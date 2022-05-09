@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/09 16:21:46 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/09 16:22:39 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static char	*static_next_line(char **str)
 		(*str)++;
 	return (res);
 }
-		
+
 char	**split_pipes(char *str)
 {
 	char	**res;
@@ -117,18 +117,4 @@ char	**split_pipes(char *str)
 	}
 	res[size] = NULL;
 	return (res);
-}
-
-int	main(int ac, char **av)
-{
-	if (ac < 2)
-		return (1);
-	char **res = split_pipes(av[1]);
-	printf("%s\n\n", av[1]);
-	while (*res)
-	{
-		printf("%s\n", *res);
-		res++;
-	}
-	return (0);
 }
