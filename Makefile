@@ -12,6 +12,8 @@ LIBFT_DIR = libft
 LIBFT_H = libft/libft.h
 LIBFT_REPO = https://github.com/adesgran/libft_extended.git
 
+LIBS_FLAGS = -lreadline
+
 INCLUDES = -I ${LIBFT_DIR} -I .
 
 .c.o:
@@ -28,10 +30,12 @@ ${NAME}: ${O_FILES}
 
 clean:
 		rm -r ${O_FILES}
-			make clean -C ${LIBFT_DIR}
+		make clean -C ${LIBFT_DIR}
 
 fclean: clean
 		rm -r ${NAME}
-			make fclean -C ${LIBFT_DIR}
+		make fclean -C ${LIBFT_DIR}
 
 re: fclean all
+
+.PHONY: all clean fclean re ${NAME}
