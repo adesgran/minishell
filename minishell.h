@@ -25,8 +25,7 @@
 
 typedef struct	s_data
 {
-	t_history	*history;
-
+	int i;
 }	t_data;
 
 #endif
