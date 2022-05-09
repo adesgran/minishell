@@ -26,7 +26,7 @@ ${LIBFT}:
 		make -C libft
 
 ${NAME}: ${O_FILES}
-		${CC} ${O_FILES} ${LIBFT_INC} -o ${NAME}
+		${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
 
 clean:
 		rm -r ${O_FILES}
