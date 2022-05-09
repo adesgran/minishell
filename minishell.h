@@ -23,12 +23,6 @@
 # include <curses.h>
 # include <term.h>
 
-typedef struct	s_history
-{
-	struct s_history	*next;
-	char				*str;
-}	t_history;
-
 typedef struct	s_data
 {
 	t_history	*history;
