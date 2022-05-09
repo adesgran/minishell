@@ -9,6 +9,7 @@
 # define COLOR_MAG "\x1B[35m"
 # define COLOR_CYN "\x1B[36m"
 # define COLOR_WHT "\x1B[37m"
+# define BOLD "\033[1m"
 
 # include <unistd.h>
 # include <stdio.h>
