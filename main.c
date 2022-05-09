@@ -6,25 +6,15 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/09 15:08:44 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/09 18:22:03 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int run_again = 1;
 void	get_sig(int sig)
 {
-	if (sig == SIGINT)
-	{
-		run_again = 0;
-		printf("\nLeave with Ctrl-C\n");
-	}
-	else if (sig == SIGQUIT)
-	{
-		run_again = 0;
-		printf("\nLeave with Ctrl-\\\n");
-	}
+	(void)sig;
 }
 
 int	loop_read(void)
@@ -33,9 +23,16 @@ int	loop_read(void)
 
 	signal(SIGINT, get_sig);
 	signal(SIGQUIT, get_sig);
-	while (run_again)
+	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
+	while (1)
 	{
 		line = readline("\x1B[34m\033[1mminishell$> \x1B[0m");
+		if (ft_strncmp(line, "exit", 5) == 0)
+		{
+			printf("\x1B[31mGood Bye !\x1B[0m\n");
+			free(line);
+			break ;
+		}
 		add_history(line);
 		free(line);
 	}
