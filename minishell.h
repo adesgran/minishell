@@ -40,5 +40,6 @@ typedef struct s_data
 }	t_data;
 
 void	pipex(t_data *data);
+void	get_bin_path(t_cmd *cmd);
 
 #endif
