@@ -6,11 +6,11 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/11 16:58:53 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:30:18 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include <minishell.h>
 
 static void	close_other(t_data	*data, t_cmd *cmd)
 {
