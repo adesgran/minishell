@@ -24,9 +24,21 @@
 # include <curses.h>
 # include <term.h>
 
-typedef struct	s_data
+typedef struct s_cmd
 {
-	int i;
+	char			**cmd;
+	char			*bin_path;
+	int				fd_infile;
+	int				fd_outfile;
+	struct s_cmd	*next;
+}	t_cmd;
+
+typedef struct s_data
+{
+	t_cmd	*cmd;
+	char	**envp;
 }	t_data;
+
+void	pipex(t_data *data);
 
 #endif
