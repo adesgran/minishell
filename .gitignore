@@ -1,5 +1,7 @@
 # Perso
 libft
+*.swp
+minishell
 
 # Prerequisites
 *.d
