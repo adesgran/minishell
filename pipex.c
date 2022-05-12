@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/11 17:30:18 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/12 12:38:19 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	set_pipefd(t_cmd *cmd)
 	return (0);
 }
 
-void	pipex(t_data *data)
+int	pipex(t_data *data)
 {
 	int		status;
 	size_t	i;

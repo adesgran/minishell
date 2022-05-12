@@ -39,7 +39,7 @@ typedef struct s_data
 	char	**envp;
 }	t_data;
 
-void	pipex(t_data *data);
+int		pipex(t_data *data);
 void	get_bin_path(t_cmd *cmd);
 
 #endif
