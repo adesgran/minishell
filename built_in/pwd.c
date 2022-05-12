@@ -6,19 +6,19 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 12:32:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 14:04:51 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:20:52 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	pwd(int ac, char **av)
+int	mini_pwd(t_data *data, int fd_out)
 {
-	char	*pwd;
+	t_env	*pwd;
 
-	pwd = getenv("PWD");
+	pwd = get_var_env(data, "PWD");
 	if (!pwd)
 		return (1);
-	write(STDOUT_FILENO, pwd + 4, ft_strlen(pwd));
+	ft_putstr_fd(pwd->var + 4, fd_out);
 	return (0);
 }
