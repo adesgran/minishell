@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/11 16:58:53 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:45:00 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include <minishell.h>
 
 static void	close_other(t_data	*data, t_cmd *cmd)
 {
@@ -112,5 +112,5 @@ void	pipex(t_data *data)
 	close_pipes(data->cmd);
 	while (--i)
 		wait(&status);
-	return (status);
+	// return (status);
 }
