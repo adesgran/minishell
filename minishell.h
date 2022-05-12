@@ -24,6 +24,12 @@
 # include <curses.h>
 # include <term.h>
 
+typedef struct s_env
+{
+	char			*var;
+	struct s_env	*next;
+} t_env;
+
 typedef struct s_cmd
 {
 	char			**cmd;
@@ -36,6 +42,7 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	t_cmd	*cmd;
+	t_env	*env;
 	char	**envp;
 }	t_data;
 
