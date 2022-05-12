@@ -92,7 +92,7 @@ int	set_pipefd(t_cmd *cmd)
 	return (0);
 }
 
-void	pipex(t_data *data)
+int	pipex(t_data *data)
 {
 	int		status;
 	size_t	i;
@@ -112,5 +112,5 @@ void	pipex(t_data *data)
 	close_pipes(data->cmd);
 	while (--i)
 		wait(&status);
-	// return (status);
+  return (status);
 }
