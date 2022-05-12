@@ -6,13 +6,13 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:25:03 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 12:27:01 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:10:20 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	main(int ac, char **av)
+int	mini_echo(char **av, int fd_out)
 {
 	int	nl;
 	int	i;
@@ -28,13 +28,13 @@ int	main(int ac, char **av)
 		}
 		while (i < ac)
 		{
-			write(STDOUT_FILENO, av[i], ft_strlen(av[i]));
+			ft_putstr_fd(av[i], fd_out);
 			if (i + 1 != ac)
-				write(STDOUT_FILENO, " ", 1);
+				fd_putchar_fd(' ', fd_out);
 			i++;
 		}
 	}
 	if (nl)
-		write(STDOUT_FILENO, "\n", 1);
+		fd_putchar_fd('\n',fd_out);
 	return (0);
 }
