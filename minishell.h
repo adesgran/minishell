@@ -48,5 +48,9 @@ typedef struct s_data
 
 int		pipex(t_data *data);
 void	get_bin_path(t_cmd *cmd);
+t_env	*get_var_env(t_env *env, char *var);
+void	push_back_env(t_env *env, char *str);
+t_env	*init_env(char **env);
+void	free_env(t_env *env);
 
 #endif
