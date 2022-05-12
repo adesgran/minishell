@@ -6,21 +6,21 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:11:39 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 14:13:34 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:16:11 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	env(int ac, char **av, char **envp)
+int	env(t_data *data, int fd_out)
 {
-	if (!envp || !*envp)
+	if (!data || fd_out < 1)
 		return (1);
-	while (ft_strncmp(*envp, "_=", 2) == 0)
+	while (data)
 	{
-		printf("%s\n", *envp);
-		envp++;
+		ft_putstr_fd(data->var, fd_out);
+		ft_putchar_fd('\n', fd_out);
+		data = data->next;
 	}
-	printf("%s\n", *envp);
 	return (0);
 }
