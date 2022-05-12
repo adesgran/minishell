@@ -6,13 +6,13 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:11:39 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 15:18:04 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:21:56 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	env(t_data *data, int fd_out)
+int	mini_env(t_data *data, int fd_out)
 {
 	t_env	*env;
 
