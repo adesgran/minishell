@@ -11,6 +11,12 @@
 # define COLOR_WHT "\x1B[37m"
 # define BOLD "\033[1m"
 
+# define WORD 0
+# define LESS 1
+# define HEREDOC 2
+# define GREAT 3
+# define GREATGREAT 4
+
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -23,6 +29,7 @@
 # include <fcntl.h>
 # include <curses.h>
 # include <term.h>
+# include <lst_token.h>
 
 typedef struct s_env
 {
@@ -55,5 +62,6 @@ t_env	*get_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *str);
 t_env	*init_env(char **env);
 void	free_env(t_env *env);
+void	lexer(char *str, t_token **token);
 
 #endif
