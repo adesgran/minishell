@@ -29,8 +29,13 @@
 # include <fcntl.h>
 # include <curses.h>
 # include <term.h>
+# include <lst_token.h>
 
-#include <lst_token.h>
+typedef struct s_env
+{
+	char			*var;
+	struct s_env	*next;
+} t_env;
 
 typedef struct s_cmd
 {
@@ -44,12 +49,19 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	t_cmd	*cmd;
+	t_env	*env;
 	char	**envp;
 }	t_data;
 
-void	pipex(t_data *data);
-
-// lexer.c
+int		pipex(t_data *data);
+void	get_bin_path(t_cmd *cmd);
+int		mini_echo(char **av, int fd_out);
+int		mini_env(t_data *data, int fd_out);
+int		mini_pwd(t_data *data, int fd_out);
+t_env	*get_var_env(t_env *env, char *var);
+void	push_back_env(t_env *env, char *str);
+t_env	*init_env(char **env);
+void	free_env(t_env *env);
 void	lexer(char *str, t_token **token);
 
 #endif
