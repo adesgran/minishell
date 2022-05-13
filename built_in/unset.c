@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 14:11:39 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 16:07:58 by adesgran         ###   ########.fr       */
+/*   Created: 2022/05/13 14:10:56 by adesgran          #+#    #+#             */
+/*   Updated: 2022/05/13 14:46:05 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	mini_env(t_data *data, int fd_out)
+int	mini_unset(t_data *data, char **strs)
 {
-	t_env	*env;
-
-	if (!data || fd_out < 1)
-		return (1);
-	env = data->env;
-	while (env)
+	if (!strs)
+		return (0);
+	while (*strs)
 	{
-		ft_putstr_fd(env->var, fd_out);
-		ft_putstr_fd("=", fd_out);
-		ft_putstr_fd(env->var, fd_out);
-		ft_putchar_fd('\n', fd_out);
-		env = env->next;
+		data->env = remove_var_env(data->env, *strs);
+		strs++;
 	}
 	return (0);
 }
