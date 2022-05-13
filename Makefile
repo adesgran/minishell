@@ -5,6 +5,7 @@ C_FLAGS = -Wall -Wextra -Werror
 
 C_FILES = $(wildcard *.c)
 C_FILES += $(wildcard lst_token/*.c)
+C_FILES += $(wildcard lst_cmd/*.c)
 O_FILES = $(C_FILES:.c=.o)
 
 LIBFT = libft/libft.a
@@ -15,7 +16,7 @@ LIBFT_REPO = https://github.com/adesgran/libft_extended.git
 
 LIBS_FLAGS = -lreadline
 
-INCLUDES = -I ${LIBFT_DIR} -I . -I lst_token
+INCLUDES = -I ${LIBFT_DIR} -I . -I lst_token -I lst_cmd
 
 .c.o:
 		${CC} ${C_FLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}

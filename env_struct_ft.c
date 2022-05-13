@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_struct_ft.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 14:56:48 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 10:21:04 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_env	*get_var_env(t_env *env, char *var)
 {
 	char	*to_check;
 
-	while (*env)
+	while (env) // retire une etoile
 	{
 		to_check = ft_strjoin(var, "=");
 		if (ft_strncmp(to_check, env->var, ft_strlen(to_check)))

@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lstclear_token.c                                   :+:      :+:    :+:   */
+/*   lstnew_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 18:23:24 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/11 18:23:24 by mchassig         ###   ########.fr       */
+/*   Created: 2022/05/13 10:28:23 by mchassig          #+#    #+#             */
+/*   Updated: 2022/05/13 10:28:23 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	lstclear_token(t_token **lst)
+t_cmd	*lstnew_cmd(void)
 {
-	t_token	*temp;
+	t_cmd	*res;
 
-	if (!lst)
-		return ;
-	if (!*lst)
-		return ;
-	if (lst[0]->next)
-		lstclear_token(&lst[0]->next);
-	free(lst[0]->token);
-	lst[0]->token = NULL;
-	temp = lst[0];
-	lst[0] = NULL;
-	free(temp);
+	res = malloc(sizeof(t_cmd));
+	if (!res)
+		return (NULL);
+	res->cmd = NULL;
+	res->bin_path = NULL;
+	res->fd_infile = -2;
+	res->fd_infile = -2;
+	res->next = NULL;
+	return (res);
 }
