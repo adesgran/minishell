@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:25:03 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 15:10:20 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 18:52:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int	mini_echo(char **av, int fd_out)
 		}
 	}
 	if (nl)
-		fd_putchar_fd('\n',fd_out);
+		fd_putchar_fd('\n', fd_out);
 	return (0);
 }

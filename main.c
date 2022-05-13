@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 15:58:12 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/13 18:57:43 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,46 +17,90 @@ void	get_sig(int sig)
 	(void)sig;
 }
 
-int	loop_read(char **env)
+void	free_data(t_data *data)
+{
+	free_env(data->env);
+	lstclear_cmd(&(data->cmd));
+	free(data);
+}
+
+t_data	*init_data(char **env)
+{
+	t_data	*data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		exit(EXIT_FAILURE);
+	data->cmd = NULL;
+	data->env = init_env(env);
+	if (!data->env)
+	{
+		free(data);
+		exit(EXIT_FAILURE);
+	}
+	data->envp = env;
+	return (data);
+}
+
+int	analyse_line(char **line_tab, t_data *data)
+{
+	t_token	*token;
+	int		i;
+
+	if (!line_tab)
+		return (1);
+	i = 0;
+	while (line_tab[i])
+	{
+		token = NULL;
+		lexer(line_tab[i], &token);
+		if (!token)
+			return (ft_free_tabstr(line_tab), 1);
+		token_to_cmd(token, &(data->cmd));
+		lstclear_token(&token);
+		if (!data->cmd)
+			return (ft_free_tabstr(line_tab), 1);
+		i++;
+	}
+	ft_free_tabstr(line_tab);
+	return (0);
+}
+
+int	loop_read(t_data *data)
 {
 	char	*line;
-	t_token	*token;
-	t_cmd	*cmd;
-	
+
 	// signal(SIGINT, get_sig);
 	// signal(SIGQUIT, get_sig);
-	(void)env;
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
-		token = NULL;
-		cmd = NULL;
 		line = readline("\x1B[34m\033[1mminishell$> \x1B[0m");
 		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			printf("\x1B[31mGood Bye !\x1B[0m\n");
-			free(line);
-			break ;
+			return (rl_clear_history(), free(line), free_data(data), 0);
 		}
 		add_history(line);
-		lexer(line, &token);
-		if (!token && line[0])
-			return (free(line), lstclear_token(&token), 1); // + free des trucs
-		token_to_cmd(token, &cmd);
-		if (!cmd)
-			return (free(line), lstclear_token(&token), 1); // + free des trucs
-		// get_bin_path(cmd);
-		lstclear_token(&token);
-		lstclear_cmd(&cmd);
+		if (line[0])
+		{
+			if (analyse_line(split_pipes(line), data) == 1)
+				return (free_data(data), free(line), 1);
+			get_bin_path(data, data->cmd);
+			pipex(data);
+			lstclear_cmd(&(data->cmd));
+		}
 		free(line);
 	}
-	rl_clear_history();
-	return (0);
+	return (rl_clear_history(), 0);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	loop_read(env);	
+	t_data	*data;
+
+	data = init_data(env);
+	loop_read(data);
 	(void)ac;
 	(void)av;
 	return (0);
