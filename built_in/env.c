@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:11:39 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 15:21:56 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:07:58 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	mini_env(t_data *data, int fd_out)
 	env = data->env;
 	while (env)
 	{
+		ft_putstr_fd(env->var, fd_out);
+		ft_putstr_fd("=", fd_out);
 		ft_putstr_fd(env->var, fd_out);
 		ft_putchar_fd('\n', fd_out);
 		env = env->next;
