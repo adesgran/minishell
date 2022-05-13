@@ -30,6 +30,7 @@
 # include <curses.h>
 # include <term.h>
 # include <lst_token.h>
+# include <lst_cmd.h>
 
 typedef struct s_env
 {
@@ -37,15 +38,6 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 } t_env;
-
-typedef struct s_cmd
-{
-	char			**cmd;
-	char			*bin_path;
-	int				fd_infile;
-	int				fd_outfile;
-	struct s_cmd	*next;
-}	t_cmd;
 
 typedef struct s_data
 {
@@ -65,6 +57,7 @@ void	push_back_env(t_env *env, char *str);
 t_env	*init_env(char **env);
 void	free_env(t_env *env);
 void	lexer(char *str, t_token **token);
+void	token_to_cmd(t_token *token, t_cmd **cmd);
 t_env	*remove_var_env(t_env *env, char *var);
 
 #endif

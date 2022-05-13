@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lstclear_token.c                                   :+:      :+:    :+:   */
+/*   lstadd_back_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 18:23:24 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/11 18:23:24 by mchassig         ###   ########.fr       */
+/*   Created: 2022/05/13 10:28:53 by mchassig          #+#    #+#             */
+/*   Updated: 2022/05/13 10:28:53 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	lstclear_token(t_token **lst)
+void	lstadd_back_cmd(t_cmd **alst, t_cmd *new)
 {
-	t_token	*temp;
+	t_cmd	*end;
 
-	if (!lst)
+	if (!alst)
 		return ;
-	if (!*lst)
+	if (!*alst)
+	{
+		*alst = new;
 		return ;
-	if (lst[0]->next)
-		lstclear_token(&lst[0]->next);
-	free(lst[0]->token);
-	lst[0]->token = NULL;
-	temp = lst[0];
-	lst[0] = NULL;
-	free(temp);
+	}
+	end = lstlast_cmd(alst[0]);
+	end->next = new;
 }

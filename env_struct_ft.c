@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_struct_ft.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 15:58:12 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 12:26:54 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	free_env(t_env *env)
 
 t_env	*get_var_env(t_env *env, char *var)
 {
+	char	*to_check;
+  
 	while (env)
 	{
 		if (ft_strncmp(var, env->var, ft_strlen(var)) \

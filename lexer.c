@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/12 17:07:21 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:34:19 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,4 @@ printf("	** new token = %s de type %d **\n", new->token, new->type);
 		}
 		i++;
 	}
-	printf("fin lexer\n");
 }

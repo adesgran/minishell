@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_bin_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/11 17:54:47 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:57:26 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	**get_path(void)
+static char	**get_path()
 {
 	char	**res;
 	char	*path;
@@ -44,9 +44,12 @@ void	get_bin_path(t_cmd *cmd)
 	char	**paths;
 
 	i = 0;
+	printf("ICI 1\n");
 	if (!cmd->cmd[0])
 		return ;
+	printf("ICI 2\n");
 	paths = get_path();
+	printf("ICI 3\n");
 	if (!paths)
 		return ;
 	while (paths[i])
@@ -60,5 +63,6 @@ void	get_bin_path(t_cmd *cmd)
 		cmd->bin_path = NULL;
 		i++;
 	}
+	printf("ICI 4\n");
 	free_paths(paths);
 }
