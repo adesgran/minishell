@@ -6,7 +6,11 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/05/13 10:21:04 by mchassig         ###   ########.fr       */
+=======
+/*   Updated: 2022/05/13 12:26:54 by adesgran         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +32,11 @@ t_env	*get_var_env(t_env *env, char *var)
 {
 	char	*to_check;
 
+<<<<<<< HEAD
 	while (env) // retire une etoile
+=======
+	while (env)
+>>>>>>> main
 	{
 		to_check = ft_strjoin(var, "=");
 		if (ft_strncmp(to_check, env->var, ft_strlen(to_check)))
