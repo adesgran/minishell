@@ -6,22 +6,21 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 15:57:26 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:48:42 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	**get_path()
+static char	**get_path(t_data *data)
 {
 	char	**res;
 	char	*path;
 
-	path = getenv("PATH");
+	path = get_var_env(data->env, "PATH")->value;
 	if (!path)
 		return (NULL);
 	res = ft_split(path, ':');
-	free(path);
 	return (res);
 }
 
@@ -38,7 +37,7 @@ static void	free_paths(char **paths)
 	free(init);
 }
 
-void	get_bin_path(t_cmd *cmd)
+void	get_bin_path(t_data *data, t_cmd *cmd)
 {
 	int		i;
 	char	**paths;
@@ -48,7 +47,7 @@ void	get_bin_path(t_cmd *cmd)
 	if (!cmd->cmd[0])
 		return ;
 	printf("ICI 2\n");
-	paths = get_path();
+	paths = get_path(data);
 	printf("ICI 3\n");
 	if (!paths)
 		return ;

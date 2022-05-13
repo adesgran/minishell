@@ -47,7 +47,7 @@ typedef struct s_data
 }	t_data;
 
 int		pipex(t_data *data);
-void	get_bin_path(t_cmd *cmd);
+void	get_bin_path(t_data *data, t_cmd *cmd);
 int		mini_echo(char **av, int fd_out);
 int		mini_env(t_data *data, int fd_out);
 int		mini_pwd(t_data *data, int fd_out);
