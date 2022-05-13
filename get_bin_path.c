@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 16:48:42 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 18:23:05 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,25 @@ void	get_bin_path(t_data *data, t_cmd *cmd)
 	char	**paths;
 
 	i = 0;
-	printf("ICI 1\n");
 	if (!cmd->cmd[0])
 		return ;
-	printf("ICI 2\n");
 	paths = get_path(data);
-	printf("ICI 3\n");
 	if (!paths)
 		return ;
-	while (paths[i])
+	while (cmd)
 	{
-		cmd->bin_path = ft_strjoinx(3, paths[i], "/", cmd->cmd[0]);
-		if (!cmd->bin_path)
-			return (free_paths(paths));
-		if (access(cmd->bin_path, X_OK) == 0)
-			break ;
-		free(cmd->bin_path);
-		cmd->bin_path = NULL;
-		i++;
+		while (paths[i])
+		{
+			cmd->bin_path = ft_strjoinx(3, paths[i], "/", cmd->cmd[0]);
+			if (!cmd->bin_path)
+				return (free_paths(paths));
+			if (access(cmd->bin_path, X_OK) == 0)
+				break ;
+			free(cmd->bin_path);
+			cmd->bin_path = NULL;
+			i++;
+		}
+		cmd = cmd->next;
 	}
-	printf("ICI 4\n");
 	free_paths(paths);
 }

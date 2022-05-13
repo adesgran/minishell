@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 16:13:47 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 17:28:43 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ t_env	*get_var_env(t_env *env, char *var)
 {
 	while (env)
 	{
-		if (ft_strncmp(var, env->var, ft_strlen(var)) \
-				&& ft_strlen(env->var) == ft_strlen(var))
+		if (ft_strncmp(var, env->var, ft_strlen(var) + 1) == 0)
 			return (env);
 		env = env->next;
 	}
@@ -87,6 +86,7 @@ void	push_back_env(t_env *env, char *str)
 t_env	*init_env(char **env)
 {
 	t_env	*res;
+	char	**strs;
 
 	if (!env || !*env)
 		return (NULL);
@@ -94,8 +94,11 @@ t_env	*init_env(char **env)
 	if (!res)
 		return (NULL);
 	res->next = NULL;
-	res->var = ft_strdup(*env);
-	while (ft_strncmp(*env, "_=", 2) == 0)
+	strs = ft_split(*env, '=');
+	res->var = strs[0];
+	res->value = strs[1];
+	free(strs);
+	while (env[1])
 	{
 		env++;
 		push_back_env(res, *env);

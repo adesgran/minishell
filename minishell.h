@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
+/*   Updated: 2022/05/13 18:54:46 by mchassig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -38,7 +50,7 @@ typedef struct s_env
 	char			*var;
 	char			*value;
 	struct s_env	*next;
-} t_env;
+}	t_env;
 
 typedef struct s_data
 {
@@ -47,18 +59,32 @@ typedef struct s_data
 	char	**envp;
 }	t_data;
 
+// pipex.c
 int		pipex(t_data *data);
+
+// get_bin_path.c
 void	get_bin_path(t_data *data, t_cmd *cmd);
+
+// built_in
 int		mini_echo(char **av, int fd_out);
 int		mini_env(t_data *data, int fd_out);
 int		mini_pwd(t_data *data, int fd_out);
 int		mini_unset(t_data *data, char **strs);
+
+// env_struct_ft.c
+void	free_env(t_env *env);
 t_env	*get_var_env(t_env *env, char *var);
+t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *str);
 t_env	*init_env(char **env);
-void	free_env(t_env *env);
+
+// lexer.c
 void	lexer(char *str, t_token **token);
+
+//parsing.c
 void	token_to_cmd(t_token *token, t_cmd **cmd);
-t_env	*remove_var_env(t_env *env, char *var);
+
+// minisplit.c
+char	**split_pipes(char *str);
 
 #endif
