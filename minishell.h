@@ -31,6 +31,7 @@
 # include <term.h>
 # include <lst_token.h>
 # include <lst_cmd.h>
+# include <dirent.h>
 
 typedef struct s_env
 {
