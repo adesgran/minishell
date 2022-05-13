@@ -16,6 +16,10 @@ void	lstclear_token(t_token **lst)
 {
 	t_token	*temp;
 
+	if (!lst)
+		return ;
+	if (!*lst)
+		return ;
 	if (lst[0]->next)
 		lstclear_token(&lst[0]->next);
 	free(lst[0]->token);

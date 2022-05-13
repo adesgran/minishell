@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/12 10:56:48 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:50:12 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	loop_read(void)
 			break ;
 		}
 		add_history(line);
+		lstclear_token(&token);
 		lexer(line, &token);
+		
 		free(line);
 	}
 	rl_clear_history();

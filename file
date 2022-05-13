@@ -1,0 +1,15 @@
+file
+infile
+lexer.c
+lexer.o
+libft
+lst_token
+main.c
+main.o
+Makefile
+minishell
+minishell.h
+minisplit.c
+minisplit.o
+pipex.c
+pipex.o
