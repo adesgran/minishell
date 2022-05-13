@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 12:26:54 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 14:42:00 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,33 @@ t_env	*get_var_env(t_env *env, char *var)
 		env = env->next;
 	}
 	return (env);
+}
+
+t_env	*remove_var_env(t_env *env, char *var)
+{
+	t_env	*temp;
+	t_env	*origin;
+	char	*varbis;
+
+	varbis = ft_strjoin(var, "=");
+	origin = env;
+	if (ft_strncmp(varbis, env->var, ft_strlen(varbis)))
+	{
+		origin = env->next;
+		return (free(env->var), free(env), free(varbis), origin);
+	}
+	while (env)
+	{
+		if (ft_strncmp(varbis, env->next->var, ft_strlen(varbis)))
+		{
+			temp = env->next;
+			env->next = temp->next;
+			return (free(temp->var), free(temp), free(varbis), origin);
+		}
+		env = env->next;
+	}
+	free(varbis);
+	return (origin);
 }
 
 void	push_back_env(t_env *env, char *str)

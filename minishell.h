@@ -63,5 +63,6 @@ void	push_back_env(t_env *env, char *str);
 t_env	*init_env(char **env);
 void	free_env(t_env *env);
 void	lexer(char *str, t_token **token);
+t_env	*remove_var_env(t_env *env, char *var);
 
 #endif
