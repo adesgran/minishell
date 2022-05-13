@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 14:42:00 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:58:12 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_env(t_env *env)
 	while (env)
 	{
 		next = env->next;
+		free(env->var);
+		free(env->value);
 		free(env);
 		env = next;
 	}
@@ -26,14 +28,11 @@ void	free_env(t_env *env)
 
 t_env	*get_var_env(t_env *env, char *var)
 {
-	char	*to_check;
-
 	while (env)
 	{
-		to_check = ft_strjoin(var, "=");
-		if (ft_strncmp(to_check, env->var, ft_strlen(to_check)))
-			return (free(to_check), env);
-		free(to_check);
+		if (ft_strncmp(var, env->var, ft_strlen(var)) \
+				&& ft_strlen(env->var) == ft_strlen(var))
+			return (env);
 		env = env->next;
 	}
 	return (env);
@@ -43,43 +42,46 @@ t_env	*remove_var_env(t_env *env, char *var)
 {
 	t_env	*temp;
 	t_env	*origin;
-	char	*varbis;
 
-	varbis = ft_strjoin(var, "=");
 	origin = env;
-	if (ft_strncmp(varbis, env->var, ft_strlen(varbis)))
+	if (ft_strncmp(var, env->var, ft_strlen(var)) \
+			&& ft_strlen(var) == ft_strlen(env->var))
 	{
 		origin = env->next;
-		return (free(env->var), free(env), free(varbis), origin);
+		return (free(env->var), free(env->value), free(env), origin);
 	}
 	while (env)
 	{
-		if (ft_strncmp(varbis, env->next->var, ft_strlen(varbis)))
+		if (ft_strncmp(var, env->next->var, ft_strlen(var)) \
+				&& ft_strlen(var) == ft_strlen(env->var))
 		{
 			temp = env->next;
 			env->next = temp->next;
-			return (free(temp->var), free(temp), free(varbis), origin);
+			return (free(temp->var), free(temp->value), free(temp), origin);
 		}
 		env = env->next;
 	}
-	free(varbis);
 	return (origin);
 }
 
 void	push_back_env(t_env *env, char *str)
 {
 	t_env	*new;
+	char	**strs;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return ;
+	strs = ft_split(str, '=');
+	if (!strs)
+		return (free(new));
 	new->next = NULL;
 	while (env->next)
 		env = env->next;
-	new->var = ft_strdup(str);
-	if (!new->var)
-		return (free(new));
+	new->var = strs[0];
+	new->value = strs[1];
 	env->next = new;
+	free(strs);
 }
 
 t_env	*init_env(char **env)
