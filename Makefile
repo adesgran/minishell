@@ -6,6 +6,7 @@ C_FLAGS = -Wall -Wextra -Werror
 C_FILES = $(wildcard *.c)
 C_FILES += $(wildcard lst_token/*.c)
 C_FILES += $(wildcard lst_cmd/*.c)
+C_FILES += $(wildcard built_in/*.c)
 O_FILES = $(C_FILES:.c=.o)
 
 LIBFT = libft/libft.a

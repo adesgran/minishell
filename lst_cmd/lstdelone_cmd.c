@@ -21,9 +21,14 @@ void	lstdelone_cmd(t_cmd *lst)
 		free(lst->cmd[i++]);
 	free(lst->cmd);
 	free(lst->bin_path);
-	if (lst->fd_infile != -2)
+	if (lst->fd_infile > 2)
 		close(lst->fd_infile);
-	if (lst->fd_outfile != -2)
-		close(lst->fd_outfile);
+	i = 0;
+	while (i < lst->nb_outfile)
+	{
+		if (lst->fd_outfile[i] > 2)
+			close(lst->fd_outfile[i]);
+		i++;
+	}
 	free(lst);
 }

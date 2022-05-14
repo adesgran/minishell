@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 18:57:43 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/14 18:45:51 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_data(t_data *data)
 	free(data);
 }
 
-t_data	*init_data(char **env)
+static t_data	*init_data(char **env)
 {
 	t_data	*data;
 
@@ -42,7 +42,7 @@ t_data	*init_data(char **env)
 	return (data);
 }
 
-int	analyse_line(char **line_tab, t_data *data)
+static int	analyse_line(char **line_tab, t_data *data)
 {
 	t_token	*token;
 	int		i;
@@ -53,12 +53,9 @@ int	analyse_line(char **line_tab, t_data *data)
 	while (line_tab[i])
 	{
 		token = NULL;
-		lexer(line_tab[i], &token);
-		if (!token)
+		if (lexer(line_tab[i], &token) == 1)
 			return (ft_free_tabstr(line_tab), 1);
-		token_to_cmd(token, &(data->cmd));
-		lstclear_token(&token);
-		if (!data->cmd)
+		if (token_to_cmd(token, &(data->cmd)) == 1)
 			return (ft_free_tabstr(line_tab), 1);
 		i++;
 	}
@@ -66,7 +63,32 @@ int	analyse_line(char **line_tab, t_data *data)
 	return (0);
 }
 
-int	loop_read(t_data *data)
+void	print_cmd(t_cmd *cmd)
+{
+	int	i;
+	
+	while (cmd)
+	{
+		printf("***************\n");
+		printf("	cmd : %s\n", cmd->cmd[0]);
+		printf("	bin : %s\n", cmd->bin_path);
+		printf("	fd_infile : %d\n", cmd->fd_infile);
+		printf("	nb_outfile : %d\n", cmd->nb_outfile);
+		if (cmd->fd_outfile)
+			printf("	fd_outfile :\n");
+		i = 0;
+		while (i < cmd->nb_outfile)
+		{
+			printf("		%d\n", cmd->fd_outfile[i]);
+			i++;
+		}
+		printf("	next : %p\n", cmd->next);
+		printf("***************\n");
+		cmd = cmd->next;
+	}
+}
+
+static int	loop_read(t_data *data)
 {
 	char	*line;
 
@@ -86,7 +108,7 @@ int	loop_read(t_data *data)
 		{
 			if (analyse_line(split_pipes(line), data) == 1)
 				return (free_data(data), free(line), 1);
-			get_bin_path(data, data->cmd);
+			get_bin_path(data->cmd, get_path(data)); //prevoir un retour d'erreur
 			pipex(data);
 			lstclear_cmd(&(data->cmd));
 		}
