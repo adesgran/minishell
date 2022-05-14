@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/13 18:54:46 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/14 17:50:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ typedef struct s_data
 	char	**envp;
 }	t_data;
 
+// main.c
+void	print_cmd(t_cmd *cmd);
+
 // pipex.c
+int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data);
 
 // get_bin_path.c
-void	get_bin_path(t_data *data, t_cmd *cmd);
+char	**get_path(t_data *data);
+void	get_bin_path(t_cmd *cmd, char **paths);
 
 // built_in
 int		mini_echo(char **av, int fd_out);
@@ -78,10 +83,10 @@ void	push_back_env(t_env *env, char *str);
 t_env	*init_env(char **env);
 
 // lexer.c
-void	lexer(char *str, t_token **token);
+int		lexer(char *str, t_token **token);
 
 //parsing.c
-void	token_to_cmd(t_token *token, t_cmd **cmd);
+int		token_to_cmd(t_token *token, t_cmd **cmd);
 
 // minisplit.c
 char	**split_pipes(char *str);

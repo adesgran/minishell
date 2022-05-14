@@ -6,13 +6,13 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 18:23:05 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/14 16:54:05 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	**get_path(t_data *data)
+char	**get_path(t_data *data)
 {
 	char	**res;
 	char	*path;
@@ -37,20 +37,27 @@ static void	free_paths(char **paths)
 	free(init);
 }
 
-void	get_bin_path(t_data *data, t_cmd *cmd)
+// static int	check_mini_cmd(t_cmd *cmd)
+// {
+// 	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0
+// 			|| ft_strncmp(cmd->cmd[0], "env", 4) == 0
+// 			|| ft_strncmp(cmd->cmd[0], "pwd", 4) == 0
+// 			|| ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
+// 		return (1);
+// 	else
+// 		return (0);
+// }
+
+void	get_bin_path(t_cmd *cmd, char **paths)
 {
 	int		i;
-	char	**paths;
 
-	i = 0;
-	if (!cmd->cmd[0])
-		return ;
-	paths = get_path(data);
-	if (!paths)
+	i = -1;
+	if (!cmd->cmd[0] || !paths)
 		return ;
 	while (cmd)
 	{
-		while (paths[i])
+		while (paths[++i])
 		{
 			cmd->bin_path = ft_strjoinx(3, paths[i], "/", cmd->cmd[0]);
 			if (!cmd->bin_path)
@@ -59,7 +66,6 @@ void	get_bin_path(t_data *data, t_cmd *cmd)
 				break ;
 			free(cmd->bin_path);
 			cmd->bin_path = NULL;
-			i++;
 		}
 		cmd = cmd->next;
 	}

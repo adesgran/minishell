@@ -14,8 +14,8 @@
 
 void	lstclear_cmd(t_cmd **lst)
 {
-	t_cmd	*temp;
-	int		i;
+	//t_cmd	*temp;
+	// int		i;
 
 	if (!lst)
 		return ;
@@ -23,16 +23,21 @@ void	lstclear_cmd(t_cmd **lst)
 		return ;
 	if (lst[0]->next)
 		lstclear_cmd(&lst[0]->next);
-	i = 0;
-	while (lst[0]->cmd && lst[0]->cmd[i])
-		free(lst[0]->cmd[i++]);
-	free(lst[0]->cmd);
-	free(lst[0]->bin_path);
-	if (lst[0]->fd_infile > 2)
-		close(lst[0]->fd_infile);
-	if (lst[0]->fd_outfile > 2)
-		close(lst[0]->fd_outfile);
-	temp = lst[0];
+	lstdelone_cmd(*lst);
+	// i = 0;
+	// while (lst[0]->cmd && lst[0]->cmd[i])
+	// 	free(lst[0]->cmd[i++]);
+	// free(lst[0]->cmd);
+	// free(lst[0]->bin_path);
+	// if (lst[0]->fd_infile > 2)
+	// 	close(lst[0]->fd_infile);
+	// i = 0;
+	// while (i < lst[0]->nb_outfile)
+	// {
+	// 	if (lst[0]->fd_outfile[i] > 2)
+	// 		close(lst[0]->fd_outfile[i]);
+	// }
+	//temp = lst[0];
 	lst[0] = NULL;
-	free(temp);
+	//free(temp);
 }

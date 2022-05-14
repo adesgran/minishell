@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:52 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/13 18:53:53 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/14 15:09:34 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ typedef struct s_cmd
 	char			**cmd;
 	char			*bin_path;
 	int				fd_infile;
-	int				fd_outfile;
+	int				*fd_outfile;
+	int				nb_outfile;
 	struct s_cmd	*next;
 }	t_cmd;
 
