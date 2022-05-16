@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 13:27:18 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/16 15:56:06 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 static char	*get_var_name(char *str)
 {
-	char	*res;
 	int		i;
 
 	i = 0;
-	while (str[i] != '=' || ft_strncmp(str + i, str[i])
+	while (str[i] != '=' && str[i])
 		i++;
-	return ft_strndup(str, i);
+	if (!str[i])
+		return (ft_strdup("_"));
+	return (ft_strndup(str, i));
 }
 
 static int	check_varname(char *str)
@@ -55,4 +56,6 @@ int	mini_export(t_data *data, char *str)
 		printf("minishell: %d: export: %s: bad variable name", data->n_cmd, varname);
 		free(varname);
 		return (2);
-
+	}
+	return (0);
+}
