@@ -22,8 +22,8 @@ t_cmd	*lstnew_cmd(void)
 	res->cmd = NULL;
 	res->bin_path = NULL;
 	res->fd_infile = -2;
-	res->fd_outfile = NULL;
-	res->nb_outfile = 0;
+	res->fd_outfile = -2;
+	res->is_heredoc = 0;
 	res->next = NULL;
 	return (res);
 }

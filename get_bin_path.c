@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/14 16:54:05 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 12:45:08 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,29 @@ static void	free_paths(char **paths)
 // 		return (0);
 // }
 
-void	get_bin_path(t_cmd *cmd, char **paths)
+int	get_bin_path(t_cmd *cmd, char **paths)
 {
 	int		i;
 
-	i = -1;
-	if (!cmd->cmd[0] || !paths)
-		return ;
+	if (!cmd->cmd || !cmd->cmd[0] || !paths)
+		return (1);
 	while (cmd)
 	{
-		while (paths[++i])
+		i = 0;
+		while (paths[i] && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
 			cmd->bin_path = ft_strjoinx(3, paths[i], "/", cmd->cmd[0]);
 			if (!cmd->bin_path)
-				return (free_paths(paths));
+				return (free_paths(paths), 1);
 			if (access(cmd->bin_path, X_OK) == 0)
 				break ;
 			free(cmd->bin_path);
 			cmd->bin_path = NULL;
+			i++;
 		}
+		if (!paths[i] && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
+			perror(cmd->cmd[0]);
 		cmd = cmd->next;
 	}
-	free_paths(paths);
+	return (free_paths(paths), 0);
 }

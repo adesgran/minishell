@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/14 17:50:59 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 12:47:55 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		pipex(t_data *data);
 
 // get_bin_path.c
 char	**get_path(t_data *data);
-void	get_bin_path(t_cmd *cmd, char **paths);
+int		get_bin_path(t_cmd *cmd, char **paths);
 
 // built_in
 int		mini_echo(char **av, int fd_out);
