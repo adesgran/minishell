@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/14 18:45:51 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 12:46:34 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,18 @@ static int	analyse_line(char **line_tab, t_data *data)
 			return (ft_free_tabstr(line_tab), 1);
 		i++;
 	}
-	ft_free_tabstr(line_tab);
 	return (0);
 }
 
 void	print_cmd(t_cmd *cmd)
 {
-	int	i;
-	
 	while (cmd)
 	{
-		printf("***************\n");
-		printf("	cmd : %s\n", cmd->cmd[0]);
-		printf("	bin : %s\n", cmd->bin_path);
-		printf("	fd_infile : %d\n", cmd->fd_infile);
-		printf("	nb_outfile : %d\n", cmd->nb_outfile);
-		if (cmd->fd_outfile)
-			printf("	fd_outfile :\n");
-		i = 0;
-		while (i < cmd->nb_outfile)
-		{
-			printf("		%d\n", cmd->fd_outfile[i]);
-			i++;
-		}
+		ft_printf("***************\n");
+		ft_printf("	cmd : %s\n", cmd->cmd[0]);
+		ft_printf("	bin : %s\n", cmd->bin_path);
+		ft_printf("	fd_infile : %d\n", cmd->fd_infile);
+		ft_printf("	fd_outfile : %d\n", cmd->fd_outfile);
 		printf("	next : %p\n", cmd->next);
 		printf("***************\n");
 		cmd = cmd->next;
@@ -108,7 +97,8 @@ static int	loop_read(t_data *data)
 		{
 			if (analyse_line(split_pipes(line), data) == 1)
 				return (free_data(data), free(line), 1);
-			get_bin_path(data->cmd, get_path(data)); //prevoir un retour d'erreur
+			if (get_bin_path(data->cmd, get_path(data)) == 1)
+				return (free_data(data), free(line), 1);
 			pipex(data);
 			lstclear_cmd(&(data->cmd));
 		}
