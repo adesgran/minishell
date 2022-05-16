@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/16 12:45:08 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 14:20:23 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,6 @@ static void	free_paths(char **paths)
 	free(init);
 }
 
-// static int	check_mini_cmd(t_cmd *cmd)
-// {
-// 	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0
-// 			|| ft_strncmp(cmd->cmd[0], "env", 4) == 0
-// 			|| ft_strncmp(cmd->cmd[0], "pwd", 4) == 0
-// 			|| ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
-// 		return (1);
-// 	else
-// 		return (0);
-// }
-
 int	get_bin_path(t_cmd *cmd, char **paths)
 {
 	int		i;
@@ -59,17 +48,19 @@ int	get_bin_path(t_cmd *cmd, char **paths)
 		i = 0;
 		while (paths[i] && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
-			cmd->bin_path = ft_strjoinx(3, paths[i], "/", cmd->cmd[0]);
+			cmd->bin_path = ft_strjoinx(3, paths[i++], "/", cmd->cmd[0]);
 			if (!cmd->bin_path)
 				return (free_paths(paths), 1);
 			if (access(cmd->bin_path, X_OK) == 0)
 				break ;
 			free(cmd->bin_path);
 			cmd->bin_path = NULL;
-			i++;
 		}
 		if (!paths[i] && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
-			perror(cmd->cmd[0]);
+		{
+			ft_putstr_fd(cmd->cmd[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+		}
 		cmd = cmd->next;
 	}
 	return (free_paths(paths), 0);

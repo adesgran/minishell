@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/16 12:46:34 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 18:40:28 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,30 @@ static t_data	*init_data(char **env)
 	return (data);
 }
 
-static int	analyse_line(char **line_tab, t_data *data)
+static int	analyse_line(char *line, t_data *data)
 {
 	t_token	*token;
 	int		i;
+	char	**line_tab;
+	int		ret;
 
+	line_tab = split_pipes(line);
+	free(line);
 	if (!line_tab)
-		return (1);
+		return (perror("line_tab"), 1);
 	i = 0;
 	while (line_tab[i])
 	{
 		token = NULL;
-		if (lexer(line_tab[i], &token) == 1)
-			return (ft_free_tabstr(line_tab), 1);
+		ret = lexer(line_tab[i], &token);
+		if (ret)
+			return (ft_free_tabstr(line_tab), ret);
 		if (token_to_cmd(token, &(data->cmd)) == 1)
-			return (ft_free_tabstr(line_tab), 1);
+			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
+		lstclear_token(&token);
 		i++;
 	}
-	return (0);
+	return (ft_free_tabstr(line_tab), 0);
 }
 
 void	print_cmd(t_cmd *cmd)
@@ -80,6 +86,7 @@ void	print_cmd(t_cmd *cmd)
 static int	loop_read(t_data *data)
 {
 	char	*line;
+	int		ret;
 
 	// signal(SIGINT, get_sig);
 	// signal(SIGQUIT, get_sig);
@@ -90,19 +97,22 @@ static int	loop_read(t_data *data)
 		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			printf("\x1B[31mGood Bye !\x1B[0m\n");
-			return (rl_clear_history(), free(line), free_data(data), 0);
+			return (rl_clear_history(), free(line), 0);
 		}
 		add_history(line);
 		if (line[0])
 		{
-			if (analyse_line(split_pipes(line), data) == 1)
-				return (free_data(data), free(line), 1);
-			if (get_bin_path(data->cmd, get_path(data)) == 1)
-				return (free_data(data), free(line), 1);
-			pipex(data);
+			ret = analyse_line(line, data);
+			if (ret == 1)
+				return (1);
+			if (ret == 0 && data->cmd->cmd)
+			{
+				if (get_bin_path(data->cmd, get_path(data)) == 1)
+					return (1);
+				pipex(data);
+			}
 			lstclear_cmd(&(data->cmd));
 		}
-		free(line);
 	}
 	return (rl_clear_history(), 0);
 }
@@ -112,7 +122,10 @@ int	main(int ac, char **av, char **env)
 	t_data	*data;
 
 	data = init_data(env);
+	if (!data)
+		return (1);
 	loop_read(data);
+	free_data(data);
 	(void)ac;
 	(void)av;
 	return (0);

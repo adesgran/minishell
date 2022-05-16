@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 12:47:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 15:39:40 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 # define BOLD "\033[1m"
 
 # define WORD 0
-# define LESS 1
-# define HEREDOC 2
-# define GREAT 3
-# define GREATGREAT 4
+# define LESS 60
+# define HEREDOC 61
+# define GREAT 62
+# define GREATGREAT 63
 
 # include <unistd.h>
 # include <stdio.h>

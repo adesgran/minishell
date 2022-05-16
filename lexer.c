@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/14 14:34:11 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 18:25:55 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,34 @@ static t_token	*new_word(char *str, int *i, int type_word)
 	return (lstnew_token(new_str, type_word));
 }
 
-static void	error_chevron(char chevron)
+static void	error_chevron(char c, int *ret)
 {
 	ft_putstr_fd("syntax error near unexpected token `", 2);
-	ft_putchar_fd(chevron, 2);
+	if (c)
+		ft_putchar_fd(c, 2);
+	else
+		ft_putstr_fd("newline", 2);
 	ft_putstr_fd("'\n", 2);
+	*ret = 2;
 }
 
-static t_token	*new_file(char *str, int *i, int type, char chevron)
+static t_token	*new_file(char *str, int *i, char chevron, int *ret)
 {
 	char	*new_str;
 	int		len;
+	int		type;
 
-	(*i)++;
-	if (str[*i] == chevron)
+	if (str[++(*i)] == chevron)
 	{
-		type++;
+		type = chevron + 1;
 		(*i)++;
 	}
+	else
+		type = chevron;
 	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
 		(*i)++;
-	if (str[*i] == '<' || str[*i] == '>')
-		return (error_chevron(chevron), NULL);
+	if (str[*i] == '<' || str[*i] == '>' || !str[*i])
+		return (error_chevron(str[*i], ret), NULL);
 	len = len_token(&str[*i], 0);
 	if (len == -1)
 		return (NULL);
@@ -91,24 +97,26 @@ static t_token	*new_file(char *str, int *i, int type, char chevron)
 int	lexer(char *str, t_token **token)
 {
 	int		i;
+	int		ret;
 	t_token	*new;
 
 	i = 0;
+	ret = 0;
 	while (str[i])
 	{
 		if (str[i] != ' ' || (str[i] < 9 && str[i] > 13))
 		{
 			if (str[i] == '<')
-				new = new_file(str, &i, LESS, '<');
+				new = new_file(str, &i, '<', &ret);
 			else if (str[i] == '>')
-				new = new_file(str, &i, GREAT, '>');
+				new = new_file(str, &i, '>', &ret);
 			else
 				new = new_word(str, &i, WORD);
 			if (!new)
-				return (lstclear_token(token), 1);
+				return (lstclear_token(token), ret);
 			lstadd_back_token(token, new);
 		}
 		i++;
 	}
-	return (0);
+	return (ret);
 }
