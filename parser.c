@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 12:47:29 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/16 17:57:37 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@ static void	getfd_infile(t_cmd *cmd, char *file_name)
 {
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
 		return ;
-	if (cmd->is_heredoc)
+	if (cmd->is_heredoc == 1)
+	{
 		unlink("heredoc");
+		cmd->is_heredoc = 0;
+	}
+	else if (cmd->is_heredoc == 2)
+		cmd->is_heredoc = 1;
 	else if (cmd->fd_infile > 2)
 		close(cmd->fd_infile);
 	cmd->fd_infile = open(file_name, O_RDONLY);
@@ -58,14 +63,14 @@ static int	getfd_heredoc(t_cmd *cmd, char *limiter)
 
 	fd = open("heredoc", O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		return (perror("heredoc"), 1);
-	cmd->is_heredoc = 1;
+		return (perror("heredoc getfd_heredoc"), 1);
+	cmd->is_heredoc = 2;
 	new_limiter = ft_strjoinx(2, limiter, "\n");
 	if (!new_limiter)
 		return (close(fd), 1);
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", 1);
+		ft_putstr_fd("> ", 1);
 		line = ft_get_next_line(STDIN_FILENO);
 		if (!line)
 			return (close(fd), free(new_limiter), 1);
@@ -116,9 +121,8 @@ int	token_to_cmd(t_token *token, t_cmd **cmd)
 		else if (token->type == GREAT || token->type == GREATGREAT)
 			getfd_outfile(new, token->token, token->type);
 		if ((!new->cmd && token->token == WORD) || ret)
-			return (lstclear_token(&token), lstclear_cmd(cmd),
-				lstdelone_cmd(new), 1);
+			return (lstclear_cmd(cmd), lstdelone_cmd(new), 1);
 		token = token->next;
 	}
-	return (lstclear_token(&token), lstadd_back_cmd(cmd, new), 0);
+	return (lstadd_back_cmd(cmd, new), 0);
 }
