@@ -57,6 +57,7 @@ typedef struct s_data
 	t_cmd	*cmd;
 	t_env	*env;
 	char	**envp;
+	int		n_cmd;
 }	t_data;
 
 // main.c
@@ -76,11 +77,14 @@ int		mini_env(t_data *data, int fd_out);
 int		mini_pwd(t_data *data, int fd_out);
 int		mini_unset(t_data *data, char **strs);
 
+// utils
+char	*ft_remove_quotes(char *str);
+
 // env_struct_ft.c
 void	free_env(t_env *env);
 t_env	*get_var_env(t_env *env, char *var);
 t_env	*remove_var_env(t_env *env, char *var);
-void	push_back_env(t_env *env, char *str);
+void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 
 // lexer.c

@@ -63,17 +63,13 @@ t_env	*remove_var_env(t_env *env, char *var)
 	return (origin);
 }
 
-void	push_back_env(t_env *env, char *str)
+void	push_back_env(t_env *env, char *var, char *value)
 {
 	t_env	*new;
-	char	**strs;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return ;
-	strs = ft_split(str, '=');
-	if (!strs)
-		return (free(new));
 	new->next = NULL;
 	while (env->next)
 		env = env->next;
@@ -82,14 +78,16 @@ void	push_back_env(t_env *env, char *str)
 	int	i = 1;
 	while (strs[++i])
 		free(strs[i]);
+	new->var = var;
+	new->value = value;
 	env->next = new;
-	free(strs);
 }
 
 t_env	*init_env(char **env)
 {
 	t_env	*res;
 	char	**strs;
+	char	**new;
 
 	if (!env || !*env)
 		return (NULL);
@@ -106,7 +104,9 @@ t_env	*init_env(char **env)
 	while (env[1])
 	{
 		env++;
-		push_back_env(res, *env);
+		new = ft_split(*env, '=');
+		push_back_env(res, new[0], new[1]);
+		free(new);
 	}
 	return (res);
 }
