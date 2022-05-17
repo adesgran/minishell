@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 17:18:46 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:27:09 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	get_bin_path(t_cmd *cmd, char **paths)
 		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
 			if (is_builtin(cmd))
-				cmd->bin_path = "built_in/";
+				cmd->bin_path = ft_strdup("built_in/");
 			else if (is_inpath(cmd, paths) == -1)
 				return (ft_free_tabstr(paths), -1);
 			if (!cmd->bin_path)

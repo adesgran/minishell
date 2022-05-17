@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 14:27:26 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 18:01:39 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void set_env_value(t_data *data, char *str, char *varname)
 	if (!*var)
 		return (free(var));
 	env = get_var_env(data->env, varname);
+	printf("env = %p\n", env);
 	if (env)
 	{
 		if (env->value)
@@ -90,9 +91,11 @@ int	mini_export(t_data *data, char *str)
 	char	*varname;
 	int		i;
 
+	printf("Start export\n");
 	if (!str || !*str)
 		return (0);
 	varname = get_var_name(str);
+	printf("Varname = %s\n", varname);
 	if (!varname  || !*varname)
 		return (0);
 	i = ft_strlen(varname);

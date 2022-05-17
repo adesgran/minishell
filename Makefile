@@ -19,11 +19,11 @@ INCLUDES = -I ${LIBFT_DIR} -I . -I lst_token -I lst_cmd
 .c.o:
 	${CC} ${C_FLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}
 
+all: ${LIBFT} ${NAME}
+
 ${LIBFT}:
 	if [ ! -d "./libft" ]; then git clone ${LIBFT_REPO} libft; fi
 	make -C libft
-
-all: ${LIBFT} ${NAME}
 
 ${NAME}: ${O_FILES}
 	${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
