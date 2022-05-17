@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 15:39:40 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:36:02 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ char	**get_path(t_data *data);
 int		get_bin_path(t_cmd *cmd, char **paths);
 
 // built_in
-int		mini_echo(char **av, int fd_out);
-int		mini_env(t_data *data, int fd_out);
-int		mini_pwd(t_data *data, int fd_out);
+int		mini_echo(char **av);
+int		mini_env(t_data *data);
+int		mini_pwd(t_data *data);
 int		mini_unset(t_data *data, char **strs);
 
 // utils
