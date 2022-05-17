@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/17 13:47:07 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:11:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*ft_remove_quotes(char *str);
 void	free_env(t_env *env);
 t_env	*get_var_env(t_env *env, char *var);
 t_env	*remove_var_env(t_env *env, char *var);
-void	push_back_env(t_env *env, char *str);
+void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 
 // lexer.c

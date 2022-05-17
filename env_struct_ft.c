@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 17:28:43 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:11:30 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,18 @@ t_env	*remove_var_env(t_env *env, char *var)
 	return (origin);
 }
 
-void	push_back_env(t_env *env, char *str)
+void	push_back_env(t_env *env, char *var, char *value)
 {
 	t_env	*new;
-	char	**strs;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return ;
-	strs = ft_split(str, '=');
-	if (!strs)
-		return (free(new));
 	new->next = NULL;
 	while (env->next)
 		env = env->next;
-	new->var = strs[0];
-	new->value = strs[1];
+	new->var = var;
+	new->value = value;
 	env->next = new;
 	free(strs);
 }
