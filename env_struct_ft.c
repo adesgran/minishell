@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/13 17:28:43 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:24:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,26 @@ t_env	*remove_var_env(t_env *env, char *var)
 	return (origin);
 }
 
-void	push_back_env(t_env *env, char *str)
+void	push_back_env(t_env *env, char *var, char *value)
 {
 	t_env	*new;
-	char	**strs;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return ;
-	strs = ft_split(str, '=');
-	if (!strs)
-		return (free(new));
 	new->next = NULL;
 	while (env->next)
 		env = env->next;
-	new->var = strs[0];
-	new->value = strs[1];
+	new->var = var;
+	new->value = value;
 	env->next = new;
-	free(strs);
 }
 
 t_env	*init_env(char **env)
 {
 	t_env	*res;
 	char	**strs;
+	char	**new;
 
 	if (!env || !*env)
 		return (NULL);
@@ -101,7 +97,9 @@ t_env	*init_env(char **env)
 	while (env[1])
 	{
 		env++;
-		push_back_env(res, *env);
+		new = ft_split(*env, '=');
+		push_back_env(res, new[0], new[1]);
+		free(new);
 	}
 	return (res);
 }

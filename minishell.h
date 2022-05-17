@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 12:47:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:26:02 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_data
 	t_cmd	*cmd;
 	t_env	*env;
 	char	**envp;
+	int		n_cmd;
 }	t_data;
 
 // main.c
@@ -76,11 +77,14 @@ int		mini_env(t_data *data, int fd_out);
 int		mini_pwd(t_data *data, int fd_out);
 int		mini_unset(t_data *data, char **strs);
 
+// built_in utils
+char	*ft_remove_quotes(char *str);
+
 // env_struct_ft.c
 void	free_env(t_env *env);
 t_env	*get_var_env(t_env *env, char *var);
 t_env	*remove_var_env(t_env *env, char *var);
-void	push_back_env(t_env *env, char *str);
+void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 
 // lexer.c
