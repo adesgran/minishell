@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 13:46:37 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:05:56 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,8 @@ static void	fill_str_inquotes(char **res, char **str)
 	{
 		if (str[0][0] == '\\' && str[0][1] == sep)
 		{
-			res[0][0] = str[0][0];
-			res[0][1] = str[0][1];
-			*res += 2;
+			res[0][0] = str[0][1];
+			*res += 1;
 			*str += 2;
 		}
 		else
