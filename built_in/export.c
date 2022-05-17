@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 18:01:39 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 18:46:38 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,25 @@ static char	*get_var_name(char *str)
 	int		i;
 
 	i = 0;
-	while ((ft_isalnum(*str) || *str == '_') && str[i])
+	while ((ft_isalnum(str[i]) || str[i] == '_') && str[i])
 		i++;
+	printf("Size = %d\n", i);
 	if (!str[i])
 		return (ft_strdup("_"));
 	return (ft_strndup(str, i));
 }
-
-/*static int	check_varname(char *str)
-{
-	if (ft_isalnum(*str) == 0 && *str != '_')
-		return (1);
-	while (*str)
-	{
-		if (ft_isalnum(*str) == 0 && *str != '_')
-			return (1);
-		str++;
-	}
-	return (0);
-}*/
 
 static void set_env_value(t_data *data, char *str, char *varname)
 {
 	t_env	*env;
 	char	*var;
 
-	var = ft_remove_quotes(str + ft_strlen(varname) + 1);
+	var = ft_strdup(str + ft_strlen(varname) + 1);
 	if (!var)
 		return ;
 	if (!*var)
 		return (free(var));
 	env = get_var_env(data->env, varname);
-	printf("env = %p\n", env);
 	if (env)
 	{
 		if (env->value)
@@ -91,11 +78,9 @@ int	mini_export(t_data *data, char *str)
 	char	*varname;
 	int		i;
 
-	printf("Start export\n");
 	if (!str || !*str)
 		return (0);
 	varname = get_var_name(str);
-	printf("Varname = %s\n", varname);
 	if (!varname  || !*varname)
 		return (0);
 	i = ft_strlen(varname);
@@ -107,7 +92,6 @@ int	mini_export(t_data *data, char *str)
 		append_env_value(data, str, varname);
 	else
 	{
-		printf("minishell: %d: export: %s: bad variable name", data->n_cmd, varname);
 		free(varname);
 		return (2);
 	}
