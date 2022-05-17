@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 12:47:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 13:47:07 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ int		mini_echo(char **av, int fd_out);
 int		mini_env(t_data *data, int fd_out);
 int		mini_pwd(t_data *data, int fd_out);
 int		mini_unset(t_data *data, char **strs);
+
+// built_in utils
+char	*ft_remove_quotes(char *str);
 
 // env_struct_ft.c
 void	free_env(t_env *env);
