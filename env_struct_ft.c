@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 14:11:30 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:24:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ void	push_back_env(t_env *env, char *var, char *value)
 	new->var = var;
 	new->value = value;
 	env->next = new;
-	free(strs);
 }
 
 t_env	*init_env(char **env)
 {
 	t_env	*res;
 	char	**strs;
+	char	**new;
 
 	if (!env || !*env)
 		return (NULL);
@@ -97,7 +97,9 @@ t_env	*init_env(char **env)
 	while (env[1])
 	{
 		env++;
-		push_back_env(res, *env);
+		new = ft_split(*env, '=');
+		push_back_env(res, new[0], new[1]);
+		free(new);
 	}
 	return (res);
 }

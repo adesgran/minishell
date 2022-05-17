@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/17 14:11:45 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 14:26:02 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_data
 	t_cmd	*cmd;
 	t_env	*env;
 	char	**envp;
+	int		n_cmd;
 }	t_data;
 
 // main.c
