@@ -3,10 +3,7 @@ NAME = minishell
 CC = gcc
 C_FLAGS = -Wall -Wextra -Werror
 
-C_FILES = $(wildcard *.c)
-C_FILES += $(wildcard lst_token/*.c)
-C_FILES += $(wildcard lst_cmd/*.c)
-C_FILES += $(wildcard built_in/*.c)
+C_FILES = $(wildcard ./*.c) $(wildcard lst_token/*.c) $(wildcard lst_cmd/*.c) $(wildcard built_in/*.c)
 O_FILES = $(C_FILES:.c=.o)
 
 LIBFT = libft/libft.a
@@ -20,16 +17,16 @@ LIBS_FLAGS = -lreadline
 INCLUDES = -I ${LIBFT_DIR} -I . -I lst_token -I lst_cmd
 
 .c.o:
-		${CC} ${C_FLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}
+	${CC} ${C_FLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}
+
+${LIBFT}:
+	if [ ! -d "./libft" ]; then git clone ${LIBFT_REPO} libft; fi
+	make -C libft
 
 all: ${LIBFT} ${NAME}
 
-${LIBFT}:
-		if [ ! -d "./libft" ]; then git clone ${LIBFT_REPO} libft; fi
-		make -C libft
-
 ${NAME}: ${O_FILES}
-		${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
+	${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
 
 clean:
 		rm -r ${O_FILES}
