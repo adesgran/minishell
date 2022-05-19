@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/17 17:37:13 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/19 17:33:50 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,14 @@ int		token_to_cmd(t_token *token, t_cmd **cmd);
 
 // minisplit.c
 char	**split_pipes(char *str);
+
+// ft_remove_quotes.c
+char	*ft_remove_quotes(char *str);
+
+// ft_expender.c
+int	expender(t_token *token, t_env *env);
+
+int	ft_ischarset(char c, char *charset);
+
 
 #endif
