@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_remove_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 15:05:56 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/17 18:21:45 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static void	fill_str(char *res, char *str)
 			str++;
 		}
 	}
+	*res = '\0';
 }
 
 char	*ft_remove_quotes(char *str)

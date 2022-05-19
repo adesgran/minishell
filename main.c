@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 16:33:47 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/17 19:26:27 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static int	analyse_line(char *line, t_data *data)
 		ret = lexer(line_tab[i], &token);
 		if (ret)
 			return (ft_free_tabstr(line_tab), ret);
+		expender(token, data->env);
 		if (token_to_cmd(token, &(data->cmd)) == 1)
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
 		lstclear_token(&token);
