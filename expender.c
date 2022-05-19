@@ -6,18 +6,33 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/19 17:38:48 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:09:47 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+char	*replace_var_by_value(char *str, int *i, int len, t_env *env)
+{
+	char	*tmp;
+	char	*dest;
+
+	tmp = ft_substr(str, 0, *i);
+	if (!tmp)
+		return (NULL);
+	*i += len;
+	dest = ft_strjoinx(3, tmp, env->value, &str[*i]);
+	free(tmp);
+	if (!dest)
+		return (NULL);
+	free(str);
+	return (dest);
+}
+
 char	*get_var_value(char *str, int *i, t_env *env)
 {
 	int		len;
 	char	*var_name;
-	char	*dest;
-	char	*tmp;
 
 	len = 1;
 	while (str[*i + len] && !ft_ischarset(str[*i + len], " \t\n\r\v\f\'\"$"))
@@ -33,18 +48,7 @@ char	*get_var_value(char *str, int *i, t_env *env)
 	}
 	free(var_name);
 	if (env)
-	{
-		tmp = ft_substr(str, 0, *i);
-		if (!tmp)
-			return (NULL);
-		*i += len;
-		dest = ft_strjoinx(3, tmp, env->value, &str[*i]);
-		free(tmp);
-		if (!dest)
-			return (NULL);
-		free(str);
-		str = dest;
-	}
+		str = replace_var_by_value(str, i, len, env);
 	return (str);
 }
 
@@ -83,7 +87,6 @@ int	expender(t_token *token, t_env *env)
 
 	while (token)
 	{
-		printf("on gere le token %s\n", token->token);
 		token->token = lf_var(token->token, env);
 		str = ft_remove_quotes(token->token);
 		if (!str)

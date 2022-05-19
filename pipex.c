@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 18:00:31 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:01:31 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	exec_cmd(t_data *data, t_cmd *cmd)
 			close(cmd->fd_outfile);
 		close_pipes(data, cmd);
 		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-		 	call_built_in(data, cmd);
+			call_built_in(data, cmd);
 		else
 			execve(cmd->bin_path, cmd->cmd, data->envp);
 		exit(EXIT_SUCCESS);
@@ -103,7 +103,7 @@ int	pipex(t_data *data)
 	int		status;
 	size_t	i;
 	t_cmd	*cmd;
-	
+
 	i = 0;
 	cmd = data->cmd;
 	if (set_pipefd(cmd, data))
