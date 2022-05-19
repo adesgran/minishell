@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 18:21:45 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:00:00 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	get_size(char *str)
 		else if (str[i] == '\"' || str[i] == '\'')
 		{
 			if (get_size_inquotes(str, &i, &res))
-					return (0);
+				return (0);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 18:09:04 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:03:56 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int	is_builtin(t_cmd *cmd)
 {
 	if (cmd->fd_infile != -1 && cmd->fd_outfile != -1
 		&& (ft_strcmp(cmd->cmd[0], "echo") == 0
-		|| ft_strcmp(cmd->cmd[0], "env") == 0
-		|| ft_strcmp(cmd->cmd[0], "export") == 0
-		|| ft_strcmp(cmd->cmd[0], "pwd") == 0
-		|| ft_strcmp(cmd->cmd[0], "unset") == 0
-		|| ft_strcmp(cmd->cmd[0], "cd") == 0))
+			|| ft_strcmp(cmd->cmd[0], "env") == 0
+			|| ft_strcmp(cmd->cmd[0], "export") == 0
+			|| ft_strcmp(cmd->cmd[0], "pwd") == 0
+			|| ft_strcmp(cmd->cmd[0], "unset") == 0
+			|| ft_strcmp(cmd->cmd[0], "cd") == 0))
 	{
 		return (1);
 	}

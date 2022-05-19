@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/16 18:25:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/19 18:58:15 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static int	len_token(char *str, int i)
 {
 	char	quote;
 
-	if (!str[i] || str[i] == '<' || str[i] == '>'
-		|| str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+	if (!str[i] || ft_ischarset(str[i], "<> \t\n\r\v\f"))
 		return (i);
 	quote = 0;
 	if (str[i] == '\'' || str[i] == '\"')
@@ -30,8 +29,7 @@ static int	len_token(char *str, int i)
 	}
 	else
 	{
-		while (str[i] && str[i] != '<' && str[i] != '>' && str[i] != '\''
-			&& str[i] != '\"' && str[i] != ' ' && (str[i] < 9 || str[i] > 13))
+		while (str[i] && !ft_ischarset(str[i], "<>\'\" \t\n\r\v\f"))
 		{
 			if (str[i] == '\\')
 				i++;
@@ -80,9 +78,9 @@ static t_token	*new_file(char *str, int *i, char chevron, int *ret)
 	}
 	else
 		type = chevron;
-	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
+	while (ft_ischarset(str[*i], " \t\n\r\v\f"))
 		(*i)++;
-	if (str[*i] == '<' || str[*i] == '>' || !str[*i])
+	if (!str[*i] || ft_ischarset(str[*i], "<>|"))
 		return (error_chevron(str[*i], ret), NULL);
 	len = len_token(&str[*i], 0);
 	if (len == -1)
@@ -104,7 +102,7 @@ int	lexer(char *str, t_token **token)
 	ret = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ' || (str[i] < 9 && str[i] > 13))
+		if (!ft_ischarset(str[i], " \t\n\r\v\f"))
 		{
 			if (str[i] == '<')
 				new = new_file(str, &i, '<', &ret);
