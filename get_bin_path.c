@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/19 19:03:56 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:25:19 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ int	is_inpath(t_cmd *cmd, char **paths)
 			return (1);
 		free(cmd->bin_path);
 		cmd->bin_path = NULL;
+	}
+	if (access(cmd->cmd[0], X_OK) == 0)
+	{
+		cmd->bin_path = ft_strdup(cmd->cmd[0]);
+		if (!cmd->bin_path)
+			return (-1);
+		return (1);
 	}
 	return (0);
 }
