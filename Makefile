@@ -3,7 +3,7 @@ NAME = minishell
 CC = gcc
 C_FLAGS = -Wall -Wextra -Werror
 
-C_FILES = $(wildcard ./*.c) $(wildcard lst_token/*.c) $(wildcard lst_cmd/*.c) $(wildcard built_in/*.c)
+C_FILES = $(wildcard ./*.c) $(wildcard built_in/*.c)
 O_FILES = $(C_FILES:.c=.o)
 
 LIBFT = libft/libft.a

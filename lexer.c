@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/19 18:58:15 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:43:41 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,26 @@ static int	len_token(char *str, int i)
 {
 	char	quote;
 
-	if (!str[i] || ft_ischarset(str[i], "<> \t\n\r\v\f"))
+	if (!str[i] || ft_ischarset(str[i], "<> \t\n\r\v\f|"))
 		return (i);
 	quote = 0;
 	if (str[i] == '\'' || str[i] == '\"')
 	{
 		quote = str[i++];
 		while (str[i] && str[i] != quote)
+		{
+			if (str[i] == '\\' && str[i + 1])
+				i++;
 			i++;
+		}
 		if (str[i++] != quote)
 			return (ft_putstr_fd("Error: open quote\n", 2), -1);
 	}
 	else
 	{
-		while (str[i] && !ft_ischarset(str[i], "<>\'\" \t\n\r\v\f"))
+		while (str[i] && !ft_ischarset(str[i], "<>\'\" \t\n\r\v\f|"))
 		{
-			if (str[i] == '\\')
+			if (str[i] == '\\' && str[i + 1])
 				i++;
 			i++;
 		}
@@ -100,7 +104,7 @@ int	lexer(char *str, t_token **token)
 
 	i = 0;
 	ret = 0;
-	while (str[i])
+	while (str[i] && str[i] != '|')
 	{
 		if (!ft_ischarset(str[i], " \t\n\r\v\f"))
 		{

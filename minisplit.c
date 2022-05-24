@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/16 18:34:17 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:43:08 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,55 +18,50 @@ static int	static_count_str(char *str)
 	char	c;
 
 	res = 1;
+	c = 0;
 	if (!str || !*str)
 		return (0);
 	while (*str)
 	{
-		if (str[0] == '\\' && str[1])
-			str += 2;
-		if (*str == '|')
-			res++;
-		if (*str == '\"' || *str == '\'')
-		{
-			c = *str;
+		if (*str == '\\' && str[1])
 			str++;
-			while (*str != c && *str)
-				str++;
-			if (!*str)
-				return (0);
-		}
+		else if (*str == '|' && c == 0 && str[1])
+			res++;
+		else if (*str == c)
+			c = 0;
+		else if ((*str == '\"' || *str == '\'') && c == 0)
+			c = *str;
 		str++;
 	}
 	return (res);
 }
 
-static int	static_line_size(char *str, int res)
+static int	static_line_size(char *str)
 {
 	char	c;
+	int		size;
 
-	res = 0;
-	while (*str && *str != '|')
+	size = 0;
+	c = 0;
+	while (*str)
 	{
-		if (*str == '\\')
+		if (*str == '\\' && str[1])
 		{
-			str += 2;
-			res += 2;
-		}
-		if (*str == '\'' || *str == '\"')
-		{
-			c = *str;
 			str++;
-			res++;
-			while (*str && *str != c)
-			{
-				str++;
-				res++;
-			}
+			size++;
 		}
-		res++;
+		else if (*str == '|' && c == 0)
+			break ;
+		else if (*str == c)
+			c = 0;
+		else if ((*str == '\'' || *str == '\"') && c == 0)
+			c = *str;
+		size++;
 		str++;
 	}
-	return (res);
+	if (*str)
+		size++;
+	return (size);
 }
 
 static char	*static_next_line(char **str)
@@ -75,10 +70,12 @@ static char	*static_next_line(char **str)
 	int		i;
 	char	*res;
 
-	size = static_line_size(*str, 0);
+	size = static_line_size(*str);
 	if (!size)
 		return (NULL);
 	res = malloc(sizeof(char) * (size + 1));
+	if (!res)
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{
@@ -87,8 +84,6 @@ static char	*static_next_line(char **str)
 		i++;
 	}
 	res[i] = '\0';
-	if (**str == '|')
-		(*str)++;
 	return (res);
 }
 

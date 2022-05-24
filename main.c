@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/23 14:16:07 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 14:14:16 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,17 @@ static t_data	*init_data(char **env)
 	return (data);
 }
 
+void	print_token(t_token *token)
+{
+	printf("***************\n");
+	while (token)
+	{
+		printf("	token = %s // type %d\n", token->token, token->type);
+		token = token->next;
+	}
+	printf("***************\n");
+}
+
 static int	analyse_line(char *line, t_data *data)
 {
 	t_token	*token;
@@ -52,7 +63,7 @@ static int	analyse_line(char *line, t_data *data)
 	line_tab = split_pipes(line);
 	free(line);
 	if (!line_tab)
-		return (perror("line_tab"), 1);
+		return (1);
 	i = 0;
 	while (line_tab[i])
 	{
@@ -60,7 +71,8 @@ static int	analyse_line(char *line, t_data *data)
 		ret = lexer(line_tab[i], &token);
 		if (ret)
 			return (ft_free_tabstr(line_tab), ret);
-		expander(token, data->env);
+		if (expander(token, data->env))
+			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
 		if (token_to_cmd(token, &(data->cmd)) == 1)
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
 		lstclear_token(&token);
@@ -73,11 +85,11 @@ void	print_cmd(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		ft_printf("***************\n");
-		ft_printf("	cmd : %s\n", cmd->cmd[0]);
-		ft_printf("	bin : %s\n", cmd->bin_path);
-		ft_printf("	fd_infile : %d\n", cmd->fd_infile);
-		ft_printf("	fd_outfile : %d\n", cmd->fd_outfile);
+		printf("***************\n");
+		printf("	cmd : %s\n", cmd->cmd[0]);
+		printf("	bin : %s\n", cmd->bin_path);
+		printf("	fd_infile : %d\n", cmd->fd_infile);
+		printf("	fd_outfile : %d\n", cmd->fd_outfile);
 		printf("	next : %p\n", cmd->next);
 		printf("***************\n");
 		cmd = cmd->next;

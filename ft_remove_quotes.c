@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/21 17:40:59 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/23 15:37:32 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static int	get_size_inquotes(char *str, int *i, int *res)
 			*i += 1;
 		*res += 1;
 	}
-	// if (!str[*i])
-	// 	return (1);
 	*i += 1;
 	return (0);
 }
@@ -47,10 +45,7 @@ static int	get_size(char *str)
 			res++;
 		}
 		else if (str[i] == '\"' || str[i] == '\'')
-		{
-			if (get_size_inquotes(str, &i, &res))
-				return (0);
-		}
+			get_size_inquotes(str, &i, &res);
 		else
 		{
 			i++;
@@ -112,8 +107,6 @@ char	*ft_remove_quotes(char *str)
 	char	*res;
 
 	size = get_size(str);
-	// if (!size)
-	// 	return (NULL);
 	res = malloc(sizeof(char) * size + 1);
 	if (!res)
 		return (NULL);
