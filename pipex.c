@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 14:59:25 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 17:58:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,32 @@ void	call_built_in(t_data *data, t_cmd *cmd)
 		mini_cd(data, cmd->cmd[1]);
 }
 
-static int	exec_cmd(t_data *data, t_cmd *cmd)
+static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 {
-	dup2(cmd->fd_infile, STDIN_FILENO);
-	if (cmd->fd_infile > 2)
-		close(cmd->fd_infile);
-	dup2(cmd->fd_outfile, STDOUT_FILENO);
-	if (cmd->fd_outfile > 2)
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (pid);
+	if (!pid)
+	{
+		dup2(cmd->fd_infile, STDIN_FILENO);
+		if (cmd->fd_infile > 2)
+			close(cmd->fd_infile);
+		dup2(cmd->fd_outfile, STDOUT_FILENO);
+		if (cmd->fd_outfile > 2)
+			close(cmd->fd_outfile);
+		close_pipes(data, cmd);
+		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
+			call_built_in(data, cmd);
+		else
+			execve(cmd->bin_path, cmd->cmd, data->envp);
 		close(cmd->fd_outfile);
-	close_pipes(data, cmd);
-	if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-		call_built_in(data, cmd);
-	else
-		execve(cmd->bin_path, cmd->cmd, data->envp);
-	close(cmd->fd_outfile);
-	close(cmd->fd_infile);
-	free_data(data);
-	exit(EXIT_SUCCESS);
+		close(cmd->fd_infile);
+		free_data(data);
+		exit(EXIT_SUCCESS);
+	}
+	return (pid);
 }
 
 int	pipex(t_data *data, t_cmd *cmd)
@@ -109,12 +118,10 @@ int	pipex(t_data *data, t_cmd *cmd)
 	{
 		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1 && cmd->bin_path)
 		{
-			pid = fork();
+			pid = exec_cmd(data, cmd);
 			if (pid == -1)
 				break ;
 			i++;
-			if (!pid)
-				exec_cmd(data, cmd);
 		}
 		cmd = cmd->next;
 	}

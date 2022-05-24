@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lst_cmd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/24 17:59:15 by mchassig          #+#    #+#             */
+/*   Updated: 2022/05/24 17:59:18 by mchassig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 t_cmd	*lstnew_cmd(void)
@@ -41,18 +53,6 @@ void	lstadd_back_cmd(t_cmd **alst, t_cmd *new)
 	end->next = new;
 }
 
-void	lstclear_cmd(t_cmd **lst)
-{
-	if (!lst)
-		return ;
-	if (!*lst)
-		return ;
-	if (lst[0]->next)
-		lstclear_cmd(&lst[0]->next);
-	lstdelone_cmd(lst[0]);
-	lst[0] = NULL;
-}
-
 void	lstdelone_cmd(t_cmd *lst)
 {
 	ft_free_tabstr(lst->cmd);
@@ -64,4 +64,16 @@ void	lstdelone_cmd(t_cmd *lst)
 	else if (lst->fd_outfile > 2)
 		close(lst->fd_outfile);
 	free(lst);
+}
+
+void	lstclear_cmd(t_cmd **lst)
+{
+	if (!lst)
+		return ;
+	if (!*lst)
+		return ;
+	if (lst[0]->next)
+		lstclear_cmd(&lst[0]->next);
+	lstdelone_cmd(*lst);
+	*lst = NULL;
 }
