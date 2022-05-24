@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/19 19:25:19 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/23 15:30:49 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	is_inpath(t_cmd *cmd, char **paths)
 	int		i;
 
 	i = 0;
+	if (!cmd->cmd[0][0])
+		return (0);
 	while (paths[i] && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 	{
 		cmd->bin_path = ft_strjoinx(3, paths[i++], "/", cmd->cmd[0]);

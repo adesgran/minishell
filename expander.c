@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/23 14:15:50 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/23 14:43:20 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*lf_var(char *token, t_env *env)
 	return (token);
 }
 
-int	add_token(t_token **token, char *str)
+int	replace_token(t_token **token, char *str)
 {
 	char	**tab_str;
 	int		i;
@@ -114,12 +114,12 @@ int	expander(t_token *token, t_env *env)
 		str = ft_remove_quotes(token->token);
 		if (!str)
 			return (1);
-		if (token->type != WORD)
+		if (token->type != WORD || !str[0])
 		{
 			free(token->token);
 			token->token = str;
 		}
-		else if (add_token(&token, str) == 1)
+		else if (replace_token(&token, str) == 1)
 			return (1);
 		token = token->next;
 	}

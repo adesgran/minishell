@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/23 14:16:01 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 14:15:58 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,24 @@
 # include <fcntl.h>
 # include <curses.h>
 # include <term.h>
-# include <lst_token.h>
-# include <lst_cmd.h>
 # include <dirent.h>
+
+typedef struct s_token
+{
+	char			*token;
+	int				type;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	char			*bin_path;
+	int				fd_infile;
+	int				fd_outfile;
+	int				is_heredoc;
+	struct s_cmd	*next;
+}	t_cmd;
 
 typedef struct s_env
 {
@@ -60,7 +75,11 @@ typedef struct s_data
 	int		n_cmd;
 }	t_data;
 
+// ************* TO ADD TO LIBFT *****************
+int		ft_ischarset(char c, char *charset);
+
 // main.c
+void	free_data(t_data *data);
 void	print_cmd(t_cmd *cmd);
 
 // pipex.c
@@ -89,6 +108,20 @@ t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 
+// lst_cmd.c
+t_cmd	*lstnew_cmd(void);
+void	lstadd_back_cmd(t_cmd **alst, t_cmd *new);
+void	lstclear_cmd(t_cmd **lst);
+void	lstdelone_cmd(t_cmd *lst);
+t_cmd	*lstlast_cmd(t_cmd *lst);
+
+//lst_token.c
+t_token	*lstnew_token(char *token, int type);
+void	lstadd_back_token(t_token **alst, t_token *new);
+t_token	*lstlast_token(t_token *lst);
+void	lstclear_token(t_token **lst);
+void	lstdelone_token(t_token *lst);
+
 // lexer.c
 int		lexer(char *str, t_token **token);
 
@@ -103,7 +136,5 @@ char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
 int		expander(t_token *token, t_env *env);
-
-int		ft_ischarset(char c, char *charset);
 
 #endif

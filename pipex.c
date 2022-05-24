@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/19 19:01:31 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 14:31:57 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void	call_built_in(t_data *data, t_cmd *cmd)
 		mini_export(data, cmd->cmd[1]);
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
 		mini_cd(data, cmd->cmd[1]);
+	close(cmd->fd_outfile);
+	close(cmd->fd_infile);
+	free_data(data);
 }
 
 static int	exec_cmd(t_data *data, t_cmd *cmd)
@@ -87,8 +90,12 @@ int	set_pipefd(t_cmd *cmd, t_data *data)
 				return (close_pipes(data, NULL), 1);
 			if (cmd->next->fd_infile == -2)
 				cmd->next->fd_infile = pipefd[0];
+			else
+				close(pipefd[0]);
 			if (cmd->fd_outfile == -2)
 				cmd->fd_outfile = pipefd[1];
+			else
+				close(pipefd[1]);
 		}
 		else
 			if (cmd->fd_outfile == -2)
