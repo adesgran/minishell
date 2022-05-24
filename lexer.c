@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 12:43:41 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 17:50:46 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	len_token(char *str, int i)
 {
 	char	quote;
 
-	if (!str[i] || ft_ischarset(str[i], "<> \t\n\r\v\f|"))
+	if (i == -1 || !str[i] || ft_ischarset(str[i], "<> \t\n\r\v\f|"))
 		return (i);
 	quote = 0;
 	if (str[i] == '\'' || str[i] == '\"')

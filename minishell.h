@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 14:48:12 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 17:09:37 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,14 @@ int		ft_ischarset(char c, char *charset);
 
 // main.c
 void	free_data(t_data *data);
+
+//debugage.c
+void	print_token(t_token *token);
 void	print_cmd(t_cmd *cmd);
 
 // pipex.c
 int		add_outfile(t_cmd *cmd, int new_fd);
-int	pipex(t_data *data, t_cmd *cmd);
+int		pipex(t_data *data, t_cmd *cmd);
 
 // get_bin_path.c
 char	**get_path(t_data *data);
@@ -129,7 +132,7 @@ int		lexer(char *str, t_token **token);
 int		token_to_cmd(t_token *token, t_cmd **cmd);
 
 // minisplit.c
-char	**split_pipes(char *str);
+char	**split_pipes(char *str, int *ret);
 
 // ft_remove_quotes.c
 char	*ft_remove_quotes(char *str);

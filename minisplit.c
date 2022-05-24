@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 12:43:08 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 17:56:24 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	static_line_size(char *str)
 	return (size);
 }
 
-static char	*static_next_line(char **str)
+static char	*static_next_line(char **str, int *ret)
 {
 	int		size;
 	int		i;
@@ -84,10 +84,15 @@ static char	*static_next_line(char **str)
 		i++;
 	}
 	res[i] = '\0';
+	if (res[ft_strlen(res) - 1] == '|' && !**str)
+	{
+		ft_putstr_fd("Error: isolated pipe\n", 2);
+		*ret = 2;
+	}
 	return (res);
 }
 
-char	**split_pipes(char *str)
+char	**split_pipes(char *str, int *ret)
 {
 	char	**res;
 	int		size;
@@ -100,7 +105,7 @@ char	**split_pipes(char *str)
 	i = 0;
 	while (i < size)
 	{
-		res[i] = static_next_line(&str);
+		res[i] = static_next_line(&str, ret);
 		if (!res[i])
 		{
 			while (--i >= 0)
