@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/23 14:43:20 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 15:19:55 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*replace_var_by_value(char *str, int *i, int len, char *value)
 	tmp = ft_substr(str, 0, *i);
 	if (!tmp)
 		return (NULL);
-	*i += len;
-	dest = ft_strjoinx(3, tmp, value, &str[*i]);
+	dest = ft_strjoinx(3, tmp, value, &str[*i + len]);
+	*i = *i + ft_strlen(value) - 1;
 	free(tmp);
 	if (!dest)
 		return (NULL);
@@ -59,7 +59,7 @@ char	*lf_var(char *token, t_env *env)
 	expand = 1;
 	while (token[i])
 	{
-		if (token[i] == '\'')
+		if (token[i] == '\\')
 			i++;
 		else if (token[i] == '\'' && expand == 1)
 			expand = 0;

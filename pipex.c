@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 14:31:57 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/24 14:59:25 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,52 +28,6 @@ static void	close_pipes(t_data	*data, t_cmd *cmd)
 		}
 		temp = temp->next;
 	}
-}
-
-void	call_built_in(t_data *data, t_cmd *cmd)
-{
-	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
-	{
-		mini_echo(cmd->cmd);
-	}
-	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
-		mini_env(data);
-	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
-		mini_pwd(data);
-	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
-		mini_unset(data, cmd->cmd);
-	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		mini_export(data, cmd->cmd[1]);
-	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
-		mini_cd(data, cmd->cmd[1]);
-	close(cmd->fd_outfile);
-	close(cmd->fd_infile);
-	free_data(data);
-}
-
-static int	exec_cmd(t_data *data, t_cmd *cmd)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return (perror("Fork"), 1);
-	if (!pid)
-	{
-		dup2(cmd->fd_infile, STDIN_FILENO);
-		if (cmd->fd_infile > 2)
-			close(cmd->fd_infile);
-		dup2(cmd->fd_outfile, STDOUT_FILENO);
-		if (cmd->fd_outfile > 2)
-			close(cmd->fd_outfile);
-		close_pipes(data, cmd);
-		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-			call_built_in(data, cmd);
-		else
-			execve(cmd->bin_path, cmd->cmd, data->envp);
-		exit(EXIT_SUCCESS);
-	}
-	return (pid);
 }
 
 int	set_pipefd(t_cmd *cmd, t_data *data)
@@ -105,22 +59,62 @@ int	set_pipefd(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-int	pipex(t_data *data)
+void	call_built_in(t_data *data, t_cmd *cmd)
+{
+	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
+	{
+		mini_echo(cmd->cmd);
+	}
+	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
+		mini_env(data);
+	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
+		mini_pwd(data);
+	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
+		mini_unset(data, cmd->cmd);
+	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
+		mini_export(data, cmd->cmd[1]);
+	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
+		mini_cd(data, cmd->cmd[1]);
+}
+
+static int	exec_cmd(t_data *data, t_cmd *cmd)
+{
+	dup2(cmd->fd_infile, STDIN_FILENO);
+	if (cmd->fd_infile > 2)
+		close(cmd->fd_infile);
+	dup2(cmd->fd_outfile, STDOUT_FILENO);
+	if (cmd->fd_outfile > 2)
+		close(cmd->fd_outfile);
+	close_pipes(data, cmd);
+	if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
+		call_built_in(data, cmd);
+	else
+		execve(cmd->bin_path, cmd->cmd, data->envp);
+	close(cmd->fd_outfile);
+	close(cmd->fd_infile);
+	free_data(data);
+	exit(EXIT_SUCCESS);
+}
+
+int	pipex(t_data *data, t_cmd *cmd)
 {
 	int		status;
 	size_t	i;
-	t_cmd	*cmd;
+	pid_t	pid;
 
-	i = 0;
-	cmd = data->cmd;
 	if (set_pipefd(cmd, data))
 		return (-1);
+	i = 0;
 	while (cmd)
 	{
 		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1 && cmd->bin_path)
 		{
+			pid = fork();
+			if (pid == -1)
+				break ;
 			i++;
-			exec_cmd(data, cmd);
+			if (!pid)
+				exec_cmd(data, cmd);
 		}
 		cmd = cmd->next;
 	}
