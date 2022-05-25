@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 17:57:23 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 18:58:15 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ void	get_sig_parent(int sig)
 void	get_sig_child(int sig)
 {
 	if (sig == SIGINT)
-		printf("\n\x1B[34m\033[1mminishell$> \x1B[0m");
+	{
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 	(void)sig;
 }
 
