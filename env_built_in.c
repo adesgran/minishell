@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 17:26:46 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:40:56 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	env_built_in(t_data *data, t_cmd *cmd)
 	int	res;
 
 	res = 0;
-	if (!data || !cmd)
-		return ;
 	if (!ft_strcmp(cmd->cmd[0], "cd"))
 		res = mini_cd(data, cmd->cmd);
 	else if (!ft_strcmp(cmd->cmd[0], "unset"))
