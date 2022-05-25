@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 15:32:44 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:37:49 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ typedef struct s_data
 	t_env	*env;
 	char	**envp;
 	int		n_cmd;
-	int		last_res;
-}	t_data;
+	char	*last_cmd_status;
 
-// ************* TO ADD TO LIBFT *****************
-int		ft_ischarset(char c, char *charset);
+}	t_data;
 
 // main.c
 void	free_data(t_data *data);
@@ -143,6 +141,6 @@ char	**split_pipes(char *str, int *ret);
 char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
-int		expander(t_token *token, t_env *env);
+int	expander(t_token *token, t_env *env, char *last_cmd_value);
 
 #endif
