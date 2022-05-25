@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 16:19:44 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:31:28 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,19 @@ int	mini_cd(t_data *data, char **cmd)
 {
 	char	*old_dir;
 	char	*new_dir;
+	char	*tmp;
 
 	if (cmd[0] && cmd[1] && cmd[2])
 		return (printf("minishell: cd: too many arguments"), 1);
-	new_dir = check_dirs(data, cmd[1]);
+	if (!cmd[1])
+		tmp = ft_strdup(get_var_env(data->env, "HOME")->value);
+	else if (cmd[1][0] == '~')
+		tmp = ft_strjoin(get_var_env(data->env, "HOME")->value, cmd[1] + 1);
+	else
+		tmp = ft_strdup(cmd[1]);
+	new_dir = check_dirs(data, tmp);
 	if (!new_dir)
-		return (1);
+		return (free(tmp), 1);
 	old_dir = get_var_env(data->env, "PWD")->value;
 	free(get_var_env(data->env, "OLDPWD")->value);
 	get_var_env(data->env, "OLDPWD")->value = old_dir;
@@ -87,5 +94,5 @@ int	mini_cd(t_data *data, char **cmd)
 		new_dir = ft_strdup("/");
 	}
 	get_var_env(data->env, "PWD")->value = formate_pwd(new_dir);
-	return (0);
+	return (free(tmp), 0);
 }
