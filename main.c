@@ -6,14 +6,21 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 17:27:05 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:39:19 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	get_sig(int sig)
+void	get_sig_parent(int sig)
 {
+	(void)sig;
+}
+
+void	get_sig_child(int sig)
+{
+	if (sig == SIGINT)
+		printf("\n\x1B[34m\033[1mminishell$> \x1B[0m");
 	(void)sig;
 }
 
@@ -81,8 +88,8 @@ static int	loop_read(t_data *data)
 	char	*line;
 	int		ret;
 
-	signal(SIGINT, get_sig);
-	signal(SIGQUIT, get_sig);
+	signal(SIGINT, get_sig_child);
+	signal(SIGQUIT, get_sig_child);
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
@@ -121,12 +128,25 @@ static int	loop_read(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
+	int		pid;
+	int		res;
 
-	data = init_data(env);
-	if (!data)
-		return (1);
-	loop_read(data);
-	free_data(data);
+	pid = fork();
+	if (!pid)
+	{
+		data = init_data(env);
+		if (!data)
+			return (1);
+		loop_read(data);
+		free_data(data);
+	}
+	else
+	{
+		signal(SIGINT, get_sig_parent);
+		signal(SIGQUIT, get_sig_parent);
+		wait(&res);
+		printf("\n");
+	}
 	(void)ac;
 	(void)av;
 	return (0);
