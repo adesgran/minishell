@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 17:51:32 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 14:09:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static int	loop_read(t_data *data)
 	char	*line;
 	int		ret;
 
-	// signal(SIGINT, get_sig);
-	// signal(SIGQUIT, get_sig);
+	signal(SIGINT, get_sig);
+	signal(SIGQUIT, get_sig);
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
@@ -97,7 +97,10 @@ static int	loop_read(t_data *data)
 			{
 				if (get_bin_path(data->cmd, get_path(data)) == 1)
 					return (1);
-				pipex(data, data->cmd);
+				if (is_env_built_in(data->cmd))
+					env_built_in(data, data->cmd);
+				else
+					pipex(data, data->cmd);
 			}
 			lstclear_cmd(&(data->cmd));
 		}
