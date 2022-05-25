@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 13:10:08 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:11:09 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*get_var_name(char *str)
 		i++;
 	printf("Size = %d\n", i);
 	if (!str[i])
-		return (ft_strdup("_"));
+		return (NULL);
 	return (ft_strndup(str, i));
 }
 
@@ -71,7 +71,6 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 	else
 		push_back_env(data->env, varname, var);
 }
-	
 
 static int	mini_export_loop(t_data *data, char *str)
 {
@@ -85,11 +84,11 @@ static int	mini_export_loop(t_data *data, char *str)
 		return (0);
 	i = ft_strlen(varname);
 	if (str[i] == '\0')
-		return (0);
+		return (free(varname), 0);
+	else if (ft_strncmp(str + i, "+=", 2) == 0)
+		append_env_value(data, str, varname);
 	else if (str[i] == '=')
 		set_env_value(data, str, varname);
-	else if (ft_strncmp(str + i, "+=", 2))
-		append_env_value(data, str, varname);
 	else
 	{
 		free(varname);
@@ -105,6 +104,7 @@ int	mini_export(t_data *data, char **cmd)
 	res = 0;
 	if (!data || !cmd)
 		return (1);
+	cmd++;
 	while (*cmd)
 	{
 		res = mini_export_loop(data, *cmd);
