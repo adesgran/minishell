@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 14:14:38 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 14:24:05 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	is_env_built_in(t_cmd *cmd)
 void	env_built_in(t_data *data, t_cmd *cmd)
 {
 	int	res;
+
+	res = 0;
 	if (!data || !cmd)
 		return ;
 	if (!ft_strcmp(cmd->cmd[0], "cd"))
