@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 17:51:32 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:10:00 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	free_data(t_data *data)
 {
 	free_env(data->env);
 	lstclear_cmd(&(data->cmd));
+	free(data->last_cmd_status);
 	free(data);
 }
 
@@ -39,6 +40,10 @@ static t_data	*init_data(char **env)
 		exit(EXIT_FAILURE);
 	}
 	data->envp = env;
+	data->n_cmd = 0;
+	data->last_cmd_status = ft_itoa(0);
+	if (!data->last_cmd_status)
+		return (free_env(data->env), free(data), NULL);
 	return (data);
 }
 
@@ -61,7 +66,7 @@ static int	analyse_line(char *line, t_data *data)
 		ret = lexer(line_tab[i], &token);
 		if (ret)
 			return (ft_free_tabstr(line_tab), ret);
-		if (expander(token, data->env))
+		if (expander(token, data->env, data->last_cmd_status))
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
 		if (token_to_cmd(token, &(data->cmd)) == 1)
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
@@ -97,7 +102,11 @@ static int	loop_read(t_data *data)
 			{
 				if (get_bin_path(data->cmd, get_path(data)) == 1)
 					return (1);
-				pipex(data, data->cmd);
+				ret = pipex(data, data->cmd);
+				free(data->last_cmd_status);
+				data->last_cmd_status = ft_itoa(ret);
+				if (!data->last_cmd_status)
+					return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
 			}
 			lstclear_cmd(&(data->cmd));
 		}

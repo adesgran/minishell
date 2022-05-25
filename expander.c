@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 15:19:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:45:52 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,32 @@ char	*replace_var_by_value(char *str, int *i, int len, char *value)
 	return (dest);
 }
 
-char	*get_var_value(char *str, int *i, t_env *env)
+char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 {
 	int		len;
 	char	*var_name;
 
 	len = 1;
-	while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+	if (str[*i + 1] == '?')
 		len++;
+	else
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+			len++;
 	var_name = ft_substr(str, *i, len);
 	if (!var_name)
 		return (NULL);
 	while (env && ft_strcmp(&var_name[1], env->var) != 0)
 		env = env->next;
-	free(var_name);
 	if (env)
 		str = replace_var_by_value(str, i, len, env->value);
+	else if (ft_strcmp(var_name, "$?") == 0)
+		str = replace_var_by_value(str, i, len, last_cmd_status);
 	else
 		str = replace_var_by_value(str, i, len, "");
-	return (str);
+	return (free(var_name), str);
 }
 
-char	*lf_var(char *token, t_env *env)
+char	*lf_var(char *token, t_env *env, char *last_cmd_status)
 {
 	int	i;
 	int	expand;
@@ -67,7 +71,7 @@ char	*lf_var(char *token, t_env *env)
 			expand = 1;
 		else if (token[i] == '$' && expand == 1)
 		{
-			token = get_var_value(token, &i, env);
+			token = get_var_value(token, &i, env, last_cmd_status);
 			if (!token)
 				return (NULL);
 		}
@@ -104,13 +108,13 @@ int	replace_token(t_token **token, char *str)
 	return (free(tab_str), 0);
 }
 
-int	expander(t_token *token, t_env *env)
+int	expander(t_token *token, t_env *env, char *last_cmd_status)
 {
 	char	*str;
 
 	while (token)
 	{
-		token->token = lf_var(token->token, env);
+		token->token = lf_var(token->token, env, last_cmd_status);
 		str = ft_remove_quotes(token->token);
 		if (!str)
 			return (1);
