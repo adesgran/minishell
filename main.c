@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 17:10:00 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:27:05 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,14 @@ static int	loop_read(t_data *data)
 				if (get_bin_path(data->cmd, get_path(data)) == 1)
 					return (1);
 				if (is_env_built_in(data->cmd))
-					env_built_in(data, data->cmd);
+					ret = env_built_in(data, data->cmd);
 				else
-        {
-          ret = pipex(data, data->cmd);
-				  free(data->last_cmd_status);
-				  data->last_cmd_status = ft_itoa(ret);
-				  if (!data->last_cmd_status)
-					  return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
-        }
+					ret = pipex(data, data->cmd);
+				free(data->last_cmd_status);
+				data->last_cmd_status = ft_itoa(ret);
+				if (!data->last_cmd_status)
+					return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
+
 			}
 			lstclear_cmd(&(data->cmd));
 		}

@@ -5,7 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
+/*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
+/*   Updated: 2022/05/25 17:29:55 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +80,7 @@ void	call_built_in(t_data *data, t_cmd *cmd)
 static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 {
 	pid_t	pid;
-	
+
 	pid = fork();
 	if (pid == -1)
 		return (pid);
@@ -110,7 +111,7 @@ int	pipex(t_data *data, t_cmd *cmd)
 	int		i;
 	pid_t	pid;
 	int		ret;
-	
+
 	if (set_pipefd(cmd, data))
 		return (-1);
 	i = 0;

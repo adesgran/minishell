@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 16:37:49 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:28:12 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ void	print_cmd(t_cmd *cmd);
 // pipex.c
 int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data, t_cmd *cmd);
+
+// env_built_in.c
 int		is_env_built_in(t_cmd *cmd);
-void	env_built_in(t_data *data, t_cmd *cmd);
+int		env_built_in(t_data *data, t_cmd *cmd);
 
 // get_bin_path.c
 char	**get_path(t_data *data);
@@ -141,6 +143,6 @@ char	**split_pipes(char *str, int *ret);
 char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
-int	expander(t_token *token, t_env *env, char *last_cmd_value);
+int		xpander(t_token *token, t_env *env, char *last_cmd_value);
 
 #endif
