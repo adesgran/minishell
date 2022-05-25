@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 15:10:57 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:19:44 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	open_check(char **dir, char *new)
 	dirflux = opendir(res);
 	if (!dirflux)
 	{
-		printf("minishell : cd :Can't access %s folder\n", res);
+		printf("minishell : cd : Can't access %s folder\n", res);
 		return (free(res), 1);
 	}
 	closedir(dirflux);
@@ -80,6 +80,12 @@ int	mini_cd(t_data *data, char **cmd)
 	old_dir = get_var_env(data->env, "PWD")->value;
 	free(get_var_env(data->env, "OLDPWD")->value);
 	get_var_env(data->env, "OLDPWD")->value = old_dir;
+	new_dir = formate_pwd(new_dir);
+	if (!*new_dir)
+	{
+		free(new_dir);
+		new_dir = ft_strdup("/");
+	}
 	get_var_env(data->env, "PWD")->value = formate_pwd(new_dir);
 	return (0);
 }
