@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 16:34:42 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 13:06:06 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,19 @@ static char	*check_dirs(t_data *data, char *str)
 	return (dir);
 }
 
-int	mini_cd(t_data *data, char *str)
+int	mini_cd(t_data *data, char **cmd)
 {
 	char	*old_dir;
 	char	*new_dir;
 
-	new_dir = check_dirs(data, str);
+	if (*cmd && cmd[1])
+		return (printf("minishell: cd: too many arguments"), 1);
+	new_dir = check_dirs(data, *cmd);
 	if (!new_dir)
 		return (1);
 	old_dir = get_var_env(data->env, "PWD")->value;
 	free(get_var_env(data->env, "OLD_PWD")->value);
 	get_var_env(data->env, "OLD_PWD")->value = old_dir;
 	get_var_env(data->env, "PWD")->value = new_dir;
-
 	return (0);
 }
