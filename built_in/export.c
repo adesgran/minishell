@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/17 18:46:38 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 13:10:08 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 }
 	
 
-int	mini_export(t_data *data, char *str)
+static int	mini_export_loop(t_data *data, char *str)
 {
 	char	*varname;
 	int		i;
@@ -96,4 +96,19 @@ int	mini_export(t_data *data, char *str)
 		return (2);
 	}
 	return (0);
+}
+
+int	mini_export(t_data *data, char **cmd)
+{
+	int	res;
+
+	res = 0;
+	if (!data || !cmd)
+		return (1);
+	while (*cmd)
+	{
+		res = mini_export_loop(data, *cmd);
+		cmd++;
+	}
+	return (res);
 }
