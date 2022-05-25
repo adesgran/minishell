@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 13:06:06 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:10:57 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ static int	open_check(char **dir, char *new)
 
 static char	*check_dirs(t_data *data, char *str)
 {
-	int	i;
+	int		i;
 	char	*dir;
 	char	**dir_list;
 
+	if (!str)
+		return (NULL);
 	if (*str == '/')
 		dir = ft_strdup("");
 	else
@@ -70,14 +72,14 @@ int	mini_cd(t_data *data, char **cmd)
 	char	*old_dir;
 	char	*new_dir;
 
-	if (*cmd && cmd[1])
+	if (cmd[0] && cmd[1] && cmd[2])
 		return (printf("minishell: cd: too many arguments"), 1);
-	new_dir = check_dirs(data, *cmd);
+	new_dir = check_dirs(data, cmd[1]);
 	if (!new_dir)
 		return (1);
 	old_dir = get_var_env(data->env, "PWD")->value;
-	free(get_var_env(data->env, "OLD_PWD")->value);
-	get_var_env(data->env, "OLD_PWD")->value = old_dir;
-	get_var_env(data->env, "PWD")->value = new_dir;
+	free(get_var_env(data->env, "OLDPWD")->value);
+	get_var_env(data->env, "OLDPWD")->value = old_dir;
+	get_var_env(data->env, "PWD")->value = formate_pwd(new_dir);
 	return (0);
 }
