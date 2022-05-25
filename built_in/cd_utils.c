@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:44:36 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 15:31:48 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:48:35 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static int	count_len(char *str)
 
 	res = 0;
 	i = 0;
-	while (ft_strlen(str + i) > 2)
+	while (str[i] && ft_strlen(str + i) > 2)
 	{
 		if (ft_strncmp(str + i, "/..", 3) == 0)
 		{
-			res--;
+			//res--;
 			j = -1;
-			while (str[i + j] != '/')
+			while (str[i + j] != '/' && str[i + j])
 			{
 				j--;
 				res--;

@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:22:42 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 15:35:39 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:51:30 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ static int	count_len(char *str)
 	{
 		if (ft_strncmp(str + i, "/./", 3) == 0 || \
 				ft_strncmp(str + i, "/.", 3) == 0)
-		{
 			i += 2;
-		}
 		else
 		{
 			i++;
 			res++;
 		}
 	}
-	return (res);
+	return (res + ft_strlen(str + i));
 }
 
 
