@@ -74,6 +74,7 @@ typedef struct s_data
 	char	**envp;
 	int		n_cmd;
 	char	*last_cmd_status;
+
 }	t_data;
 
 // main.c
@@ -86,6 +87,8 @@ void	print_cmd(t_cmd *cmd);
 // pipex.c
 int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data, t_cmd *cmd);
+int		is_env_built_in(t_cmd *cmd);
+void	env_built_in(t_data *data, t_cmd *cmd);
 
 // get_bin_path.c
 char	**get_path(t_data *data);
@@ -96,8 +99,10 @@ int		mini_echo(char **av);
 int		mini_env(t_data *data);
 int		mini_pwd(t_data *data);
 int		mini_unset(t_data *data, char **strs);
-int		mini_cd(t_data *data, char *str);
-int		mini_export(t_data *data, char *str);
+int		mini_cd(t_data *data, char **cmd);
+int		mini_export(t_data *data, char **cmd);
+char	*formate_pwd(char *str);
+char	*formate_pwd_bis(char *str);
 
 // utils
 char	*ft_remove_quotes(char *str);

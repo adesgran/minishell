@@ -81,8 +81,8 @@ static int	loop_read(t_data *data)
 	char	*line;
 	int		ret;
 
-	// signal(SIGINT, get_sig);
-	// signal(SIGQUIT, get_sig);
+	signal(SIGINT, get_sig);
+	signal(SIGQUIT, get_sig);
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
@@ -102,11 +102,16 @@ static int	loop_read(t_data *data)
 			{
 				if (get_bin_path(data->cmd, get_path(data)) == 1)
 					return (1);
-				ret = pipex(data, data->cmd);
-				free(data->last_cmd_status);
-				data->last_cmd_status = ft_itoa(ret);
-				if (!data->last_cmd_status)
-					return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
+				if (is_env_built_in(data->cmd))
+					env_built_in(data, data->cmd);
+				else
+        {
+          ret = pipex(data, data->cmd);
+				  free(data->last_cmd_status);
+				  data->last_cmd_status = ft_itoa(ret);
+				  if (!data->last_cmd_status)
+					  return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
+        }
 			}
 			lstclear_cmd(&(data->cmd));
 		}

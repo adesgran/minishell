@@ -6,7 +6,6 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:29:46 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 16:46:08 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +71,9 @@ void	call_built_in(t_data *data, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
 		mini_unset(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		mini_export(data, cmd->cmd[1]);
+		mini_export(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
-		mini_cd(data, cmd->cmd[1]);
+		mini_cd(data, cmd->cmd);
 }
 
 static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
