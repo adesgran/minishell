@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 13:12:51 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 14:13:17 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_data
 	t_env	*env;
 	char	**envp;
 	int		n_cmd;
+	int		last_res;
 }	t_data;
 
 // ************* TO ADD TO LIBFT *****************
@@ -89,7 +90,7 @@ void	print_cmd(t_cmd *cmd);
 int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data, t_cmd *cmd);
 int		is_env_built_in(t_cmd *cmd);
-int		env_built_in(t_data *data, t_cmd *cmd);
+void	env_built_in(t_data *data, t_cmd *cmd);
 
 // get_bin_path.c
 char	**get_path(t_data *data);
