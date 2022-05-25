@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 17:41:26 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:49:52 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int		pipex(t_data *data, t_cmd *cmd);
 // env_built_in.c
 int		is_env_built_in(t_cmd *cmd);
 int		env_built_in(t_data *data, t_cmd *cmd);
+void	call_built_in_fork(t_data *data, t_cmd *cmd);
 
 // get_bin_path.c
 char	**get_path(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 17:29:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:49:39 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,6 @@ int	set_pipefd(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-void	call_built_in(t_data *data, t_cmd *cmd)
-{
-	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
-	{
-		mini_echo(cmd->cmd);
-	}
-	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
-		mini_env(data);
-	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
-		mini_pwd(data);
-	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
-		mini_unset(data, cmd->cmd);
-	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		mini_export(data, cmd->cmd);
-	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
-		mini_cd(data, cmd->cmd);
-}
-
 static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 {
 	pid_t	pid;
@@ -94,7 +76,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 			close(cmd->fd_outfile);
 		close_pipes(data, cmd);
 		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-			call_built_in(data, cmd);
+			call_built_in_fork(data, cmd);
 		else
 			execve(cmd->bin_path, cmd->cmd, data->envp);
 		close(cmd->fd_outfile);
