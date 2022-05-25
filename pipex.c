@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 19:49:39 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 20:02:20 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,24 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 	return (pid);
 }
 
+int	wait_child(pid_t pid, int i, int ret)
+{
+	int	status;
+
+	status = 0;
+	while (i-- > 1)
+		wait(&status);
+	if (i == 0)
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			ret = WEXITSTATUS(status);
+	}
+	return (ret);
+}
+
 int	pipex(t_data *data, t_cmd *cmd)
 {
-	int		status;
 	int		i;
 	pid_t	pid;
 	int		ret;
@@ -98,7 +113,6 @@ int	pipex(t_data *data, t_cmd *cmd)
 		return (-1);
 	i = 0;
 	ret = 0;
-	status = 0;
 	while (cmd)
 	{
 		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1 && cmd->bin_path)
@@ -115,14 +129,5 @@ int	pipex(t_data *data, t_cmd *cmd)
 			ret = 127;
 		cmd = cmd->next;
 	}
-	close_pipes(data, NULL);
-	while (i-- > 0)
-		wait(&status);
-	if (i == 0)
-	{
-	 	waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			ret = WEXITSTATUS(status);
-	}
-	return (ret);
+	return (close_pipes(data, NULL), wait_child(pid, i, ret));
 }
