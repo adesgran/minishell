@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_built_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 14:24:05 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:26:46 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_env_built_in(t_cmd *cmd)
 	return (0);
 }
 
-void	env_built_in(t_data *data, t_cmd *cmd)
+int	env_built_in(t_data *data, t_cmd *cmd)
 {
 	int	res;
 
@@ -38,5 +38,5 @@ void	env_built_in(t_data *data, t_cmd *cmd)
 		res = mini_unset(data, cmd->cmd);
 	else if (!ft_strcmp(cmd->cmd[0], "export"))
 		res = mini_export(data, cmd->cmd);
-	data->last_res = res;
+	return (res);
 }
