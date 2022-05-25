@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 17:28:12 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/25 17:41:26 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,6 @@ char	**split_pipes(char *str, int *ret);
 char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
-int		xpander(t_token *token, t_env *env, char *last_cmd_value);
+int		expander(t_token *token, t_env *env, char *last_cmd_value);
 
 #endif
