@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 16:45:52 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:21:54 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 	return (free(var_name), str);
 }
 
-char	*lf_var(char *token, t_env *env, char *last_cmd_status)
+char	*lf_var(char *token, t_env *env, char *last_cmd_status, int is_heredoc)
 {
 	int	i;
 	int	expand;
@@ -65,9 +65,9 @@ char	*lf_var(char *token, t_env *env, char *last_cmd_status)
 	{
 		if (token[i] == '\\')
 			i++;
-		else if (token[i] == '\'' && expand == 1)
+		else if (!is_heredoc && token[i] == '\'' && expand == 1)
 			expand = 0;
-		else if (token[i] == '\'' && expand == 0)
+		else if (!is_heredoc && token[i] == '\'' && expand == 0)
 			expand = 1;
 		else if (token[i] == '$' && expand == 1)
 		{
@@ -114,7 +114,8 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 
 	while (token)
 	{
-		token->token = lf_var(token->token, env, last_cmd_status);
+		if (token->type != HEREDOC)
+			token->token = lf_var(token->token, env, last_cmd_status, 0);
 		str = ft_remove_quotes(token->token);
 		if (!str)
 			return (1);
