@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/23 15:03:37 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:24:56 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ static void	getfd_infile(t_cmd *cmd, char *file_name)
 	}
 	else if (cmd->is_heredoc == 2)
 		cmd->is_heredoc = 1;
-	else if (cmd->fd_infile > 2)
+	if (cmd->fd_infile > 2)
 		close(cmd->fd_infile);
 	cmd->fd_infile = open(file_name, O_RDONLY);
 	if (cmd->fd_infile == -1)
 		perror(file_name);
 }
 
-static int	getfd_heredoc(t_cmd *cmd, char *limiter)
+static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data)
 {
 	int		fd;
 	char	*line;
@@ -76,11 +76,11 @@ static int	getfd_heredoc(t_cmd *cmd, char *limiter)
 			return (close(fd), free(new_limiter), 1);
 		if (ft_strncmp(line, new_limiter, ft_strlen(line)) == 0)
 			break ;
+		line = lf_var(line, data->env, data->last_cmd_status, 1);
 		ft_putstr_fd(line, fd);
 		free(line);
 		line = NULL;
 	}
-	close(fd);
 	return (free(line), free(new_limiter), getfd_infile(cmd, "heredoc"), 0);
 }
 
@@ -101,7 +101,7 @@ static void	getfd_outfile(t_cmd *cmd, char *file_name, int type)
 		perror(file_name);
 }
 
-int	token_to_cmd(t_token *token, t_cmd **cmd)
+int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data)
 {
 	t_cmd	*new;
 	int		ret;
@@ -117,7 +117,7 @@ int	token_to_cmd(t_token *token, t_cmd **cmd)
 		else if (token->type == LESS)
 			getfd_infile(new, token->token);
 		else if (token->type == HEREDOC)
-			ret = getfd_heredoc(new, token->token);
+			ret = getfd_heredoc(new, token->token, data);
 		else if (token->type == GREAT || token->type == GREATGREAT)
 			getfd_outfile(new, token->token, token->type);
 		if ((!new->cmd && token->token == WORD) || ret)

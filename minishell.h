@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 19:39:16 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:08:31 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	lstdelone_token(t_token *lst);
 int		lexer(char *str, t_token **token);
 
 //parsing.c
-int		token_to_cmd(t_token *token, t_cmd **cmd);
+int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data);
 
 // minisplit.c
 char	**split_pipes(char *str, int *ret);
@@ -145,6 +145,7 @@ char	**split_pipes(char *str, int *ret);
 char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
+char	*lf_var(char *token, t_env *env, char *last_cmd_status, int is_heredoc);
 int		expander(t_token *token, t_env *env, char *last_cmd_value);
 
 #endif
