@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 19:42:11 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 13:24:16 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static char	*get_var_name(char *str)
 	i = 0;
 	while ((ft_isalnum(str[i]) || str[i] == '_') && str[i])
 		i++;
-	printf("Size = %d\n", i);
 	if (!str[i])
 		return (NULL);
 	return (ft_strndup(str, i));
@@ -33,8 +32,6 @@ static void set_env_value(t_data *data, char *str, char *varname)
 	var = ft_strdup(str + ft_strlen(varname) + 1);
 	if (!var)
 		return ;
-	if (!*var)
-		return (free(var));
 	env = get_var_env(data->env, varname);
 	if (env)
 	{
