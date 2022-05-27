@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 20:02:20 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 13:29:00 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
 			call_built_in_fork(data, cmd);
 		else
-			execve(cmd->bin_path, cmd->cmd, data->envp);
+			execve(cmd->bin_path, cmd->cmd, env_to_tab(data->env));
 		close(cmd->fd_outfile);
 		close(cmd->fd_infile);
 		free_data(data);
