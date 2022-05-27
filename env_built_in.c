@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 15:13:23 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 15:17:01 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	env_built_in(t_data *data, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->cmd[0], "export") && cmd->cmd[1])
 		res = mini_export(data, cmd->cmd);
 	else if (!ft_strcmp(cmd->cmd[0], "exit"))
-		res = mini_exit(data);
+		res = mini_exit(data, cmd->cmd, 1);
 	return (res);
 }
 
@@ -60,5 +60,5 @@ void	call_built_in_fork(t_data *data, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
 		mini_cd(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
-		mini_exit(data);
+		mini_exit(data, cmd->cmd, 0);
 }
