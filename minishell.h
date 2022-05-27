@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 15:18:20 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:51:24 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # include <curses.h>
 # include <term.h>
 # include <dirent.h>
+# include <errno.h>
 
 typedef struct s_token
 {
@@ -105,8 +106,6 @@ int		mini_unset(t_data *data, char **strs);
 int		mini_cd(t_data *data, char **cmd);
 int		mini_export(t_data *data, char **cmd);
 int		mini_exit(t_data *data, char **cmd, int infork);
-char	*formate_pwd(char *str);
-char	*formate_pwd_bis(char *str);
 void	export_empty(t_env *env);
 
 // utils
