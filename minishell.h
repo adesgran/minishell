@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/26 11:08:31 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 12:07:18 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ t_env	*get_var_env(t_env *env, char *var);
 t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
+char	**env_to_tab(t_env *env);
 
 // lst_cmd.c
 t_cmd	*lstnew_cmd(void);
@@ -136,7 +137,7 @@ void	lstdelone_token(t_token *lst);
 int		lexer(char *str, t_token **token);
 
 //parsing.c
-int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data);
+int		token_to_cmd(t_token *token, t_cmd **cmd, t_data *data);
 
 // minisplit.c
 char	**split_pipes(char *str, int *ret);
