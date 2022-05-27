@@ -2,6 +2,7 @@
 libft
 *.swp
 minishell
+valgrind-out.txt
 
 # Prerequisites
 *.d
