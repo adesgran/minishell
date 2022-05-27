@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/26 11:02:24 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 15:04:35 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	loop_read(t_data *data)
 	while (1)
 	{
 		line = readline("\x1B[34m\033[1mminishell$> \x1B[0m");
-		if (!line || ft_strcmp(line, "exit") == 0)
+		if (!line)
 		{
 			if (!line)
 				printf("exit\n");

@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 12:07:18 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 15:18:20 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		mini_pwd(t_data *data);
 int		mini_unset(t_data *data, char **strs);
 int		mini_cd(t_data *data, char **cmd);
 int		mini_export(t_data *data, char **cmd);
+int		mini_exit(t_data *data, char **cmd, int infork);
 char	*formate_pwd(char *str);
 char	*formate_pwd_bis(char *str);
 void	export_empty(t_env *env);
