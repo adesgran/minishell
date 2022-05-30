@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/26 11:02:24 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:52:06 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	analyse_line(char *line, t_data *data)
 			return (ft_free_tabstr(line_tab), ret);
 		if (expander(token, data->env, data->last_cmd_status))
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
-		if (token_to_cmd(token, &(data->cmd), data) == 1)
+		if (token_to_cmd(token, &(data->cmd), data, i) == 1)
 			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
 		lstclear_token(&token);
 		i++;
@@ -112,7 +112,7 @@ static int	loop_read(t_data *data)
 			ret = analyse_line(line, data);
 			if (ret == 1)
 				return (1);
-			if (ret == 0 && data->cmd->cmd)
+			if (ret == 0)
 			{
 				if (get_bin_path(data->cmd, get_path(data)) == 1)
 					return (1);

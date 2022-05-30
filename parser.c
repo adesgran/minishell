@@ -6,44 +6,61 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/26 11:24:56 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:56:04 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	**add_optioncmd(char **cmd, t_token *token)
+char	*add_error(char *old_msg, char *file_name, int type)
+{
+	char	*new_msg;
+	char	*type_msg;
+	
+	if (type == 1)
+		type_msg = ": No such file or directory\n";
+	else
+		type_msg = ": Persmission denied\n";
+	if (!old_msg)
+		new_msg = ft_strjoin(file_name, type_msg);
+	else
+		new_msg = ft_strjoinx(3, old_msg, file_name, type_msg);
+	return (free(old_msg), new_msg);
+}
+
+static int	add_optioncmd(t_cmd *cmd, t_token *token)
 {
 	char	**new_cmd;
 	int		size;
 	int		i;
 
 	size = 0;
-	while (cmd && cmd[size])
+	while (cmd->cmd && cmd->cmd[size])
 		size++;
 	new_cmd = malloc(sizeof(char *) * (size + 2));
 	if (!new_cmd)
-		return (NULL);
+		return (1);
 	new_cmd[size + 1] = NULL;
 	i = 0;
-	while (cmd && cmd[i])
+	while (cmd->cmd && cmd->cmd[i])
 	{
-		new_cmd[i] = cmd[i];
+		new_cmd[i] = cmd->cmd[i];
 		i++;
 	}
-	free(cmd);
+	free(cmd->cmd);
 	new_cmd[i] = token->token;
 	token->token = NULL;
-	return (new_cmd);
+	cmd->cmd = new_cmd;
+	return (0);
 }
 
-static void	getfd_infile(t_cmd *cmd, char *file_name)
+static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg)
 {
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
-		return ;
+		return (0);
 	if (cmd->is_heredoc == 1)
 	{
-		unlink("heredoc");
+		unlink(cmd->heredoc);
 		cmd->is_heredoc = 0;
 	}
 	else if (cmd->is_heredoc == 2)
@@ -52,18 +69,23 @@ static void	getfd_infile(t_cmd *cmd, char *file_name)
 		close(cmd->fd_infile);
 	cmd->fd_infile = open(file_name, O_RDONLY);
 	if (cmd->fd_infile == -1)
-		perror(file_name);
+	{
+		*error_msg = add_error(*error_msg, file_name, 1);
+		if (!*error_msg)
+			return (1);
+	}
+	return (0);
 }
 
-static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data)
+static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data, char **error_msg)
 {
 	int		fd;
 	char	*line;
 	char	*new_limiter;
 
-	fd = open("heredoc", O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		return (perror("heredoc getfd_heredoc"), 1);
+		return (1);
 	cmd->is_heredoc = 2;
 	new_limiter = ft_strjoinx(2, limiter, "\n");
 	if (!new_limiter)
@@ -81,15 +103,15 @@ static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data)
 		free(line);
 		line = NULL;
 	}
-	return (free(line), free(new_limiter), getfd_infile(cmd, "heredoc"), 0);
+	return (free(line), free(new_limiter), getfd_infile(cmd, cmd->heredoc, error_msg), 0);
 }
 
-static void	getfd_outfile(t_cmd *cmd, char *file_name, int type)
+static int	getfd_outfile(t_cmd *cmd, char *file_name, int type, char **error_msg)
 {
 	int	open_option;
 
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
-		return ;
+		return (0);
 	if (cmd->fd_outfile > 2)
 		close(cmd->fd_outfile);
 	if (type == GREAT)
@@ -98,31 +120,39 @@ static void	getfd_outfile(t_cmd *cmd, char *file_name, int type)
 		open_option = O_APPEND;
 	cmd->fd_outfile = open(file_name, O_WRONLY | open_option | O_CREAT, 0644);
 	if (cmd->fd_outfile == -1)
-		perror(file_name);
+	{
+		*error_msg = add_error(*error_msg, file_name, 2);
+		if (!*error_msg)
+			return (1);
+	}
+	return (0);
 }
 
-int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data)
+int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 {
 	t_cmd	*new;
 	int		ret;
-
+	char	*error_msg;
+	
 	ret = 0;
-	new = lstnew_cmd();
+	new = lstnew_cmd(i);
 	if (!new)
-		return (lstclear_token(&token), lstclear_cmd(cmd), 1);
+		return (lstclear_cmd(cmd), 1);
+	error_msg = NULL;
 	while (token)
 	{
 		if (token->type == WORD)
-			new->cmd = add_optioncmd(new->cmd, token);
+			ret = add_optioncmd(new, token);
 		else if (token->type == LESS)
-			getfd_infile(new, token->token);
+			ret = getfd_infile(new, token->token, &error_msg);
 		else if (token->type == HEREDOC)
-			ret = getfd_heredoc(new, token->token, data);
+			ret = getfd_heredoc(new, token->token, data, &error_msg);
 		else if (token->type == GREAT || token->type == GREATGREAT)
-			getfd_outfile(new, token->token, token->type);
-		if ((!new->cmd && token->token == WORD) || ret)
+			ret = getfd_outfile(new, token->token, token->type, &error_msg);
+		if (ret)
 			return (lstclear_cmd(cmd), lstdelone_cmd(new), 1);
 		token = token->next;
 	}
+	ft_putstr_fd(error_msg, 2);
 	return (lstadd_back_cmd(cmd, new), 0);
 }

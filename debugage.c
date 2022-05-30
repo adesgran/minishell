@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:58:46 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 17:58:47 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:51:31 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	print_cmd(t_cmd *cmd)
 		printf("	bin : %s\n", cmd->bin_path);
 		printf("	fd_infile : %d\n", cmd->fd_infile);
 		printf("	fd_outfile : %d\n", cmd->fd_outfile);
+		printf("	heredoc : %s\n", cmd->heredoc);
 		printf("	next : %p\n", cmd->next);
 		printf("*cmd***************\n");
 		cmd = cmd->next;
