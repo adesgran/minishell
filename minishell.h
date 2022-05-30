@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:52:16 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:08:03 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ void	print_cmd(t_cmd *cmd);
 // pipex.c
 int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data, t_cmd *cmd);
+
+// data_functions.c
+void	free_data(t_data *data);
+t_data	*init_data(char **env);
+void	increment_shlvl(t_data *data);
 
 // env_built_in.c
 int		is_env_built_in(t_cmd *cmd);

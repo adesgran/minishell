@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 17:52:06 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:06:17 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,10 @@ void	get_sig_child(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		rl_replace_line("", 2);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	(void)sig;
-}
-
-void	free_data(t_data *data)
-{
-	free_env(data->env);
-	lstclear_cmd(&(data->cmd));
-	free(data->last_cmd_status);
-	free(data);
-}
-
-static t_data	*init_data(char **env)
-{
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		exit(EXIT_FAILURE);
-	data->cmd = NULL;
-	data->env = init_env(env);
-	if (!data->env)
-	{
-		free(data);
-		exit(EXIT_FAILURE);
-	}
-	data->envp = env;
-	data->n_cmd = 0;
-	data->last_cmd_status = ft_itoa(0);
-	if (!data->last_cmd_status)
-		return (free_env(data->env), free(data), NULL);
-	return (data);
 }
 
 static int	analyse_line(char *line, t_data *data)
