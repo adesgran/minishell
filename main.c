@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 13:06:17 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/30 14:53:19 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ void	get_sig_child(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	(void)sig;
 }
 
 static int	analyse_line(char *line, t_data *data)
@@ -69,7 +63,7 @@ static int	loop_read(t_data *data)
 	int		ret;
 
 	signal(SIGINT, get_sig_child);
-	signal(SIGQUIT, get_sig_child);
+	signal(SIGQUIT, SIG_IGN);
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
