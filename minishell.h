@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:51:24 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:52:16 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_cmd
 	int				fd_infile;
 	int				fd_outfile;
 	int				is_heredoc;
+	char			*heredoc;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -120,7 +121,7 @@ t_env	*init_env(char **env);
 char	**env_to_tab(t_env *env);
 
 // lst_cmd.c
-t_cmd	*lstnew_cmd(void);
+t_cmd	*lstnew_cmd(int i);
 void	lstadd_back_cmd(t_cmd **alst, t_cmd *new);
 void	lstclear_cmd(t_cmd **lst);
 void	lstdelone_cmd(t_cmd *lst);
@@ -137,7 +138,7 @@ void	lstdelone_token(t_token *lst);
 int		lexer(char *str, t_token **token);
 
 //parsing.c
-int		token_to_cmd(t_token *token, t_cmd **cmd, t_data *data);
+int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i);
 
 // minisplit.c
 char	**split_pipes(char *str, int *ret);

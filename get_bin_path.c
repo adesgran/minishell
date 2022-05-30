@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/23 15:30:49 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:51:45 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ int	is_inpath(t_cmd *cmd, char **paths)
 
 int	get_bin_path(t_cmd *cmd, char **paths)
 {
-	if (!cmd->cmd || !cmd->cmd[0] || !paths)
+	if (!paths)
 		return (1);
 	while (cmd)
 	{
-		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1)
+		if (cmd->cmd && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
 			if (is_builtin(cmd))
 			{

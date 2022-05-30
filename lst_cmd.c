@@ -6,16 +6,17 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:59:15 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 17:59:18 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:51:56 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_cmd	*lstnew_cmd(void)
+t_cmd	*lstnew_cmd(int i)
 {
 	t_cmd	*res;
-
+	char	*num_cmd;
+	
 	res = malloc(sizeof(t_cmd));
 	if (!res)
 		return (NULL);
@@ -24,6 +25,13 @@ t_cmd	*lstnew_cmd(void)
 	res->fd_infile = -2;
 	res->fd_outfile = -2;
 	res->is_heredoc = 0;
+	num_cmd = ft_itoa(i);
+	if (!num_cmd)
+		return (free(res), NULL);
+	res->heredoc = ft_strjoin("heredoc", num_cmd);
+	free(num_cmd);
+	if (!res->heredoc)
+		return (free(res), NULL);
 	res->next = NULL;
 	return (res);
 }
@@ -60,9 +68,10 @@ void	lstdelone_cmd(t_cmd *lst)
 	if (lst->fd_infile > 2)
 		close(lst->fd_infile);
 	if (lst->is_heredoc)
-		unlink("heredoc");
+		unlink(lst->heredoc);
 	else if (lst->fd_outfile > 2)
 		close(lst->fd_outfile);
+	free(lst->heredoc);
 	free(lst);
 }
 

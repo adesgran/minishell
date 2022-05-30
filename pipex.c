@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:50:53 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:52:25 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 		free_data(data);
 		exit(EXIT_SUCCESS);
 	}
+	if (cmd->is_heredoc)
+		unlink(cmd->heredoc);
 	return (pid);
 }
 
