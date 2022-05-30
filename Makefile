@@ -3,7 +3,12 @@ NAME = minishell
 CC = gcc
 C_FLAGS = -Wall -Wextra -Werror
 
-C_FILES = $(wildcard ./*.c) $(wildcard built_in/*.c)
+C_FILES = data_functions.c debugage.c env_built_in.c env_struct_ft.c env_to_tab.c \
+		 expander.c ft_remove_quotes.c get_bin_path.c lexer.c lst_cmd.c lst_token.c \
+		 main.c minisplit.c parser.c pipex.c \
+		 built_in/cd.c built_in/echo.c built_in/env.c built_in/exit.c built_in/export.c \
+		 built_in/export_empty.c built_in/pwd.c built_in/unset.c
+
 O_FILES = $(C_FILES:.c=.o)
 
 LIBFT = libft/libft.a
@@ -38,4 +43,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re ${NAME}
+.PHONY: all clean fclean re
