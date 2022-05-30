@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 19:57:31 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:55:28 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_env	*init_env(char **env)
 	while (env[1])
 	{
 		env++;
-		new = ft_split(*env, '=');
+		new = ft_split_first(*env, '=');
 		push_back_env(res, new[0], new[1]);
 		free(new);
 	}

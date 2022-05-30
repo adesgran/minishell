@@ -78,7 +78,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
 			call_built_in_fork(data, cmd);
 		else
-			execve(cmd->bin_path, cmd->cmd, data->envp);
+			execve(cmd->bin_path, cmd->cmd, env_to_tab(data->env));
 		close(cmd->fd_outfile);
 		close(cmd->fd_infile);
 		free_data(data);

@@ -42,6 +42,7 @@
 # include <curses.h>
 # include <term.h>
 # include <dirent.h>
+# include <errno.h>
 
 typedef struct s_token
 {
@@ -105,8 +106,7 @@ int		mini_pwd(t_data *data);
 int		mini_unset(t_data *data, char **strs);
 int		mini_cd(t_data *data, char **cmd);
 int		mini_export(t_data *data, char **cmd);
-char	*formate_pwd(char *str);
-char	*formate_pwd_bis(char *str);
+int		mini_exit(t_data *data, char **cmd, int infork);
 void	export_empty(t_env *env);
 
 // utils
@@ -118,6 +118,7 @@ t_env	*get_var_env(t_env *env, char *var);
 t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
+char	**env_to_tab(t_env *env);
 
 // lst_cmd.c
 t_cmd	*lstnew_cmd(int i);
