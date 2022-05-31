@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/30 13:08:03 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 12:53:02 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void	call_built_in_fork(t_data *data, t_cmd *cmd);
 // get_bin_path.c
 char	**get_path(t_data *data);
 int		get_bin_path(t_cmd *cmd, char **paths);
+int		is_relative_path(t_cmd *cmd);
+char	*get_relative_path(t_cmd *cmd);
 
 // built_in
 int		mini_echo(char **av);
