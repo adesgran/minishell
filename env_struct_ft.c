@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 17:55:28 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 13:54:55 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,15 @@ t_env	*init_env(char **env)
 	char	**strs;
 	char	**new;
 
-	if (!env || !*env)
+	if (!env)
 		return (NULL);
+	if (!*env)
+		return (init_empty_env());
 	res = malloc(sizeof(t_env));
 	if (!res)
 		return (NULL);
 	res->next = NULL;
-	strs = ft_split(*env, '=');
+	strs = ft_split_first(*env, '=');
 	if (!strs)
 		return (free(res), NULL);
 	res->var = strs[0];

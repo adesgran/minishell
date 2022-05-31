@@ -1,7 +1,8 @@
 # Perso
+a.out
 *.swp
-minishell
-valgrind-out.txt
+main.c
+*.sh
 
 # Prerequisites
 *.d

@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 12:53:02 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:05:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 char	**env_to_tab(t_env *env);
+t_env	*init_empty_env(void);
 
 // lst_cmd.c
 t_cmd	*lstnew_cmd(int i);

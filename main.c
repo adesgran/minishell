@@ -6,16 +6,11 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 14:53:19 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:26:50 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-void	get_sig_parent(int sig)
-{
-	(void)sig;
-}
 
 void	get_sig_child(int sig)
 {
@@ -57,17 +52,37 @@ static int	analyse_line(char *line, t_data *data)
 	return (ft_free_tabstr(line_tab), 0);
 }
 
+static char	*get_prompt(void)
+{
+	char	*cwd;
+	char	*res;
+
+	cwd = malloc(sizeof(char) * 201);
+	if (!getcwd(cwd, 200))
+		return (free(cwd), NULL);
+	res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	free(cwd);
+	return (res);
+}
+
 static int	loop_read(t_data *data)
 {
 	char	*line;
+	char	*prompt;
 	int		ret;
 
-	signal(SIGINT, get_sig_child);
-	signal(SIGQUIT, SIG_IGN);
 	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
 	while (1)
 	{
-		line = readline(ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ "));
+		signal(SIGINT, get_sig_child);
+		signal(SIGQUIT, SIG_IGN);
+		prompt = get_prompt();
+		if (prompt)
+			line = readline(prompt);
+		else
+			line = readline(ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ "));
+		if (prompt)
+			free(prompt);
 		if (!line)
 		{
 			if (!line)
@@ -108,20 +123,20 @@ int	main(int ac, char **av, char **env)
 	int		res;
 
 	pid = fork();
-	data = init_data(env);
-	if (!data)
-		return (1);
 	if (!pid)
 	{
+		data = init_data(env);
+		if (!data)
+			return (1);
 		loop_read(data);
 		free_data(data);
 	}
 	else
 	{
-		signal(SIGINT, get_sig_parent);
-		signal(SIGQUIT, get_sig_parent);
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		wait(&res);
-		free_data(data);
+		//free_data(data);
 		printf("\n");
 	}
 	(void)ac;

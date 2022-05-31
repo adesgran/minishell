@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 13:19:21 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:23:07 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@ char	**get_path(t_data *data)
 
 	path = get_var_env(data->env, "PATH")->value;
 	if (!path)
-		return (NULL);
+	{
+		res = malloc(sizeof(*res));
+		if (res == NULL)
+			return (NULL);
+		*res = NULL;
+		return (res);
+	}
 	res = ft_split(path, ':');
 	return (res);
 }
