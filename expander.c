@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 17:28:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:49:05 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 	if (str[*i + 1] == '?')
 		len++;
 	else
-		while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
+					str[*i + len] == '_'))
 			len++;
 	var_name = ft_substr(str, *i, len);
 	if (!var_name)

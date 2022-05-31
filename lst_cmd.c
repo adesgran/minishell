@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:59:15 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:51:56 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:48:08 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*lstnew_cmd(int i)
 {
 	t_cmd	*res;
 	char	*num_cmd;
-	
+
 	res = malloc(sizeof(t_cmd));
 	if (!res)
 		return (NULL);

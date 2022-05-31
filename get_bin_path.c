@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 16:50:15 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:48:37 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	**get_path(t_data *data)
 	char	*path;
 	t_env	*env;
 
-	
 	env = get_var_env(data->env, "PATH");
 	path = NULL;
 	if (env)
