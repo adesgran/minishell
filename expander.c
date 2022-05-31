@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 18:11:12 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:31:42 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 
 	while (token)
 	{
+		token->unexpanded = ft_strdup(token->token);
+		if (!token->unexpanded)
+			return (1);
 		if (token->type != HEREDOC)
 			token->expanded = lf_var(&(token->token), env, last_cmd_status, 0);
 		if (token->expanded == -1)

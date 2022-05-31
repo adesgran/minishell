@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 17:58:47 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:29:57 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_token
 	char			*token;
 	int				expanded;
 	int				type;
+	char			*unexpanded;
 	struct s_token	*next;
 }	t_token;
 

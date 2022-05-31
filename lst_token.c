@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:18 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 16:54:18 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:37:00 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_token	*lstnew_token(char *token, int type)
 		return (NULL);
 	res->token = token;
 	res->expanded = 0;
+	res->unexpanded = NULL;
 	res->type = type;
 	res->next = NULL;
 	return (res);
@@ -54,12 +55,13 @@ void	lstadd_back_token(t_token **alst, t_token *new)
 void	lstdelone_token(t_token *lst)
 {
 	free(lst->token);
+	free(lst->unexpanded);
 	free(lst);
 }
 
 void	lstclear_token(t_token **lst)
 {
-	t_token	*temp;
+	// t_token	*temp;
 
 	if (!lst)
 		return ;
@@ -67,9 +69,10 @@ void	lstclear_token(t_token **lst)
 		return ;
 	if (lst[0]->next)
 		lstclear_token(&lst[0]->next);
-	free(lst[0]->token);
-	lst[0]->token = NULL;
-	temp = lst[0];
+	lstdelone_token(lst[0]);
+	// free(lst[0]->token);
+	// lst[0]->token = NULL;
+	// temp = lst[0];
 	lst[0] = NULL;
-	free(temp);
+	// free(temp);
 }
