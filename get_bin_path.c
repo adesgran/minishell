@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:46:34 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:06:05 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	is_builtin(t_cmd *cmd)
 		&& (ft_strcmp(cmd->cmd[0], "echo") == 0
 			|| ft_strcmp(cmd->cmd[0], "env") == 0
 			|| ft_strcmp(cmd->cmd[0], "export") == 0
+			|| ft_strcmp(cmd->cmd[0], "exit") == 0
 			|| ft_strcmp(cmd->cmd[0], "pwd") == 0
 			|| ft_strcmp(cmd->cmd[0], "unset") == 0
 			|| ft_strcmp(cmd->cmd[0], "cd") == 0
@@ -83,7 +84,7 @@ int	get_bin_path(t_cmd *cmd, char **paths)
 		return (1);
 	while (cmd)
 	{
-		if (cmd->cmd && cmd->fd_infile != -1 && cmd->fd_outfile != -1)
+		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
 			if (is_builtin(cmd) || is_relative_path(cmd))
 			{

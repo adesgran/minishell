@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 15:14:00 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:21:07 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	analyse_line(char *line, t_data *data)
 	int		ret;
 
 	ret = 1;
-	line_tab = split_pipes(line, &ret);
+	line_tab = split_pipes(ft_strtrim(line, " \t\n\r\v\f"), &ret);
 	free(line);
 	if (!line_tab || ret == 2)
 		return (ft_free_tabstr(line_tab), ret);
@@ -71,23 +71,23 @@ static int	loop_read(t_data *data)
 	char	*prompt;
 	int		ret;
 
-	printf("\x1B[32mWelcome to Minishell !\x1B[0m\n");
+	printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
 	while (1)
 	{
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
 		prompt = get_prompt();
-		if (prompt)
-			line = readline(prompt);
-		else
-			line = readline(ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ "));
-		if (prompt)
+		if (!prompt)
+      prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
+    if (!prompt)
+        return (1);
+		line = readline(prompt);
 			free(prompt);
 		if (!line)
 		{
 			if (!line)
 				printf("exit\n");
-			printf("\x1B[31mGood Bye !\x1B[0m\n");
+			printf("\x1B[31mGood Bye!\x1B[0m\n");
 			return (rl_clear_history(), free(line), 0);
 		}
 		add_history(line);

@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:56:04 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/30 17:04:31 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*add_error(char *old_msg, char *file_name, int type)
 	char	*new_msg;
 	char	*type_msg;
 	
-	if (type == 1)
+	if (type == 1 || (type == 2 && !ft_strlen(file_name)))
 		type_msg = ": No such file or directory\n";
 	else
 		type_msg = ": Persmission denied\n";
