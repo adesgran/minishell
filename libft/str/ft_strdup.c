@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
+/*   Created: 2021/11/29 11:15:23 by adesgran          #+#    #+#             */
+/*   Updated: 2021/12/24 12:29:13 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <libft.h>
 
-int	mini_exit(t_data *data, char **cmd, int infork)
+char	*ft_strdup(const char *s1)
 {
-	int	res;
-	if (!infork)
+	char	*res;
+	int		i;
+
+	res = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (res == NULL)
+		return (res);
+	i = 0;
+	while (s1[i])
 	{
-		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
+		res[i] = s1[i];
+		i++;
 	}
-	res = 0;
-	if (cmd[1])
-		res = ft_atoi(cmd[1]);
-	free_data(data);
-	exit(res);
+	res[i] = '\0';
+	return (res);
 }

@@ -12,11 +12,6 @@
 
 #include <minishell.h>
 
-void	get_sig_parent(int sig)
-{
-	(void)sig;
-}
-
 void	get_sig_child(int sig)
 {
 	if (sig == SIGINT)
@@ -26,42 +21,6 @@ void	get_sig_child(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
-		rl_replace_line("", 2);
-		rl_redisplay();
-	}
-	(void)sig;
-}
-
-void	free_data(t_data *data)
-{
-	free_env(data->env);
-	lstclear_cmd(&(data->cmd));
-	free(data->last_cmd_status);
-	free(data);
-}
-
-static t_data	*init_data(char **env)
-{
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		exit(EXIT_FAILURE);
-	data->cmd = NULL;
-	data->env = init_env(env);
-	if (!data->env)
-	{
-		free(data);
-		exit(EXIT_FAILURE);
-	}
-	data->envp = env;
-	data->n_cmd = 0;
-	data->last_cmd_status = ft_itoa(0);
-	if (!data->last_cmd_status)
-		return (free_env(data->env), free(data), NULL);
-	return (data);
 }
 
 static int	analyse_line(char *line, t_data *data)
@@ -93,20 +52,37 @@ static int	analyse_line(char *line, t_data *data)
 	return (ft_free_tabstr(line_tab), 0);
 }
 
+static char	*get_prompt(void)
+{
+	char	*cwd;
+	char	*res;
+
+	cwd = malloc(sizeof(char) * 201);
+	if (!getcwd(cwd, 200))
+		return (free(cwd), NULL);
+	res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	free(cwd);
+	return (res);
+}
+
 static int	loop_read(t_data *data)
 {
 	char	*line;
-	int		ret;
 	char	*prompt;
-	
-	signal(SIGINT, get_sig_child);
-	signal(SIGQUIT, get_sig_child);
+	int		ret;
+
 	printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
 	while (1)
 	{
-		prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m", get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
+		signal(SIGINT, get_sig_child);
+		signal(SIGQUIT, SIG_IGN);
+		prompt = get_prompt();
+		if (!prompt)
+      prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
+    if (!prompt)
+        return (1);
 		line = readline(prompt);
-		free(prompt);
+			free(prompt);
 		if (!line)
 		{
 			if (!line)
@@ -146,22 +122,24 @@ int	main(int ac, char **av, char **env)
 	int		pid;
 	int		res;
 
+	res = 0;
 	pid = fork();
-	data = init_data(env);
-	if (!data)
-		return (1);
 	if (!pid)
 	{
+		data = init_data(env);
+		if (!data)
+			return (1);
 		loop_read(data);
 		free_data(data);
+		exit(1);
 	}
 	else
 	{
-		signal(SIGINT, get_sig_parent);
-		signal(SIGQUIT, get_sig_parent);
-		wait(&res);
-		free_data(data);
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(pid, &res, 0);
 		printf("\n");
+		exit(res / 256);
 	}
 	(void)ac;
 	(void)av;

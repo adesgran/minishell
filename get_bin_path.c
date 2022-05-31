@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-void	error_path(char *cmd)
+static void	error_path(char *cmd)
 {
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -22,15 +22,26 @@ char	**get_path(t_data *data)
 {
 	char	**res;
 	char	*path;
+	t_env	*env;
 
-	path = get_var_env(data->env, "PATH")->value;
+	
+	env = get_var_env(data->env, "PATH");
+	path = NULL;
+	if (env)
+		path = env->value;
 	if (!path)
-		return (NULL);
+	{
+		res = malloc(sizeof(*res));
+		if (res == NULL)
+			return (NULL);
+		*res = NULL;
+		return (res);
+	}
 	res = ft_split(path, ':');
 	return (res);
 }
 
-int	is_builtin(t_cmd *cmd)
+static int	is_builtin(t_cmd *cmd)
 {
 	if (cmd->fd_infile != -1 && cmd->fd_outfile != -1
 		&& (ft_strcmp(cmd->cmd[0], "echo") == 0
@@ -39,14 +50,15 @@ int	is_builtin(t_cmd *cmd)
 			|| ft_strcmp(cmd->cmd[0], "exit") == 0
 			|| ft_strcmp(cmd->cmd[0], "pwd") == 0
 			|| ft_strcmp(cmd->cmd[0], "unset") == 0
-			|| ft_strcmp(cmd->cmd[0], "cd") == 0))
+			|| ft_strcmp(cmd->cmd[0], "cd") == 0
+			|| ft_strcmp(cmd->cmd[0], "exit") == 0))
 	{
 		return (1);
 	}
 	return (0);
 }
 
-int	is_inpath(t_cmd *cmd, char **paths)
+static int	is_inpath(t_cmd *cmd, char **paths)
 {
 	int		i;
 
@@ -63,13 +75,6 @@ int	is_inpath(t_cmd *cmd, char **paths)
 		free(cmd->bin_path);
 		cmd->bin_path = NULL;
 	}
-	if (access(cmd->cmd[0], X_OK) == 0)
-	{
-		cmd->bin_path = ft_strdup(cmd->cmd[0]);
-		if (!cmd->bin_path)
-			return (-1);
-		return (1);
-	}
 	return (0);
 }
 
@@ -81,9 +86,12 @@ int	get_bin_path(t_cmd *cmd, char **paths)
 	{
 		if (cmd->fd_infile != -1 && cmd->fd_outfile != -1)
 		{
-			if (is_builtin(cmd))
+			if (is_builtin(cmd) || is_relative_path(cmd))
 			{
-				cmd->bin_path = ft_strjoin("built_in/", cmd->cmd[0]);
+				if (is_relative_path(cmd))
+					cmd->bin_path = get_relative_path(cmd);
+				else if (is_builtin(cmd))
+					cmd->bin_path = ft_strdup("built_in/");
 				if (!cmd->bin_path)
 					return (ft_free_tabstr(paths), -1);
 			}

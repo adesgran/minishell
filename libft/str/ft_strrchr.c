@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
+/*   Created: 2021/11/29 11:10:25 by adesgran          #+#    #+#             */
+/*   Updated: 2021/12/01 13:14:50 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <unistd.h>
 
-int	mini_exit(t_data *data, char **cmd, int infork)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	res;
-	if (!infork)
+	char		c2;
+	const char	*res;
+
+	c2 = (char)c;
+	res = NULL;
+	while (*s)
 	{
-		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
+		if (*s == c2)
+			res = s;
+		s++;
 	}
-	res = 0;
-	if (cmd[1])
-		res = ft_atoi(cmd[1]);
-	free_data(data);
-	exit(res);
+	if (!c2)
+		res = s;
+	return ((char *)res);
 }

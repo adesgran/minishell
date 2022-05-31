@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
+/*   Created: 2022/01/08 14:21:59 by adesgran          #+#    #+#             */
+/*   Updated: 2022/01/08 14:22:39 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <libft.h>
 
-int	mini_exit(t_data *data, char **cmd, int infork)
+void	ft_swap(int *a, int *b)
 {
-	int	res;
-	if (!infork)
-	{
-		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
-	}
-	res = 0;
-	if (cmd[1])
-		res = ft_atoi(cmd[1]);
-	free_data(data);
-	exit(res);
+	int	temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }

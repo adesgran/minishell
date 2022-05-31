@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/27 17:52:16 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:05:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ void	print_cmd(t_cmd *cmd);
 int		add_outfile(t_cmd *cmd, int new_fd);
 int		pipex(t_data *data, t_cmd *cmd);
 
+// data_functions.c
+void	free_data(t_data *data);
+t_data	*init_data(char **env);
+void	increment_shlvl(t_data *data);
+
 // env_built_in.c
 int		is_env_built_in(t_cmd *cmd);
 int		env_built_in(t_data *data, t_cmd *cmd);
@@ -98,6 +103,8 @@ void	call_built_in_fork(t_data *data, t_cmd *cmd);
 // get_bin_path.c
 char	**get_path(t_data *data);
 int		get_bin_path(t_cmd *cmd, char **paths);
+int		is_relative_path(t_cmd *cmd);
+char	*get_relative_path(t_cmd *cmd);
 
 // built_in
 int		mini_echo(char **av);
@@ -119,6 +126,7 @@ t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 char	**env_to_tab(t_env *env);
+t_env	*init_empty_env(void);
 
 // lst_cmd.c
 t_cmd	*lstnew_cmd(int i);

@@ -82,13 +82,15 @@ t_env	*init_env(char **env)
 	char	**strs;
 	char	**new;
 
-	if (!env || !*env)
+	if (!env)
 		return (NULL);
+	if (!*env)
+		return (init_empty_env());
 	res = malloc(sizeof(t_env));
 	if (!res)
 		return (NULL);
 	res->next = NULL;
-	strs = ft_split(*env, '=');
+	strs = ft_split_first(*env, '=');
 	if (!strs)
 		return (free(res), NULL);
 	res->var = strs[0];

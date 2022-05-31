@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_free_tabstr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
+/*   Created: 2022/05/16 15:41:37 by adesgran          #+#    #+#             */
+/*   Updated: 2022/05/16 15:45:06 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <libft.h>
 
-int	mini_exit(t_data *data, char **cmd, int infork)
+void	ft_free_tabstr(char **tab)
 {
-	int	res;
-	if (!infork)
+	char	**init;
+
+	if (!tab)
+		return ;
+	init = tab;
+	while (*tab)
 	{
-		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
+		free(*tab);
+		tab++;
 	}
-	res = 0;
-	if (cmd[1])
-		res = ft_atoi(cmd[1]);
-	free_data(data);
-	exit(res);
+	free(init);
 }

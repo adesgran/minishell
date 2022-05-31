@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 19:15:32 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 19:58:11 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:56:54 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	export_empty(t_env *env)
 	while (size)
 	{
 		tmp = get_lower(env);
-		printf("declare -x %s=%s\n", tmp->var, tmp->value);
+		printf("export %s=%s\n", tmp->var, tmp->value);
 		env = remove_var_env(env, tmp->var);
 		size--;
 	}

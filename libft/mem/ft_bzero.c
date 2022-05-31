@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adesgran <adesgran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
+/*   Created: 2021/11/22 13:24:00 by adesgran          #+#    #+#             */
+/*   Updated: 2021/11/29 11:28:30 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <unistd.h>
 
-int	mini_exit(t_data *data, char **cmd, int infork)
+void	ft_bzero(void *s, size_t n)
 {
-	int	res;
-	if (!infork)
+	unsigned char	*temp;
+	size_t			i;
+
+	i = 0;
+	temp = (unsigned char *)s;
+	while (i < n)
 	{
-		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
+		temp[i] = '\0';
+		i++;
 	}
-	res = 0;
-	if (cmd[1])
-		res = ft_atoi(cmd[1]);
-	free_data(data);
-	exit(res);
 }
