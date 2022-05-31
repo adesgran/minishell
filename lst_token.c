@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:18 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/25 17:29:19 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:54:18 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_token	*lstnew_token(char *token, int type)
 	if (!res)
 		return (NULL);
 	res->token = token;
+	res->expanded = 0;
 	res->type = type;
 	res->next = NULL;
 	return (res);

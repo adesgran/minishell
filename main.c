@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 17:14:13 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:50:23 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ static int	loop_read(t_data *data)
 		signal(SIGQUIT, SIG_IGN);
 		prompt = get_prompt();
 		if (!prompt)
-      prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
-    if (!prompt)
-        return (1);
+			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
+		if (!prompt)
+			return (1);
 		line = readline(prompt);
-			free(prompt);
+		free(prompt);
 		if (!line)
 		{
 			if (!line)
