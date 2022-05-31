@@ -25,7 +25,6 @@ char	**get_path(t_data *data)
 	char	*path;
 	t_env	*env;
 
-	
 	env = get_var_env(data->env, "PATH");
 	path = NULL;
 	if (env)

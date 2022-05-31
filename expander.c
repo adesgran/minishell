@@ -38,7 +38,8 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 	if (str[*i + 1] == '?')
 		len++;
 	else
-		while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
+					str[*i + len] == '_'))
 			len++;
 	var_name = ft_substr(str, *i, len);
 	if (!var_name)
