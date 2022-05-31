@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/30 17:04:31 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:29:46 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 	error_msg = NULL;
 	while (token)
 	{
-		if (token->type == WORD)
+		if (token->token[0] && token->type == WORD)
 			ret = add_optioncmd(new, token);
 		else if (token->type == LESS)
 			ret = getfd_infile(new, token->token, &error_msg);
@@ -153,6 +153,5 @@ int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 			return (lstclear_cmd(cmd), lstdelone_cmd(new), 1);
 		token = token->next;
 	}
-	ft_putstr_fd(error_msg, 2);
-	return (lstadd_back_cmd(cmd, new), 0);
+	return (ft_putstr_fd(error_msg, 2), lstadd_back_cmd(cmd, new), 0);
 }

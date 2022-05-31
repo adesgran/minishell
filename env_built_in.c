@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 15:21:17 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:49:07 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_env_built_in(t_cmd *cmd)
 {
-	if (!cmd || cmd->next)
+	if (!cmd || !cmd->cmd || cmd->next)
 		return (0);
 	if (!ft_strcmp(cmd->cmd[0], "cd"))
 		return (1);

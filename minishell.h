@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 14:05:45 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:29:37 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 typedef struct s_token
 {
 	char			*token;
+	int				expanded;
 	int				type;
 	struct s_token	*next;
 }	t_token;
@@ -146,7 +147,7 @@ void	lstdelone_token(t_token *lst);
 int		lexer(char *str, t_token **token);
 
 //parsing.c
-int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i);
+int		token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i);
 
 // minisplit.c
 char	**split_pipes(char *str, int *ret);
