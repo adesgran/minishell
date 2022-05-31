@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:26:50 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:14:00 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int ac, char **av, char **env)
 	int		pid;
 	int		res;
 
+	res = 0;
 	pid = fork();
 	if (!pid)
 	{
@@ -130,14 +131,15 @@ int	main(int ac, char **av, char **env)
 			return (1);
 		loop_read(data);
 		free_data(data);
+		exit(1);
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		wait(&res);
-		//free_data(data);
+		waitpid(pid, &res, 0);
 		printf("\n");
+		exit(res / 256);
 	}
 	(void)ac;
 	(void)av;
