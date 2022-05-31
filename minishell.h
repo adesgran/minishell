@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 17:29:37 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:58:47 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char	**split_pipes(char *str, int *ret);
 char	*ft_remove_quotes(char *str);
 
 // ft_expander.c
-char	*lf_var(char *token, t_env *env, char *last_cmd_status, int is_heredoc);
+int		lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc);
 int		expander(t_token *token, t_env *env, char *last_cmd_value);
 
 //sig_handler.c
