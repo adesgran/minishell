@@ -6,11 +6,13 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 15:50:27 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:17:17 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+t_data	*g_data;
 
 char	*add_error(char *old_msg, char *file_name, int type)
 {
@@ -81,25 +83,45 @@ static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data, char **error_m
 {
 	int		fd;
 	char	*line;
+	pid_t	pid;
+	int	res;
 
-	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd == -1)
-		return (1);
-	cmd->is_heredoc = 2;
-	while (1)
+	pid = fork();
+	if (!pid)
 	{
-
-		line = readline("> ");
-		if (!line)
-			return (close(fd), 1);
-		if (ft_strcmp(line, limiter) == 0)
-			break ;
-		line = lf_var(line, data->env, data->last_cmd_status, 1);
-		ft_putendl_fd(line, fd);
+		fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		g_data = data;
+		if (fd == -1)
+			return (1);
+		cmd->is_heredoc = 2;
+		while (1)
+		{
+			signal(SIGINT, get_sig_heredoc);
+			line = readline("> ");
+			if (!line)
+			{
+				printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->n_cmd, limiter);
+				break ;
+			}
+			if (ft_strcmp(line, limiter) == 0)
+				break ;
+			line = lf_var(line, data->env, data->last_cmd_status, 1);
+			ft_putendl_fd(line, fd);
+			free(line);
+			line = NULL;
+		}
 		free(line);
-		line = NULL;
+		free_data(data);
+		exit(0);
 	}
-	return (free(line), getfd_infile(cmd, cmd->heredoc, error_msg), 0);
+	signal(SIGINT, SIG_IGN);
+	wait(&res);
+	if (res == 256)
+	{
+		unlink(cmd->heredoc);
+		return (2);
+	}
+	return (getfd_infile(cmd, cmd->heredoc, error_msg), 0);
 }
 
 static int	getfd_outfile(t_cmd *cmd, char *file_name, int type, char **error_msg)
@@ -146,7 +168,7 @@ int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 		else if (token->type == GREAT || token->type == GREATGREAT)
 			ret = getfd_outfile(new, token->token, token->type, &error_msg);
 		if (ret)
-			return (lstclear_cmd(cmd), lstdelone_cmd(new), 1);
+			return (lstclear_cmd(cmd), lstdelone_cmd(new), ret);
 		token = token->next;
 	}
 	ft_putstr_fd(error_msg, 2);

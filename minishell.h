@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 14:05:45 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:11:15 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_data
 	char	**envp;
 	int		n_cmd;
 	char	*last_cmd_status;
+	t_token	*token;
 
 }	t_data;
 
@@ -157,5 +158,9 @@ char	*ft_remove_quotes(char *str);
 // ft_expander.c
 char	*lf_var(char *token, t_env *env, char *last_cmd_status, int is_heredoc);
 int		expander(t_token *token, t_env *env, char *last_cmd_value);
+
+//sig_handler.c
+void	get_sig_heredoc(int sig);
+void	get_sig_child(int sig);
 
 #endif

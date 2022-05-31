@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:05:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:19:27 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:12:30 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	increment_shlvl(t_data *data)
 
 void	free_data(t_data *data)
 {
+	lstclear_token(&data->token);
 	free_env(data->env);
 	lstclear_cmd(&(data->cmd));
 	free(data->last_cmd_status);
@@ -43,6 +44,7 @@ t_data	*init_data(char **env)
 		exit(EXIT_FAILURE);
 	data->cmd = NULL;
 	data->env = init_env(env);
+	data->token = NULL;
 	if (!data->env)
 	{
 		free(data);
