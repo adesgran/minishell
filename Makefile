@@ -30,18 +30,20 @@ all: ${NAME}
 ${NAME}: $(O_FILES)
 	@echo "\n"
 	@if [ ! -d "./libft" ]; then git clone ${LIBFT_REPO} libft; fi
-	@make -C libft
+	@make --no-print-directory -C libft 
 	@echo "\n\033[0;34mCompiling minshell..."
 	@${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
 
 clean:
-	@make clean -C libft/
+	@make --no-print-directory clean -C libft/ 
 	@echo "\nRemoving binaries..."
 	@rm -f $(O_FILES)
 	@echo "\033[0m"
 
-fclean: clean
-	@make fclean -C libft/
+fclean:
+	@make --no-print-directory fclean -C libft/
+	@echo "\n\033[0;31mRemoving binaries..."
+	@rm -f $(O_FILES)
 	@echo "\n\033[0;31mDeleting executable..."
 	@rm -f $(NAME)
 	@echo "\033[0m"
