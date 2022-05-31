@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:42:50 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:46:34 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int	is_builtin(t_cmd *cmd)
 			|| ft_strcmp(cmd->cmd[0], "export") == 0
 			|| ft_strcmp(cmd->cmd[0], "pwd") == 0
 			|| ft_strcmp(cmd->cmd[0], "unset") == 0
-			|| ft_strcmp(cmd->cmd[0], "cd") == 0))
+			|| ft_strcmp(cmd->cmd[0], "cd") == 0
+			|| ft_strcmp(cmd->cmd[0], "exit") == 0))
 	{
 		return (1);
 	}
