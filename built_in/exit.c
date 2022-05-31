@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 15:24:29 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:21:11 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	mini_exit(t_data *data, char **cmd, int infork)
 {
 	int	res;
+
 	if (!infork)
 	{
 		printf("exit\n");

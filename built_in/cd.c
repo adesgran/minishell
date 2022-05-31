@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 17:48:19 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:24:42 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ int	mini_cd(t_data *data, char **cmd)
 		return (1);
 	res = chdir(tmp);
 	if (res)
-	{
-		printf("Can't access %s\n", tmp);
-		return (free(tmp), 1);
-	}
+		return (printf("Can't access %s\n", tmp), free(tmp), 1);
+	free(tmp);
 	free(get_var_env(data->env, "OLDPWD")->value);
-	get_var_env(data->env, "OLDPWD")->value = get_var_env(data->env, "PWD")->value;
+	tmp = get_var_env(data->env, "PWD")->value;
+	get_var_env(data->env, "OLDPWD")->value = tmp;
 	get_var_env(data->env, "PWD")->value = malloc(sizeof(char) * 1000);
 	getcwd(get_var_env(data->env, "PWD")->value, 1000);
-	return (free(tmp), 0);
+	return (0);
 }
