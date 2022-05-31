@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/24 17:50:46 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 11:33:39 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,7 @@ int	lexer(char *str, t_token **token)
 		}
 		i++;
 	}
+	if (str[i] == '|' && !*token)
+		return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2), 2);
 	return (ret);
 }

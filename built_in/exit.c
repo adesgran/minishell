@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 15:21:11 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/30 16:58:53 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	mini_exit(t_data *data, char **cmd, int infork)
 	if (!infork)
 	{
 		printf("exit\n");
-		printf("\x1B[31mGood Bye !\x1B[0m\n");
+		printf("\x1B[31mGood Bye!\x1B[0m\n");
 	}
 	res = 0;
 	if (cmd[1])

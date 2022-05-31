@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/24 17:56:24 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:22:29 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	*static_next_line(char **str, int *ret)
 	res[i] = '\0';
 	if (res[ft_strlen(res) - 1] == '|' && !**str)
 	{
-		ft_putstr_fd("Error: isolated pipe\n", 2);
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 		*ret = 2;
 	}
 	return (res);
@@ -97,10 +97,12 @@ char	**split_pipes(char *str, int *ret)
 	char	**res;
 	int		size;
 	int		i;
-
+	char	*cpy;
+	
+	cpy = str;
 	size = static_count_str(str);
-	if (!size)
-		return (NULL);
+	if (!size || !str)
+		return (free(cpy), NULL);
 	res = malloc(sizeof(char *) * (size + 1));
 	i = 0;
 	while (i < size)
@@ -111,10 +113,10 @@ char	**split_pipes(char *str, int *ret)
 			while (--i >= 0)
 				free(res[i]);
 			free(res);
-			return (NULL);
+			return (free(cpy), NULL);
 		}
 		i++;
 	}
 	res[size] = NULL;
-	return (res);
+	return (free(cpy), res);
 }
