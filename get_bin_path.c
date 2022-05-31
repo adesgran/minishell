@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:23:07 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:42:50 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ char	**get_path(t_data *data)
 {
 	char	**res;
 	char	*path;
+	t_env	*env;
 
-	path = get_var_env(data->env, "PATH")->value;
+	
+	env = get_var_env(data->env, "PATH");
+	path = NULL;
+	if (env)
+		path = env->value;
 	if (!path)
 	{
 		res = malloc(sizeof(*res));
