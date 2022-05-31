@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/30 17:04:31 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:50:27 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,29 +81,25 @@ static int	getfd_heredoc(t_cmd *cmd, char *limiter, t_data *data, char **error_m
 {
 	int		fd;
 	char	*line;
-	char	*new_limiter;
 
 	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (1);
 	cmd->is_heredoc = 2;
-	new_limiter = ft_strjoinx(2, limiter, "\n");
-	if (!new_limiter)
-		return (close(fd), 1);
 	while (1)
 	{
-		ft_putstr_fd("> ", 1);
-		line = ft_get_next_line(STDIN_FILENO);
+
+		line = readline("> ");
 		if (!line)
-			return (close(fd), free(new_limiter), 1);
-		if (ft_strncmp(line, new_limiter, ft_strlen(line)) == 0)
+			return (close(fd), 1);
+		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		line = lf_var(line, data->env, data->last_cmd_status, 1);
-		ft_putstr_fd(line, fd);
+		ft_putendl_fd(line, fd);
 		free(line);
 		line = NULL;
 	}
-	return (free(line), free(new_limiter), getfd_infile(cmd, cmd->heredoc, error_msg), 0);
+	return (free(line), getfd_infile(cmd, cmd->heredoc, error_msg), 0);
 }
 
 static int	getfd_outfile(t_cmd *cmd, char *file_name, int type, char **error_msg)
