@@ -77,6 +77,7 @@ typedef struct s_data
 	char	**envp;
 	int		n_cmd;
 	char	*last_cmd_status;
+	t_token	*token;
 
 }	t_data;
 
@@ -158,5 +159,9 @@ char	*ft_remove_quotes(char *str);
 // ft_expander.c
 char	*lf_var(char *token, t_env *env, char *last_cmd_status, int is_heredoc);
 int		expander(t_token *token, t_env *env, char *last_cmd_value);
+
+//sig_handler.c
+void	get_sig_heredoc(int sig);
+void	get_sig_child(int sig);
 
 #endif

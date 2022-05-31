@@ -12,20 +12,8 @@
 
 #include <minishell.h>
 
-void	get_sig_child(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
 static int	analyse_line(char *line, t_data *data)
 {
-	t_token	*token;
 	int		i;
 	char	**line_tab;
 	int		ret;
@@ -38,15 +26,15 @@ static int	analyse_line(char *line, t_data *data)
 	i = 0;
 	while (line_tab[i])
 	{
-		token = NULL;
-		ret = lexer(line_tab[i], &token);
+		data->token = NULL;
+		ret = lexer(line_tab[i], &data->token);
 		if (ret)
 			return (ft_free_tabstr(line_tab), ret);
-		if (expander(token, data->env, data->last_cmd_status))
-			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
-		if (token_to_cmd(token, &(data->cmd), data, i) == 1)
-			return (lstclear_token(&token), ft_free_tabstr(line_tab), 1);
-		lstclear_token(&token);
+		if (expander(data->token, data->env, data->last_cmd_status))
+			return (lstclear_token(&data->token), ft_free_tabstr(line_tab), 1);
+		if (token_to_cmd(data->token, &(data->cmd), data, i) == 1)
+			return (lstclear_token(&data->token), ft_free_tabstr(line_tab), 1);
+		lstclear_token(&data->token);
 		i++;
 	}
 	return (ft_free_tabstr(line_tab), 0);
@@ -90,6 +78,7 @@ static int	loop_read(t_data *data)
 			printf("\x1B[31mGood Bye!\x1B[0m\n");
 			return (rl_clear_history(), free(line), 0);
 		}
+		data->n_cmd++;
 		add_history(line);
 		if (line[0])
 		{

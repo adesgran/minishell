@@ -5,7 +5,7 @@ C_FLAGS = -Wall -Wextra -Werror
 
 C_ROOT = data_functions debugage env_built_in env_struct_ft env_to_tab expander \
 		 ft_remove_quotes get_bin_path lexer lst_cmd lst_token main minisplit parser pipex \
-		 get_bin_path_relative env_struct_ft2
+		 get_bin_path_relative env_struct_ft2 sig_handler
 C_BUILTIN = cd echo env exit export export_empty pwd unset
 
 C_FILES = $(addsuffix .c, $(C_ROOT)) $(addsuffix .c, $(addprefix built_in/, $(C_BUILTIN)))
@@ -58,4 +58,4 @@ valgrind: ${NAME}
 env: ${NAME}
 	@env -i ./minishell
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re valgrind env
