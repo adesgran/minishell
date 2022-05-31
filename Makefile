@@ -51,4 +51,11 @@ fclean:
 
 re: fclean all
 
+valgrind: ${NAME}
+	@valgrind --suppressions=cmd_valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
+	@vim valgrind-out.txt
+
+env: ${NAME}
+	@env -i ./minishell
+
 .PHONY: all clean fclean re
