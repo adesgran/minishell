@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 18:23:20 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:33:17 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 t_data	*g_data;
 
-char	*add_error(char *old_msg, char *file_name, int type, int expanded)
+char	*add_error(char *old_msg, char *file_name, int type, t_token *token)
 {
 	char	*new_msg;
 	char	*type_msg;
 	
-	if (expanded && !ft_strlen(file_name))
-		type_msg =": ambiguous redirect\n";
+	if (token->expanded && !ft_strlen(file_name))
+	{
+		file_name = token->unexpanded;
+		type_msg = ": ambiguous redirect\n";
+	}
 	else if (type == 1 || (type == 2 && !ft_strlen(file_name)))
 		type_msg = ": No such file or directory\n";
 	else
@@ -58,7 +61,7 @@ static int	add_optioncmd(t_cmd *cmd, t_token *token)
 	return (0);
 }
 
-static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, int expanded)
+static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *token)
 {
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
 		return (0);
@@ -74,7 +77,7 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, int expan
 	cmd->fd_infile = open(file_name, O_RDONLY);
 	if (cmd->fd_infile == -1)
 	{
-		*error_msg = add_error(*error_msg, file_name, 1, expanded);
+		*error_msg = add_error(*error_msg, file_name, 1, token);
 		if (!*error_msg)
 			return (1);
 	}
@@ -121,7 +124,7 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, t_data *data, char **error_
 	wait(&res);
 	if (res == 256)
 		return (unlink(cmd->heredoc), 2);
-	return (getfd_infile(cmd, cmd->heredoc, error_msg, token->expanded), 0);
+	return (getfd_infile(cmd, cmd->heredoc, error_msg, token), 0);
 }
 
 static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
@@ -139,7 +142,7 @@ static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
 	cmd->fd_outfile = open(token->token, O_WRONLY | open_option | O_CREAT, 0644);
 	if (cmd->fd_outfile == -1)
 	{
-		*error_msg = add_error(*error_msg, token->token, 2, token->expanded);
+		*error_msg = add_error(*error_msg, token->token, 2, token);
 		if (!*error_msg)
 			return (1);
 	}
@@ -163,7 +166,7 @@ int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 			(!token->token[0] && !token->expanded)))
 			ret = add_optioncmd(new, token);
 		else if (token->type == LESS)
-			ret = getfd_infile(new, token->token, &error_msg, token->expanded);
+			ret = getfd_infile(new, token->token, &error_msg, token);
 		else if (token->type == HEREDOC)
 			ret = getfd_heredoc(new, token, data, &error_msg);
 		else if (token->type == GREAT || token->type == GREATGREAT)
