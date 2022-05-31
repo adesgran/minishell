@@ -15,6 +15,7 @@
 int	mini_exit(t_data *data, char **cmd, int infork)
 {
 	int	res;
+
 	if (!infork)
 	{
 		printf("exit\n");

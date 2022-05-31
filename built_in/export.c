@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/27 13:24:16 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:30:45 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*get_var_name(char *str)
 	return (ft_strndup(str, i));
 }
 
-static void set_env_value(t_data *data, char *str, char *varname)
+static void	set_env_value(t_data *data, char *str, char *varname)
 {
 	t_env	*env;
 	char	*var;
@@ -77,7 +77,7 @@ static int	mini_export_loop(t_data *data, char *str)
 	if (!str || !*str)
 		return (0);
 	varname = get_var_name(str);
-	if (!varname  || !*varname)
+	if (!varname || !*varname)
 		return (0);
 	i = ft_strlen(varname);
 	if (str[i] == '\0')
