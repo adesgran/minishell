@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 16:50:23 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:36:07 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,57 @@ static int	analyse_line(char *line, t_data *data)
 	return (ft_free_tabstr(line_tab), 0);
 }
 
-static char	*get_prompt(void)
+static char	*replace_begin(t_data *data, char *str)
+{
+	int		len;
+	char	*usrdir;
+	char	*res;
+	int		i;
+	int		j;
+
+	usrdir = get_var_env(data->env, "HOME")->value;
+	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
+	res = malloc(sizeof(len + 1));
+	if (!res)
+		return (str);
+	i = ft_strlen(usrdir);
+	j = 1;
+	res[0] = '~';
+	while (j < len && str[i])
+	{
+		res[j] = str[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	return (free(str), res);
+}
+
+static char	*get_prompt(t_data *data)
 {
 	char	*cwd;
 	char	*res;
+	int		i;
+	char	*home;
 
 	cwd = malloc(sizeof(char) * 201);
 	if (!getcwd(cwd, 200))
 		return (free(cwd), NULL);
-	res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	home = get_var_env(data->env, "HOME")->value;
+	i = 0;
+	while (cwd[i])
+	{
+		if (ft_strncmp(home, cwd + i, ft_strlen(home)) == 0)
+		{
+			cwd = replace_begin(data, cwd);
+			break ;
+		}
+		i++;
+	}
+	if (ft_atoi(data->last_cmd_status))
+		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	else
+		res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
 	free(cwd);
 	return (res);
 }
@@ -64,7 +106,7 @@ static int	loop_read(t_data *data)
 	{
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
-		prompt = get_prompt();
+		prompt = get_prompt(data);
 		if (!prompt)
 			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
 		if (!prompt)
