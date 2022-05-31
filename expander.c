@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/26 11:21:54 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/05/30 12:10:24 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 	var_name = ft_substr(str, *i, len);
 	if (!var_name)
 		return (NULL);
-	while (env && ft_strcmp(&var_name[1], env->var) != 0)
-		env = env->next;
+	env = get_var_env(env, &var_name[1]);
 	if (env)
 		str = replace_var_by_value(str, i, len, env->value);
 	else if (ft_strcmp(var_name, "$?") == 0)
