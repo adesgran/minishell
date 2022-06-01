@@ -40,51 +40,53 @@ static int	analyse_line(char *line, t_data *data)
 	return (ft_free_tabstr(line_tab), 0);
 }
 
-// static char	*replace_begin(t_data *data, char *str)
-// {
-// 	int		len;
-// 	char	*usrdir;
-// 	char	*res;
-// 	int		i;
-// 	int		j;
+static char	*replace_begin(t_data *data, char *str)
+{
+	int		len;
+ 	char	*usrdir;
+ 	char	*res;
+ 	int		i;
+ 	int		j;
 
-// 	usrdir = get_var_env(data->env, "HOME")->value;
-// 	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
-// 	res = malloc(sizeof(len + 1));
-// 	if (!res)
-// 		return (str);
-// 	i = ft_strlen(usrdir);
-// 	j = 1;
-// 	res[0] = '~';
-// 	while (j < len && str[i])
-// 	{
-// 		res[j] = str[i];
-// 		j++;
-// 		i++;
-// 	}
-// 	res[j] = '\0';
-// 	return (free(str), res);
-// }
+	usrdir = get_var_env(data->env, "HOME")->value;
+	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (str);
+	i = ft_strlen(usrdir);
+	j = 1;
+	res[0] = '~';
+	while (j < len && str[i])
+	{
+		res[j] = str[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	return (free(str), res);
+}
 
-// static char	*get_prompt(t_data *data)
-// {
-// 	char	*cwd;
-// 	char	*res;
-// 	char	*home;
+static char	*get_prompt(t_data *data)
+{
+	char	*cwd;
+	char	*res;
+	char	*home;
 
-// 	cwd = malloc(sizeof(char) * 201);
-// 	if (!getcwd(cwd, 200))
-// 		return (free(cwd), NULL);
-// 	home = get_var_env(data->env, "HOME")->value;
-// 	if (ft_strncmp(home, cwd, ft_strlen(home)) == 0)
-// 		cwd = replace_begin(data, cwd);
-// 	if (ft_atoi(data->last_cmd_status))
-// 		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
-// 	else
-// 		res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
-// 	free(cwd);
-// 	return (res);
-// }
+	cwd = malloc(sizeof(char), 201);
+	if (!getcwd(cwd, 200))
+		return (free(cwd), NULL);
+	if (!get_var_env(data->env, "HOME"))
+		return (ft_strdup(""));
+	home = get_var_env(data->env, "HOME")->value;
+	if (ft_strncmp(home, cwd, ft_strlen(home)) == 0)
+		cwd = replace_begin(data, cwd);
+	if (ft_atoi(data->last_cmd_status))
+		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	else
+		res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	free(cwd);
+	return (res);
+}
 
 static int	loop_read(t_data *data)
 {
@@ -97,11 +99,14 @@ static int	loop_read(t_data *data)
 	{
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
-		// prompt = get_prompt(data);
-		// if (!prompt)
+		prompt = get_prompt(data);
+		 if (!prompt)
 			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
 		if (!prompt)
+		{
+			printf("Prompt Malloc error\n");
 			return (1);
+		}
 		line = readline(prompt);
 		free(prompt);
 		if (!line)

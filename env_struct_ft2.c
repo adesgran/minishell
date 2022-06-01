@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 14:30:12 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:41:17 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 13:09:33 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,31 @@ t_env	*init_empty_env(void)
 		return (res);
 	}
 	res->next->next = NULL;
+	return (res);
+}
+
+t_env	*duplicate_env(t_env *env)
+{
+	t_env	*res;
+	t_env	*curr;
+
+	res = malloc(sizeof(env));
+	if (!res)
+		return (NULL);
+	curr = res;
+	while (env)
+	{
+		curr->var = ft_strdup(env->var);
+		curr->value = ft_strdup(env->value);
+		curr->next = NULL;
+		if (env->next)
+		{
+			curr->next = malloc(sizeof(t_env));
+			if (!curr->next)
+				return (res);
+			curr = curr->next;
+		}
+		env = env->next;
+	}
 	return (res);
 }

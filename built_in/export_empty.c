@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 19:15:32 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 14:56:54 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 13:05:03 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,23 @@ static t_env	*get_lower(t_env *env)
 	return (res);
 }
 
-void	export_empty(t_env *env)
+void	export_empty(t_env *env, int fd_out)
 {
 	t_env	*tmp;
+	t_env	*new;
 	int		size;
 
-	size = env_size(env);
+	new = duplicate_env(env);
+	size = env_size(new);
 	while (size)
 	{
-		tmp = get_lower(env);
-		printf("export %s=%s\n", tmp->var, tmp->value);
-		env = remove_var_env(env, tmp->var);
+		tmp = get_lower(new);
+		ft_putstr_fd("export ", fd_out);
+		ft_putstr_fd(tmp->var, fd_out);
+		ft_putstr_fd("=", fd_out);
+		ft_putstr_fd(tmp->value, fd_out);
+		ft_putchar_fd('\n', fd_out);
+		new = remove_var_env(new, tmp->var);
 		size--;
 	}
 }
