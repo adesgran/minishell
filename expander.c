@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 11:24:47 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 11:49:47 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,28 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 
 int	lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc)
 {
-	int	i;
-	int	expand;
-	int	ret;
-	
+	int		i;
+	bool	is_expandable;
+	int		ret;
+
 	i = 0;
-	expand = 1;
+	is_expandable = TRUE;
 	ret = 0;
 	while (token[0][i])
 	{
 		if (token[0][i] == '\\')
 			i++;
-		else if (!is_heredoc && token[0][i] == '\'' && expand == 1)
-			expand = 0;
-		else if (!is_heredoc && token[0][i] == '\'' && expand == 0)
-			expand = 1;
-		else if (token[0][i] == '$' && expand == 1)
+		else if (!is_heredoc && token[0][i] == '\'')
+			is_expandable = !is_expandable;
+		else if (token[0][i] == '$' && is_expandable == TRUE)
 		{
 			ret = 1;
 			token[0] = get_var_value(token[0], &i, env, last_cmd_status);
 			if (!token[0])
 				return (-1);
 		}
-		if (!token[0][i])
-			break ;
-		i++;
+		if (token[0][i])
+			i++;
 	}
 	return (ret);
 }

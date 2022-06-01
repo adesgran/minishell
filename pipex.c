@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 16:49:33 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 14:53:51 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == -1)
-		return (pid);
 	if (!pid)
 	{
 		dup2(cmd->fd_infile, STDIN_FILENO);
@@ -82,12 +80,10 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 			increment_shlvl(data);
 			execve(cmd->bin_path, cmd->cmd, env_to_tab(data->env));
 		}
-		close(cmd->fd_outfile);
-		close(cmd->fd_infile);
-		free_data(data);
-		exit(EXIT_SUCCESS);
+		return (close(cmd->fd_outfile), close(cmd->fd_infile), free_data(data),
+			exit(EXIT_SUCCESS), 0);
 	}
-	if (cmd->is_heredoc)
+	if (pid != -1 && cmd->is_heredoc)
 		unlink(cmd->heredoc);
 	return (pid);
 }
