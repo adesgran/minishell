@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-t_data	*g_data;
+t_garbage	gbg;
 
 char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token)
 {
@@ -91,7 +91,7 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *
 
 static int	getfd_heredoc(t_cmd *cmd, t_token *token, t_data *data, char **error_msg)
 {
-	int		fd;
+	// int		fd;
 	char	*line;
 	pid_t	pid;
 	int		res;
@@ -99,9 +99,9 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, t_data *data, char **error_
 	pid = fork();
 	if (!pid)
 	{
-		fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		g_data = data;
-		if (fd == -1)
+		gbg.fd_heredoc = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		gbg.data = data;
+		if (gbg.fd_heredoc == -1)
 			return (1);
 		cmd->is_heredoc = 2;
 		while (1)
@@ -117,12 +117,12 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, t_data *data, char **error_
 				break ;
 			if (lf_var(&line, data->env, data->last_cmd_status, 1) == -1)
 				exit(EXIT_FAILURE);
-			ft_putendl_fd(line, fd);
+			ft_putendl_fd(line, gbg.fd_heredoc);
 			free(line);
 			line = NULL;
 		}
 		free(line);
-		free_data(data);
+		free_garbage(0);
 		exit(0);
 	}
 	signal(SIGINT, SIG_IGN);
@@ -154,31 +154,30 @@ static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
 	return (0);
 }
 
-int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
+int	token_to_cmd(t_token *token, t_data *data, int i)
 {
-	t_cmd	*new;
 	int		ret;
 	char	*error_msg;
 	
 	ret = 0;
-	new = lstnew_cmd(i);
-	if (!new)
-		return (lstclear_cmd(cmd), 1);
+	gbg.new_cmd = lstnew_cmd(i);
+	if (!gbg.new_cmd)
+		return (1);
 	error_msg = NULL;
 	while (token)
 	{
 		if (token->type == WORD && (token->token[0] || \
 			(!token->token[0] && !token->expanded)))
-			ret = add_optioncmd(new, token);
+			ret = add_optioncmd(gbg.new_cmd, token);
 		else if (token->type == LESS)
-			ret = getfd_infile(new, token->token, &error_msg, token);
+			ret = getfd_infile(gbg.new_cmd, token->token, &error_msg, token);
 		else if (token->type == HEREDOC)
-			ret = getfd_heredoc(new, token, data, &error_msg);
+			ret = getfd_heredoc(gbg.new_cmd, token, data, &error_msg);
 		else if (token->type == GREAT || token->type == GREATGREAT)
-			ret = getfd_outfile(new, token, &error_msg);
+			ret = getfd_outfile(gbg.new_cmd, token, &error_msg);
 		if (ret)
-			return (lstclear_cmd(cmd), lstdelone_cmd(new), ret);
+			return (lstdelone_cmd(gbg.new_cmd), ret);
 		token = token->next;
 	}
-	return (ft_putstr_fd(error_msg, 2), free(error_msg), lstadd_back_cmd(cmd, new), 0);
+	return (ft_putstr_fd(error_msg, 2), free(error_msg), lstadd_back_cmd(&(data->cmd), gbg.new_cmd), 0);
 }

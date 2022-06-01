@@ -6,38 +6,59 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 15:31:35 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:41:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+extern t_garbage	gbg;
+
+void	free_garbage(int is_unlink)
+{
+	ft_free_tabstr(gbg.line_tab);
+	if (is_unlink)
+		lstdelone_cmd(gbg.new_cmd);
+	else
+	{
+		ft_free_tabstr(gbg.new_cmd->cmd);
+		free(gbg.new_cmd->bin_path);
+		if (gbg.new_cmd->fd_infile > 2)
+			close(gbg.new_cmd->fd_infile);
+		if (gbg.new_cmd->fd_outfile > 2)
+			close(gbg.new_cmd->fd_outfile);
+		free(gbg.new_cmd->heredoc);
+		free(gbg.new_cmd);		
+		close(gbg.fd_heredoc);
+	}
+	free_data(gbg.data);
+}
+
 static int	analyse_line(char *line, t_data *data)
 {
-	int		i;
-	char	**line_tab;
-	int		ret;
+	int			i;
+	int			ret;
 
 	ret = 1;
-	line_tab = split_pipes(ft_strtrim(line, " \t\n\r\v\f"), &ret);
+	gbg.line_tab = split_pipes(ft_strtrim(line, " \t\n\r\v\f"), &ret);
 	free(line);
-	if (!line_tab || ret == 2)
-		return (ft_free_tabstr(line_tab), ret);
+	if (!gbg.line_tab || ret == 2)
+		return (ft_free_tabstr(gbg.line_tab), ret);
 	i = 0;
-	while (line_tab[i])
+	while (gbg.line_tab[i])
 	{
 		data->token = NULL;
-		ret = lexer(line_tab[i], &data->token);
+		ret = lexer(gbg.line_tab[i], &data->token);
 		if (ret)
-			return (ft_free_tabstr(line_tab), ret);
+			return (ft_free_tabstr(gbg.line_tab), ret);
 		if (expander(data->token, data->env, data->last_cmd_status))
-			return (lstclear_token(&data->token), ft_free_tabstr(line_tab), 1);
-		if (token_to_cmd(data->token, &(data->cmd), data, i) == 1)
-			return (lstclear_token(&data->token), ft_free_tabstr(line_tab), 1);
+			return (/*lstclear_token(&data->token), */ft_free_tabstr(gbg.line_tab), 1);
+		if (token_to_cmd(data->token, data, i) == 1)
+			return (/*lstclear_token(&data->token), */ft_free_tabstr(gbg.line_tab), 1);
 		lstclear_token(&data->token);
 		i++;
 	}
-	return (ft_free_tabstr(line_tab), 0);
+	return (ft_free_tabstr(gbg.line_tab), 0);
 }
 
 static char	*replace_begin(t_data *data, char *str)

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:55:00 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 17:46:42 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:42:52 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-extern t_data	*g_data;
+extern t_garbage	gbg;
 
 void	get_sig_child(int sig)
 {
@@ -29,7 +29,7 @@ void	get_sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		free_data(g_data);
+		free_garbage(1);
 		printf("\n");
 		exit(1);
 	}
