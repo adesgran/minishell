@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 18:33:17 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 11:27:08 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,5 @@ int	token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i)
 			return (lstclear_cmd(cmd), lstdelone_cmd(new), ret);
 		token = token->next;
 	}
-	return (ft_putstr_fd(error_msg, 2), lstadd_back_cmd(cmd, new), 0);
+	return (ft_putstr_fd(error_msg, 2), free(error_msg), lstadd_back_cmd(cmd, new), 0);
 }
