@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:05:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 17:12:30 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:10:11 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ void	free_data(t_data *data)
 	lstclear_cmd(&(data->cmd));
 	free(data->last_cmd_status);
 	free(data);
+	close(0);
+	close(1);
+	close(2);
 }
 
 t_data	*init_data(char **env)

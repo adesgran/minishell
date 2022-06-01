@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 16:54:15 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:58:56 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ typedef struct s_garbage
 // main.c
 void	free_data(t_data *data);
 void	free_garbage(int is_unlink);
+
+// get_line.c
+char	*get_line(t_data *data);
 
 //debugage.c
 void	print_token(t_token *token);

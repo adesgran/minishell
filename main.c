@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 17:25:20 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:15:19 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_garbage(int is_unlink)
 		if (g_gbg.new_cmd->fd_outfile > 2)
 			close(g_gbg.new_cmd->fd_outfile);
 		free(g_gbg.new_cmd->heredoc);
-		free(g_gbg.new_cmd);		
+		free(g_gbg.new_cmd);
 		close(g_gbg.fd_heredoc);
 	}
 	free_data(g_gbg.data);
@@ -53,7 +53,7 @@ static int	analyse_line(char *line, t_data *data)
 			return (ft_free_tabstr(g_gbg.line_tab), ret);
 		if (expander(data->token, data->env, data->last_cmd_status))
 			return (ft_free_tabstr(g_gbg.line_tab), 1);
-		if (token_to_cmd(data->token, data, i))
+		if (token_to_cmd(data->token, data, i) == 1)
 			return (ft_free_tabstr(g_gbg.line_tab), 1);
 		lstclear_token(&data->token);
 		i++;
@@ -61,107 +61,49 @@ static int	analyse_line(char *line, t_data *data)
 	return (ft_free_tabstr(g_gbg.line_tab), 0);
 }
 
-static char	*replace_begin(t_data *data, char *str)
+static int	execution(t_data *data)
 {
-	int		len;
- 	char	*usrdir;
- 	char	*res;
- 	int		i;
- 	int		j;
+	int	ret;
 
-	usrdir = get_var_env(data->env, "HOME")->value;
-	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
-	res = malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (str);
-	i = ft_strlen(usrdir);
-	j = 1;
-	res[0] = '~';
-	while (j < len && str[i])
-	{
-		res[j] = str[i];
-		j++;
-		i++;
-	}
-	res[j] = '\0';
-	return (free(str), res);
-}
-
-static char	*get_prompt(t_data *data)
-{
-	char	*cwd;
-	char	*res;
-	char	*home;
-
-	cwd = malloc(sizeof(char) * 201);
-	if (!getcwd(cwd, 200))
-		return (free(cwd), NULL);
-	if (!get_var_env(data->env, "HOME"))
-		return (ft_strdup(""));
-	home = get_var_env(data->env, "HOME")->value;
-	if (ft_strncmp(home, cwd, ft_strlen(home)) == 0)
-		cwd = replace_begin(data, cwd);
-	if (ft_atoi(data->last_cmd_status))
-		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
+	if (get_bin_path(data->cmd, get_path(data)) == 1)
+		return (1);
+	if (is_env_built_in(data->cmd))
+		ret = env_built_in(data, data->cmd);
 	else
-		res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  cwd, "\x1B[0m$ ");
-	free(cwd);
-	return (res);
+		ret = pipex(data, data->cmd);
+	if (ret == -1)
+		return (1);
+	free(data->last_cmd_status);
+	data->last_cmd_status = ft_itoa(ret);
+	if (!data->last_cmd_status)
+		return (1);
+	return (0);
 }
 
-static int	loop_read(t_data *data)
+static void	loop_read(t_data *data)
 {
 	char	*line;
-	char	*prompt;
 	int		ret;
 
-	printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
 	while (1)
 	{
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
-		prompt = get_prompt(data);
-		 if (!prompt)
-			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
-		if (!prompt)
-		{
-			printf("Prompt Malloc error\n");
-			return (1);
-		}
-		line = readline(prompt);
-		free(prompt);
+		line = get_line(data);
 		if (!line)
-		{
-			if (!line)
-				printf("exit\n");
-			printf("\x1B[31mGood Bye!\x1B[0m\n");
-			return (rl_clear_history(), free(line), 0);
-		}
-		data->n_cmd++;
-		add_history(line);
+			return (rl_clear_history());
 		if (line[0])
 		{
 			ret = analyse_line(line, data);
 			if (ret == 1)
-				return (1);
+				return (rl_clear_history());
 			if (ret == 0)
-			{
-				if (get_bin_path(data->cmd, get_path(data)) == 1)
-					return (1);
-				if (is_env_built_in(data->cmd))
-					ret = env_built_in(data, data->cmd);
-				else
-					ret = pipex(data, data->cmd);
-				free(data->last_cmd_status);
-				data->last_cmd_status = ft_itoa(ret);
-				if (!data->last_cmd_status)
-					return (lstclear_cmd(&(data->cmd)), rl_clear_history(), 1);
-
-			}
+				if (execution(data) == 1)
+					return (rl_clear_history());
 			lstclear_cmd(&(data->cmd));
 		}
 	}
-	return (rl_clear_history(), 0);
+	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)
@@ -171,30 +113,24 @@ int	main(int ac, char **av, char **env)
 	int		res;
 
 	res = 0;
-	pid = fork();
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (1);
+	pid = fork();
 	if (!pid)
 	{
 		data = init_data(env);
 		if (!data)
 			return (1);
+		printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
 		loop_read(data);
 		free_data(data);
 		exit(1);
 	}
-	else
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(pid, &res, 0);
-		printf("\n");
-		close(0);
-		close(1);
-		close(2);
-		exit(res / 256);
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &res, 0);
+	printf("\n");
 	(void)ac;
 	(void)av;
-	return (0);
+	return (res / 256);
 }
