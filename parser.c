@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 12:11:16 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:13:36 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static int	add_optioncmd(t_cmd *cmd, t_token *token)
 
 static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *token)
 {
+	struct stat	buffer;
+
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
 		return (0);
 	if (cmd->is_heredoc == 1)
@@ -77,7 +79,10 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *
 	cmd->fd_infile = open(file_name, O_RDONLY);
 	if (cmd->fd_infile == -1)
 	{
-		*error_msg = error_buffer(*error_msg, file_name, 1, token);
+		if (!stat(file_name, &buffer))
+			*error_msg = error_buffer(*error_msg, file_name, 3, token);
+		else
+			*error_msg = error_buffer(*error_msg, file_name, 1, token);
 		if (!*error_msg)
 			return (1);
 	}
