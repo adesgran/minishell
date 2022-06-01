@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 12:06:26 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:06:58 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,8 @@ int	lexer(char *str, t_token **token)
 	{
 		if (!ft_ischarset(str[i], " \t\n\r\v\f"))
 		{
-			if (str[i] == '<')
-				new = new_file(str, &i, '<', &ret);
-			else if (str[i] == '>')
-				new = new_file(str, &i, '>', &ret);
+			if (str[i] == '<' || str[i] == '>')
+				new = new_file(str, &i, str[i], &ret);
 			else
 				new = new_word(str, &i, WORD, &ret);
 			if (!new)

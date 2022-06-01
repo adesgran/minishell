@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 15:17:13 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:37:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,17 @@ typedef struct s_data
 
 }	t_data;
 
+typedef struct s_garbage
+{
+	t_data	*data;
+	char	**line_tab;
+	t_cmd	*new_cmd;
+	int		fd_heredoc;
+}	t_garbage;
+
 // main.c
 void	free_data(t_data *data);
+void	free_garbage(int is_unlink);
 
 //debugage.c
 void	print_token(t_token *token);
@@ -149,7 +158,7 @@ void	lstdelone_token(t_token *lst);
 int		lexer(char *str, t_token **token);
 
 //parsing.c
-int		token_to_cmd(t_token *token, t_cmd **cmd, t_data *data, int i);
+int	token_to_cmd(t_token *token, t_data *data, int i);
 
 // minisplit.c
 char	**split_pipes(char *str, int *ret);
