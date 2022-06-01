@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 13:03:05 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:17:13 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,9 @@ int		mini_env(t_data *data);
 int		mini_pwd(t_data *data);
 int		mini_unset(t_data *data, char **strs);
 int		mini_cd(t_data *data, char **cmd);
-int		mini_export(t_data *data, char **cmd, int fd_out);
+int		mini_export(t_data *data, char **cmd);
 int		mini_exit(t_data *data, char **cmd, int infork);
-void	export_empty(t_env *env, int fd_out);
+void	export_empty(t_data *data);
 
 // utils
 char	*ft_remove_quotes(char *str);
@@ -129,7 +129,6 @@ t_env	*remove_var_env(t_env *env, char *var);
 void	push_back_env(t_env *env, char *var, char *value);
 t_env	*init_env(char **env);
 char	**env_to_tab(t_env *env);
-t_env	*duplicate_env(t_env *env);
 t_env	*init_empty_env(void);
 
 // lst_cmd.c

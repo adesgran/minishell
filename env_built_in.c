@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 13:05:36 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:11:06 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_env_built_in(t_cmd *cmd)
 		return (1);
 	if (!ft_strcmp(cmd->cmd[0], "unset"))
 		return (1);
-	if (!ft_strcmp(cmd->cmd[0], "export"))
+	if (!ft_strcmp(cmd->cmd[0], "export") && cmd->cmd[1])
 		return (1);
 	if (!ft_strcmp(cmd->cmd[0], "exit"))
 		return (1);
@@ -36,8 +36,8 @@ int	env_built_in(t_data *data, t_cmd *cmd)
 		res = mini_cd(data, cmd->cmd);
 	else if (!ft_strcmp(cmd->cmd[0], "unset"))
 		res = mini_unset(data, cmd->cmd);
-	else if (!ft_strcmp(cmd->cmd[0], "export"))
-		res = mini_export(data, cmd->cmd, cmd->fd_outfile);
+	else if (!ft_strcmp(cmd->cmd[0], "export") && cmd->cmd[1])
+		res = mini_export(data, cmd->cmd);
 	else if (!ft_strcmp(cmd->cmd[0], "exit"))
 		res = mini_exit(data, cmd->cmd, 0);
 	return (res);
@@ -56,7 +56,7 @@ void	call_built_in_fork(t_data *data, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
 		mini_unset(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		mini_export(data, cmd->cmd, cmd->fd_outfile);
+		mini_export(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
 		mini_cd(data, cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)

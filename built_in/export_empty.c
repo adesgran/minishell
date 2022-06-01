@@ -6,18 +6,11 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 19:15:32 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 13:05:03 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:16:59 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static int	env_size(t_env *env)
-{
-	if (env->next)
-		return (env_size(env->next) + 1);
-	return (1);
-}
 
 static t_env	*get_lower(t_env *env)
 {
@@ -38,23 +31,17 @@ static t_env	*get_lower(t_env *env)
 	return (res);
 }
 
-void	export_empty(t_env *env, int fd_out)
+void	export_empty(t_data *data)
 {
 	t_env	*tmp;
-	t_env	*new;
-	int		size;
+	t_env	*env;
 
-	new = duplicate_env(env);
-	size = env_size(new);
-	while (size)
+	env = data->env;
+	while (env)
 	{
-		tmp = get_lower(new);
-		ft_putstr_fd("export ", fd_out);
-		ft_putstr_fd(tmp->var, fd_out);
-		ft_putstr_fd("=", fd_out);
-		ft_putstr_fd(tmp->value, fd_out);
-		ft_putchar_fd('\n', fd_out);
-		new = remove_var_env(new, tmp->var);
-		size--;
+		tmp = get_lower(env);
+		printf("export %s=%s\n", tmp->var, tmp->value);
+		env = remove_var_env(env, tmp->var);
 	}
+	data->env = NULL;
 }
