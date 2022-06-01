@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 18:15:19 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:30:17 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ static int	analyse_line(char *line, t_data *data)
 			return (ft_free_tabstr(g_gbg.line_tab), ret);
 		if (expander(data->token, data->env, data->last_cmd_status))
 			return (ft_free_tabstr(g_gbg.line_tab), 1);
-		if (token_to_cmd(data->token, data, i) == 1)
-			return (ft_free_tabstr(g_gbg.line_tab), 1);
+		ret = token_to_cmd(data->token, data, i);
+		if (ret)
+			return (lstclear_token(&data->token),
+				ft_free_tabstr(g_gbg.line_tab), ret);
 		lstclear_token(&data->token);
 		i++;
 	}
@@ -132,5 +134,5 @@ int	main(int ac, char **av, char **env)
 	printf("\n");
 	(void)ac;
 	(void)av;
-	return (res / 256);
+	return (close(1), close(2), close(3), res / 256);
 }

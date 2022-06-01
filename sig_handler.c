@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:55:00 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 16:54:37 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:29:21 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	get_sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		free_garbage(1);
 		printf("\n");
+		close(g_gbg.fd_heredoc);
+		free_garbage(1);
 		exit(1);
 	}
 }
