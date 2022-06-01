@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 13:59:31 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 14:32:35 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char	*get_prompt(t_data *data)
 	char	*res;
 	char	*home;
 
-	cwd = ft_calloc(sizeof(char), 201);
+	cwd = malloc(sizeof(char), 201);
 	if (!getcwd(cwd, 200))
 		return (free(cwd), NULL);
 	if (!get_var_env(data->env, "HOME"))
