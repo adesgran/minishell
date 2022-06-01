@@ -94,6 +94,9 @@ typedef struct s_garbage
 void	free_data(t_data *data);
 void	free_garbage(int is_unlink);
 
+// get_line.c
+char	*get_line(t_data *data);
+
 //debugage.c
 void	print_token(t_token *token);
 void	print_cmd(t_cmd *cmd);
