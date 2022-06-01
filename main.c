@@ -53,7 +53,7 @@ static int	analyse_line(char *line, t_data *data)
 			return (ft_free_tabstr(g_gbg.line_tab), ret);
 		if (expander(data->token, data->env, data->last_cmd_status))
 			return (ft_free_tabstr(g_gbg.line_tab), 1);
-		if (token_to_cmd(data->token, data, i) == 1)
+		if (token_to_cmd(data->token, data, i))
 			return (ft_free_tabstr(g_gbg.line_tab), 1);
 		lstclear_token(&data->token);
 		i++;
