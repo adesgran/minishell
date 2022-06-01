@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:59:15 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 17:48:08 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:04:23 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	lstdelone_cmd(t_cmd *lst)
 	free(lst->bin_path);
 	if (lst->fd_infile > 2)
 		close(lst->fd_infile);
-	if (lst->is_heredoc)
+	if (lst->is_heredoc > 0)
 		unlink(lst->heredoc);
 	else if (lst->fd_outfile > 2)
 		close(lst->fd_outfile);

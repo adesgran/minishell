@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:18 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 18:37:00 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 11:51:39 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ void	lstdelone_token(t_token *lst)
 
 void	lstclear_token(t_token **lst)
 {
-	// t_token	*temp;
-
 	if (!lst)
 		return ;
 	if (!*lst)
@@ -70,9 +68,5 @@ void	lstclear_token(t_token **lst)
 	if (lst[0]->next)
 		lstclear_token(&lst[0]->next);
 	lstdelone_token(lst[0]);
-	// free(lst[0]->token);
-	// lst[0]->token = NULL;
-	// temp = lst[0];
 	lst[0] = NULL;
-	// free(temp);
 }
