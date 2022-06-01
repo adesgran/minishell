@@ -43,10 +43,10 @@ static int	analyse_line(char *line, t_data *data)
 static char	*replace_begin(t_data *data, char *str)
 {
 	int		len;
-	char	*usrdir;
-	char	*res;
-	int		i;
-	int		j;
+ 	char	*usrdir;
+ 	char	*res;
+ 	int		i;
+ 	int		j;
 
 	usrdir = get_var_env(data->env, "HOME")->value;
 	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
@@ -100,7 +100,7 @@ static int	loop_read(t_data *data)
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
 		prompt = get_prompt(data);
-		if (!prompt)
+		 if (!prompt)
 			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
 		if (!prompt)
 		{

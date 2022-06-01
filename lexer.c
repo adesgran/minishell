@@ -6,13 +6,24 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/05/31 11:33:39 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 12:06:26 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	len_token(char *str, int i)
+static void	syntax_error(char c, int *ret)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (c)
+		ft_putchar_fd(c, 2);
+	else
+		ft_putstr_fd("newline", 2);
+	ft_putstr_fd("'\n", 2);
+	*ret = 2;
+}
+
+static int	len_token(char *str, int i, int *ret)
 {
 	char	quote;
 
@@ -23,32 +34,26 @@ static int	len_token(char *str, int i)
 	{
 		quote = str[i++];
 		while (str[i] && str[i] != quote)
-		{
-			if (str[i] == '\\' && str[i + 1])
+			if (str[i++] == '\\' && str[i])
 				i++;
-			i++;
-		}
 		if (str[i++] != quote)
-			return (ft_putstr_fd("Error: open quote\n", 2), -1);
+			return (syntax_error('\0', ret), -1);
 	}
 	else
 	{
 		while (str[i] && !ft_ischarset(str[i], "<>\'\" \t\n\r\v\f|"))
-		{
-			if (str[i] == '\\' && str[i + 1])
+			if (str[i++] == '\\' && str[i])
 				i++;
-			i++;
-		}
 	}
-	return (len_token(str, i));
+	return (len_token(str, i, ret));
 }
 
-static t_token	*new_word(char *str, int *i, int type_word)
+static t_token	*new_word(char *str, int *i, int type_word, int *ret)
 {
 	int		len;
 	char	*new_str;
 
-	len = len_token(&str[*i], 0);
+	len = len_token(&str[*i], 0, ret);
 	if (len == -1)
 		return (NULL);
 	new_str = ft_substr(str, *i, len);
@@ -56,17 +61,6 @@ static t_token	*new_word(char *str, int *i, int type_word)
 		return (NULL);
 	*i += len - 1;
 	return (lstnew_token(new_str, type_word));
-}
-
-static void	error_chevron(char c, int *ret)
-{
-	ft_putstr_fd("syntax error near unexpected token `", 2);
-	if (c)
-		ft_putchar_fd(c, 2);
-	else
-		ft_putstr_fd("newline", 2);
-	ft_putstr_fd("'\n", 2);
-	*ret = 2;
 }
 
 static t_token	*new_file(char *str, int *i, char chevron, int *ret)
@@ -85,8 +79,8 @@ static t_token	*new_file(char *str, int *i, char chevron, int *ret)
 	while (ft_ischarset(str[*i], " \t\n\r\v\f"))
 		(*i)++;
 	if (!str[*i] || ft_ischarset(str[*i], "<>|"))
-		return (error_chevron(str[*i], ret), NULL);
-	len = len_token(&str[*i], 0);
+		return (syntax_error(str[*i], ret), NULL);
+	len = len_token(&str[*i], 0, ret);
 	if (len == -1)
 		return (NULL);
 	new_str = ft_substr(str, *i, len);
@@ -113,7 +107,7 @@ int	lexer(char *str, t_token **token)
 			else if (str[i] == '>')
 				new = new_file(str, &i, '>', &ret);
 			else
-				new = new_word(str, &i, WORD);
+				new = new_word(str, &i, WORD, &ret);
 			if (!new)
 				return (lstclear_token(token), ret);
 			lstadd_back_token(token, new);

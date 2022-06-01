@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 11:27:08 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 12:11:16 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_data	*g_data;
 
-char	*add_error(char *old_msg, char *file_name, int type, t_token *token)
+char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token)
 {
 	char	*new_msg;
 	char	*type_msg;
@@ -31,7 +31,7 @@ char	*add_error(char *old_msg, char *file_name, int type, t_token *token)
 	if (!old_msg)
 		new_msg = ft_strjoinx(3, "minishell: ", file_name, type_msg);
 	else
-		new_msg = ft_strjoinx(3, old_msg, file_name, type_msg);
+		new_msg = ft_strjoinx(4, old_msg, "minishell: ", file_name, type_msg);
 	return (free(old_msg), new_msg);
 }
 
@@ -77,7 +77,7 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *
 	cmd->fd_infile = open(file_name, O_RDONLY);
 	if (cmd->fd_infile == -1)
 	{
-		*error_msg = add_error(*error_msg, file_name, 1, token);
+		*error_msg = error_buffer(*error_msg, file_name, 1, token);
 		if (!*error_msg)
 			return (1);
 	}
@@ -142,7 +142,7 @@ static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
 	cmd->fd_outfile = open(token->token, O_WRONLY | open_option | O_CREAT, 0644);
 	if (cmd->fd_outfile == -1)
 	{
-		*error_msg = add_error(*error_msg, token->token, 2, token);
+		*error_msg = error_buffer(*error_msg, token->token, 2, token);
 		if (!*error_msg)
 			return (1);
 	}
