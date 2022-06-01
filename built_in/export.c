@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 13:06:18 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:16:31 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	mini_export_loop(t_data *data, char *str)
 	return (0);
 }
 
-int	mini_export(t_data *data, char **cmd, int fd_out)
+int	mini_export(t_data *data, char **cmd)
 {
 	int	res;
 
@@ -103,7 +103,7 @@ int	mini_export(t_data *data, char **cmd, int fd_out)
 		return (1);
 	cmd++;
 	if (!*cmd)
-		return (export_empty(data->env, fd_out), 0);
+		return (export_empty(data), 0);
 	while (*cmd)
 	{
 		res = mini_export_loop(data, *cmd);
