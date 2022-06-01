@@ -6,13 +6,13 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:55:00 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 16:42:52 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:54:37 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-extern t_garbage	gbg;
+extern t_garbage	g_gbg;
 
 void	get_sig_child(int sig)
 {
