@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_line.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
+/*   Updated: 2022/06/01 18:23:10 by adesgran         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static char	*replace_begin(t_data *data, char *str)
@@ -56,7 +68,7 @@ char	*get_line(t_data *data)
 {
 	char	*prompt;
 	char	*line;
-	
+
 	prompt = get_prompt(data);
 	if (!prompt)
 		return (NULL);
