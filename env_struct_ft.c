@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/30 12:05:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:17:23 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ t_env	*init_env(char **env)
 	char	**strs;
 	char	**new;
 
-	if (!env)
-		return (NULL);
-	if (!*env)
+	if (!env || !*env)
 		return (init_empty_env());
 	res = malloc(sizeof(t_env));
 	if (!res)
