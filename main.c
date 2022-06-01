@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 18:48:49 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/01 13:59:31 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*replace_begin(t_data *data, char *str)
 
 	usrdir = get_var_env(data->env, "HOME")->value;
 	len = ft_strlen(str) - ft_strlen(usrdir) + 1;
-	res = malloc(sizeof(len + 1));
+	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (str);
 	i = ft_strlen(usrdir);
@@ -72,9 +72,11 @@ static char	*get_prompt(t_data *data)
 	char	*res;
 	char	*home;
 
-	cwd = malloc(sizeof(char) * 201);
+	cwd = ft_calloc(sizeof(char), 201);
 	if (!getcwd(cwd, 200))
 		return (free(cwd), NULL);
+	if (!get_var_env(data->env, "HOME"))
+		return (ft_strdup(""));
 	home = get_var_env(data->env, "HOME")->value;
 	if (ft_strncmp(home, cwd, ft_strlen(home)) == 0)
 		cwd = replace_begin(data, cwd);
@@ -101,7 +103,10 @@ static int	loop_read(t_data *data)
 		if (!prompt)
 			prompt = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m",  get_var_env(data->env, "PWD")->value, "\x1B[0m$ ");
 		if (!prompt)
+		{
+			printf("Prompt Malloc error\n");
 			return (1);
+		}
 		line = readline(prompt);
 		free(prompt);
 		if (!line)
