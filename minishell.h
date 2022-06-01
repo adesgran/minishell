@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 16:54:15 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:39:33 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,5 +173,11 @@ int		expander(t_token *token, t_env *env, char *last_cmd_value);
 //sig_handler.c
 void	get_sig_heredoc(int sig);
 void	get_sig_child(int sig);
+
+//heredoc_child.c
+void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token);
+
+//error_buffer.c
+char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token);
 
 #endif
