@@ -6,34 +6,13 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 17:26:23 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:49:59 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 t_garbage	g_gbg;
-
-char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token)
-{
-	char	*new_msg;
-	char	*type_msg;
-	
-	if (token->expanded && !ft_strlen(file_name))
-	{
-		file_name = token->unexpanded;
-		type_msg = ": ambiguous redirect\n";
-	}
-	else if (type == 1 || (type == 2 && !ft_strlen(file_name)))
-		type_msg = ": No such file or directory\n";
-	else
-		type_msg = ": Persmission denied\n";
-	if (!old_msg)
-		new_msg = ft_strjoinx(3, "minishell: ", file_name, type_msg);
-	else
-		new_msg = ft_strjoinx(4, old_msg, "minishell: ", file_name, type_msg);
-	return (free(old_msg), new_msg);
-}
 
 static int	add_optioncmd(t_cmd *cmd, t_token *token)
 {
@@ -61,7 +40,8 @@ static int	add_optioncmd(t_cmd *cmd, t_token *token)
 	return (0);
 }
 
-static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *token)
+static int	getfd_infile(t_cmd *cmd, char *file_name, \
+		char **error_msg, t_token *token)
 {
 	struct stat	buffer;
 
@@ -89,42 +69,15 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, char **error_msg, t_token *
 	return (0);
 }
 
-static int	getfd_heredoc(t_cmd *cmd, t_token *token, t_data *data, char **error_msg)
+static int	getfd_heredoc(t_cmd *cmd, t_token *token, \
+		t_data *data, char **error_msg)
 {
-	// int		fd;
-	char	*line;
 	pid_t	pid;
 	int		res;
 
 	pid = fork();
 	if (!pid)
-	{
-		g_gbg.fd_heredoc = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		g_gbg.data = data;
-		if (g_gbg.fd_heredoc == -1)
-			return (1);
-		cmd->is_heredoc = 2;
-		while (1)
-		{
-			signal(SIGINT, get_sig_heredoc);
-			line = readline("> ");
-			if (!line)
-			{
-				printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", data->n_cmd, token->token);
-				break ;
-			}
-			if (ft_strcmp(line, token->token) == 0)
-				break ;
-			if (lf_var(&line, data->env, data->last_cmd_status, 1) == -1)
-				exit(EXIT_FAILURE);
-			ft_putendl_fd(line, g_gbg.fd_heredoc);
-			free(line);
-			line = NULL;
-		}
-		free(line);
-		free_garbage(0);
-		exit(0);
-	}
+		heredoc_child(data, cmd, token);
 	signal(SIGINT, SIG_IGN);
 	wait(&res);
 	if (res == 256)
@@ -144,7 +97,8 @@ static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
 		open_option = O_TRUNC;
 	else
 		open_option = O_APPEND;
-	cmd->fd_outfile = open(token->token, O_WRONLY | open_option | O_CREAT, 0644);
+	cmd->fd_outfile = open(token->token, \
+			O_WRONLY | open_option | O_CREAT, 0644);
 	if (cmd->fd_outfile == -1)
 	{
 		*error_msg = error_buffer(*error_msg, token->token, 2, token);
@@ -158,7 +112,7 @@ int	token_to_cmd(t_token *token, t_data *data, int i)
 {
 	int		ret;
 	char	*error_msg;
-	
+
 	ret = 0;
 	g_gbg.new_cmd = lstnew_cmd(i);
 	if (!g_gbg.new_cmd)
@@ -179,5 +133,6 @@ int	token_to_cmd(t_token *token, t_data *data, int i)
 			return (lstdelone_cmd(g_gbg.new_cmd), ret);
 		token = token->next;
 	}
-	return (ft_putstr_fd(error_msg, 2), free(error_msg), lstadd_back_cmd(&(data->cmd), g_gbg.new_cmd), 0);
+	return (ft_putstr_fd(error_msg, 2), free(error_msg), \
+			lstadd_back_cmd(&(data->cmd), g_gbg.new_cmd), 0);
 }
