@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:41:35 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 16:17:23 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:23:42 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ t_env	*remove_var_env(t_env *env, char *var)
 	t_env	*origin;
 
 	origin = env;
-	if (ft_strcmp(var, env->var) == 0)
+	if (ft_strcmp(var, env->var) == 0 && env)
 	{
 		origin = env->next;
-		return (free(env->var), free(env->value), free(env), origin);
+		if (env->value)
+			free(env->value);
+		return (free(env->var), free(env), origin);
 	}
 	while (env)
 	{
@@ -54,7 +56,9 @@ t_env	*remove_var_env(t_env *env, char *var)
 		{
 			temp = env->next;
 			env->next = temp->next;
-			return (free(temp->var), free(temp->value), free(temp), origin);
+			if (temp->value)
+				free(temp->value);
+			return (free(temp->var), free(temp), origin);
 		}
 		env = env->next;
 	}

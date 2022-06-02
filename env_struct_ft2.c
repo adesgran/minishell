@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 14:30:12 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 15:10:35 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:18:22 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ t_env	*init_empty_env(void)
 		return (res);
 	}
 	res->next->next = NULL;
+	push_back_env(res, "PWD", NULL);
+	push_back_env(res, "OLD_PWD", NULL);
 	return (res);
 }
