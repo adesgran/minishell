@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 14:10:56 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/25 14:23:58 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:46:33 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	mini_unset(t_data *data, char **strs)
 	strs++;
 	while (*strs)
 	{
-		data->env = remove_var_env(data->env, *strs);
+		if (ft_strcmp(*strs, "_"))
+			data->env = remove_var_env(data->env, *strs);
 		strs++;
 	}
 	return (0);
