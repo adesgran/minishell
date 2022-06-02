@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 11:58:38 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:02:35 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	mini_cd(t_data *data, char **cmd)
 	free(get_var_env(data->env, "OLDPWD")->value);
 	tmp = get_var_env(data->env, "PWD")->value;
 	get_var_env(data->env, "OLDPWD")->value = tmp;
-	get_var_env(data->env, "PWD")->value = malloc(sizeof(char) * 1000);
+	get_var_env(data->env, "PWD")->value = malloc(sizeof(char) * 1001);
 	getcwd(get_var_env(data->env, "PWD")->value, 1000);
 	return (0);
 }
