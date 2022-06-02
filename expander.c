@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 11:49:47 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 18:13:43 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 			token->expanded = lf_var(&(token->token), env, last_cmd_status, 0);
 		if (token->expanded == -1)
 			return (1);
-		str = ft_remove_quotes(token->token);
+		str = ft_remove_quotes(token);
 		if (!str)
 			return (1);
 		if (token->type != WORD || !str[0])

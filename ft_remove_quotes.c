@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/23 15:37:32 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 18:17:24 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	get_size_inquotes(char *str, int *i, int *res)
 	return (0);
 }
 
-static int	get_size(char *str)
+static int	get_size(char *str, t_token *token)
 {
 	int		i;
 	int		res;
@@ -45,7 +45,11 @@ static int	get_size(char *str)
 			res++;
 		}
 		else if (str[i] == '\"' || str[i] == '\'')
+		{
 			get_size_inquotes(str, &i, &res);
+			if (token->type == HEREDOC)
+				token->expanded = 1;
+		}
 		else
 		{
 			i++;
@@ -101,15 +105,15 @@ static void	fill_str(char *res, char *str)
 	*res = '\0';
 }
 
-char	*ft_remove_quotes(char *str)
+char	*ft_remove_quotes(t_token *token)
 {
 	int		size;
 	char	*res;
 
-	size = get_size(str);
+	size = get_size(token->token, token);
 	res = malloc(sizeof(char) * size + 1);
 	if (!res)
 		return (NULL);
-	fill_str(res, str);
+	fill_str(res, token->token);
 	return (res);
 }
