@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 15:16:31 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:45:08 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	mini_export_loop(t_data *data, char *str)
 	if (!str || !*str)
 		return (0);
 	varname = get_var_name(str);
-	if (!varname || !*varname)
+	if (!varname || !*varname || !ft_strcmp(varname, "_"))
 		return (0);
 	i = ft_strlen(varname);
 	if (str[i] == '\0')
