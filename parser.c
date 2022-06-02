@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:38:01 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 17:30:07 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, \
 
 	cmd->is_heredoc = 2;
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (!pid)
 		heredoc_child(data, cmd, token);
 	signal(SIGINT, SIG_IGN);
