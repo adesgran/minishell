@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:11:05 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:29:55 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,16 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, \
 		heredoc_child(data, cmd, token);
 	signal(SIGINT, SIG_IGN);
 	wait(&res);
-	if (res == 256)
+	res = res / 256;
+	printf("%d\n", res);
+	if (res == 1)
 		return (unlink(cmd->heredoc), 2);
+	if (res == 130)
+	{
+		free(data->last_cmd_status);
+		data->last_cmd_status = ft_strdup("130");
+		return (unlink(cmd->heredoc), 2);
+	}
 	return (getfd_infile(cmd, cmd->heredoc, error_msg, token), 0);
 }
 
