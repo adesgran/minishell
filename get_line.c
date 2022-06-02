@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 18:23:10 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:02:18 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,13 @@ static char	*get_prompt(t_data *data)
 {
 	char	*cwd;
 	char	*res;
-	char	*home;
+	t_env	*home;
 
-	cwd = malloc(sizeof(char) * 201);
-	if (!getcwd(cwd, 200))
+	cwd = malloc(sizeof(char) * 1001);
+	if (!getcwd(cwd, 1000))
 		return (free(cwd), NULL);
-	if (!get_var_env(data->env, "HOME"))
-		return (ft_strdup(""));
-	home = get_var_env(data->env, "HOME")->value;
-	if (ft_strncmp(home, cwd, ft_strlen(home)) == 0)
+	home = get_var_env(data->env, "HOME");
+	if (home && ft_strncmp(home->value, cwd, ft_strlen(home->value)) == 0)
 		cwd = replace_begin(data, cwd);
 	if (ft_atoi(data->last_cmd_status))
 		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m", cwd,
