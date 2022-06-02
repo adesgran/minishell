@@ -6,11 +6,12 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 12:18:55 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 13:19:07 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
 static char	*get_home(t_data *data, char *str)
 {
 	t_env	*home;
@@ -32,7 +33,7 @@ static void	update_env(t_data *data)
 	old_pwd = get_var_env(data->env, "OLD_PWD");
 	pwd = get_var_env(data->env, "PWD");
 	if (!old_pwd && pwd)
-		push_back_env(data->env, "OLD_PWD", pwd->value);
+		push_back_env(data->env, ft_strdup("OLD_PWD"), pwd->value);
 	else if (old_pwd)
 	{
 		if (old_pwd->value)
@@ -49,7 +50,7 @@ static void	update_env(t_data *data)
 	if (!pwd->value)
 		free(buff);
 }
-			
+
 int	mini_cd(t_data *data, char **cmd)
 {
 	char	*tmp;

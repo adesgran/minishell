@@ -43,9 +43,9 @@ clean:
 
 fclean:
 	@make --no-print-directory fclean -C libft/
-	@echo "\n\033[0;31mRemoving binaries..."
+	@echo "\n\033[0;31mCleaning Minishell binaries..."
 	@rm -f $(O_FILES)
-	@echo "\n\033[0;31mDeleting executable..."
+	@echo "\n\033[0;31mCleaning Minishell executable..."
 	@rm -f $(NAME)
 	@echo "\033[0m"
 
