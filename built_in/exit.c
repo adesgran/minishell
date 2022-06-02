@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 17:25:07 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 17:54:26 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ static int	check_max(char *str)
 	return (1);
 }
 
-
 static int	check_input(char *str)
 {
-
 	char	*str_init;
 
 	str_init = str;
