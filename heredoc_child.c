@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_child.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:30:02 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 14:56:53 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:10:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token)
 	g_gbg.data = data;
 	if (g_gbg.fd_heredoc == -1)
 		exit(1);
-	cmd->is_heredoc = 2;
 	while (1)
 	{
 		signal(SIGINT, get_sig_heredoc);
