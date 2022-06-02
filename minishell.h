@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 17:39:33 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 18:14:10 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,6 @@ int		mini_export(t_data *data, char **cmd);
 int		mini_exit(t_data *data, char **cmd, int infork);
 void	export_empty(t_data *data);
 
-// utils
-char	*ft_remove_quotes(char *str);
-
 // env_struct_ft.c
 void	free_env(t_env *env);
 t_env	*get_var_env(t_env *env, char *var);
@@ -167,7 +164,7 @@ int		token_to_cmd(t_token *token, t_data *data, int i);
 char	**split_pipes(char *str, int *ret);
 
 // ft_remove_quotes.c
-char	*ft_remove_quotes(char *str);
+char	*ft_remove_quotes(t_token *token);
 
 // ft_expander.c
 int		lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc);
