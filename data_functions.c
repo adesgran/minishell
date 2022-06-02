@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:05:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 18:10:11 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 13:36:15 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ t_data	*init_data(char **env)
 	data->last_cmd_status = ft_itoa(0);
 	if (!data->last_cmd_status)
 		return (free_env(data->env), free(data), NULL);
-	increment_shlvl(data);
 	return (data);
 }
