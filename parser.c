@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:29:55 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:38:01 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static int	getfd_heredoc(t_cmd *cmd, t_token *token, \
 	signal(SIGINT, SIG_IGN);
 	wait(&res);
 	res = res / 256;
-	printf("%d\n", res);
 	if (res == 1)
 		return (unlink(cmd->heredoc), 2);
 	if (res == 130)
