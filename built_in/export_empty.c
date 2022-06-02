@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 19:15:32 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 15:16:59 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 16:48:43 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	export_empty(t_data *data)
 	while (env)
 	{
 		tmp = get_lower(env);
-		printf("export %s=%s\n", tmp->var, tmp->value);
+		printf("export %s=\"%s\"\n", tmp->var, tmp->value);
 		env = remove_var_env(env, tmp->var);
 	}
 	data->env = NULL;

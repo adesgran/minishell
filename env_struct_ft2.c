@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 14:30:12 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 13:36:50 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 17:26:47 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ t_env	*init_empty_env(void)
 		return (res);
 	}
 	res->next->next = NULL;
-	push_back_env(res, ft_strdup("_"), ft_strdup("/usr/bin/env"));
+	push_back_env(res, ft_strdup("_"), ft_strdup("./minishell"));
 	return (res);
 }
