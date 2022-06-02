@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:11:54 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:47:49 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	pipex(t_data *data, t_cmd *cmd)
 		}
 		else if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
 			ret = 1;
-		else if (!cmd->bin_path && !cmd->is_heredoc)
+		else if (!cmd->bin_path && !cmd->is_heredoc && cmd->cmd)
 			ret = 127;
 		cmd = cmd->next;
 	}
