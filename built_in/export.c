@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 15:45:08 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 16:52:52 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ static char	*get_var_name(char *str)
 	int		i;
 
 	i = 0;
+	if (!ft_isalpha(*str))
+	{
+		printf("minishell: export: `%s\': not a valid identifier\n", str);
+		return (NULL);
+	}
 	while ((ft_isalnum(str[i]) || str[i] == '_') && str[i])
 		i++;
 	if (!str[i])
