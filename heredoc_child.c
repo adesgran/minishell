@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:30:02 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 17:47:34 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 14:56:53 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document at line %d delimited by \
-					end-of-file (wanted `%s')\n", data->n_cmd, token->token);
+			printf("minishell: warning: here-document at line %d", data->n_cmd);
+			printf(" delimited by end-of-file (wanted `%s')\n", token->token);
 			break ;
 		}
 		if (ft_strcmp(line, token->token) == 0)
