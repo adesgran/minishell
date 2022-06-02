@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 17:49:25 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 14:46:59 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	**split_pipes(char *str, int *ret)
 
 	cpy = str;
 	size = static_count_str(str);
-	if (!size || !str)
+	if (!str)
 		return (free(cpy), NULL);
 	res = malloc(sizeof(char *) * (size + 1));
 	i = 0;
