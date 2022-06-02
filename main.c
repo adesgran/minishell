@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 14:49:21 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/02 17:31:13 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static void	loop_read(t_data *data)
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
 		line = get_line(data);
+		signal(SIGINT, SIG_IGN);
 		if (!line)
 			return (rl_clear_history());
 		if (line[0])
