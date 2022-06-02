@@ -6,11 +6,22 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 15:24:42 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 11:58:38 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+static char	*get_home(t_data *data, char *str)
+{
+	t_env	*home;
+
+	home = get_var_env(data->env, "HOME");
+	if (!home)
+		return (printf("minishell: cd: HOME not set\n"), NULL);
+	if (!str)
+		return (ft_strdup(home->value));
+	return (ft_strjoin(home->value, str));
+}
 
 int	mini_cd(t_data *data, char **cmd)
 {
@@ -20,9 +31,9 @@ int	mini_cd(t_data *data, char **cmd)
 	if (cmd[0] && cmd[1] && cmd[2])
 		return (printf("minishell: cd: too many arguments"), 1);
 	if (!cmd[1])
-		tmp = ft_strdup(get_var_env(data->env, "HOME")->value);
+		tmp = get_home(data, NULL);
 	else if (cmd[1][0] == '~')
-		tmp = ft_strjoin(get_var_env(data->env, "HOME")->value, cmd[1] + 1);
+		tmp = get_home(data, cmd[1] + 1);
 	else
 		tmp = ft_strdup(cmd[1]);
 	if (!tmp)
