@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 14:30:12 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 13:13:04 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 13:36:50 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_env	*init_empty_env(void)
 	if (!res->next)
 		return (res);
 	res->next->var = ft_strdup("SHLVL");
-	res->next->value = ft_strdup("0");
+	res->next->value = ft_strdup("1");
 	if (!res->next->var || !res->next->value)
 	{
 		res->next = free_temp_env(res->next);
