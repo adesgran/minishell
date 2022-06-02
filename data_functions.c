@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:05:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 13:57:11 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 14:40:18 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_data	*init_data(char **env)
 		exit(EXIT_FAILURE);
 	data->cmd = NULL;
 	data->env = init_env(env);
-	if (!get_env_var(data->env, "SHLVL"))
+	if (!get_var_env(data->env, "SHLVL"))
 		push_back_env(data->env, ft_strdup("SHLVL"), ft_strdup("1"));
 	data->token = NULL;
 	if (!data->env)
