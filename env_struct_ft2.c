@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 14:30:12 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 12:18:22 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 13:13:04 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_env	*init_empty_env(void)
 	if (!res)
 		return (NULL);
 	res->var = ft_strdup("PWD");
-	res->value = malloc(sizeof(char) * 201);
-	getcwd(res->value, 200);
+	res->value = malloc(sizeof(char) * 1001);
+	getcwd(res->value, 1000);
 	if (!res->var || !res->value)
 		return (free_temp_env(res));
 	res->next = malloc(sizeof(*res));
@@ -45,7 +45,6 @@ t_env	*init_empty_env(void)
 		return (res);
 	}
 	res->next->next = NULL;
-	push_back_env(res, "PWD", NULL);
-	push_back_env(res, "OLD_PWD", NULL);
+	push_back_env(res, ft_strdup("_"), ft_strdup("/usr/bin/env"));
 	return (res);
 }
