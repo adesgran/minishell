@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 11:46:50 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/02 11:59:29 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static char	*get_prompt(t_data *data)
 	home = get_var_env(data->env, "HOME");
 	if (home && ft_strncmp(home->value, cwd, ft_strlen(home->value)) == 0)
 		cwd = replace_begin(data, cwd);
-	printf("\ncwd=%s\n", cwd);
 	if (ft_atoi(data->last_cmd_status))
 		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m", cwd,
 				"\x1B[0m$ ");
