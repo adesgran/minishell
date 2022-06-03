@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 11:49:41 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:20:16 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,28 +84,24 @@ int	lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc)
 	return (ret);
 }
 
-int	replace_token(t_token **token, char *str, int is_option)
+int	replace_token(t_token **token, int is_option)
 {
 	char	**tab_str;
 	int		i;
 	t_token	*new;
 
-	tab_str = ft_split(str, ' ');
-	free(str);
+	tab_str = ft_split((*token)->token, ' ');
 	if (!tab_str)
 		return (1);
+	free((*token)->token);
 	if (is_option)
 	{
-		char *test = ft_tabjoin(tab_str, " ");
-		ft_free_tabstr(tab_str);
-		free((*token)->token);
-		(*token)->token = test;
-		return (0);
+		(*token)->token = ft_tabjoin(tab_str, " ");
+		return (ft_free_tabstr(tab_str), 0);
 	}
-	i = 0;
-	free((*token)->token);
-	(*token)->token = tab_str[i++];
-	while (tab_str[i])
+	i = -1;
+	(*token)->token = tab_str[++i];
+	while (tab_str[++i])
 	{
 		new = lstnew_token(tab_str[i], WORD);
 		if (!new)
@@ -113,21 +109,18 @@ int	replace_token(t_token **token, char *str, int is_option)
 		new->next = (*token)->next;
 		(*token)->next = new;
 		*token = (*token)->next;
-		i++;
 	}
 	return (free(tab_str), 0);
 }
 
 int	expander(t_token *token, t_env *env, char *last_cmd_status)
 {
-	char	*str;
 	int		is_option;
 	int		is_expanded_quote;
-	
+
 	is_option = 0;
 	while (token)
 	{
-		is_expanded_quote = 0;
 		token->unexpanded = ft_strdup(token->token);
 		if (!token->unexpanded)
 			return (1);
@@ -135,16 +128,12 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 			token->expanded = lf_var(&(token->token), env, last_cmd_status, 0);
 		if (token->expanded == -1)
 			return (1);
-		str = ft_remove_quotes(token, &is_expanded_quote);
-		if (!str)
+		is_expanded_quote = ft_remove_quotes(token);
+		if (is_expanded_quote == -1)
 			return (1);
-		if (token->type != WORD || !str[0] || is_expanded_quote)
-		{
-			free(token->token);
-			token->token = str;
-		}
-		else if (replace_token(&token, str, is_option) == 1)
-			return (1);
+		if (token->type == WORD && token->token[0] && !is_expanded_quote)
+			if (replace_token(&token, is_option) == 1)
+				return (1);
 		if (token->type == WORD && is_option == 0)
 			is_option = 1;
 		token = token->next;
