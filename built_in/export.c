@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 18:21:42 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:37:04 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 	char	*temp;
 
 	var = ft_strdup(str + ft_strlen(varname) + 2);
+	printf("var=%s\n", var);
 	if (!var)
 		return ;
 	env = get_var_env(data->env, varname);
@@ -66,6 +67,7 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 			env->value = ft_strjoin(temp, var);
 			free(var);
 			free(temp);
+			free(varname);
 		}
 		else
 			env->value = var;
