@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:47:49 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:38:21 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	pipex(t_data *data, t_cmd *cmd)
 	int		ret;
 
 	if (set_pipefd(cmd, data))
-		return (-1);
+		return (0);
 	i = 0;
 	ret = 0;
 	while (cmd)

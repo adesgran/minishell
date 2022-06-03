@@ -6,21 +6,21 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 12:20:44 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:27:54 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define COLOR_DEFAULT "\x1B[0m"
-# define COLOR_RED "\x1B[31m"
-# define COLOR_GRN "\x1B[32m"
-# define COLOR_YEL "\x1B[33m"
-# define COLOR_BLU "\x1B[34m"
-# define COLOR_MAG "\x1B[35m"
-# define COLOR_CYN "\x1B[36m"
-# define COLOR_WHT "\x1B[37m"
+# define COL_DEFAULT "\x1B[0m"
+# define COL_RED "\x1B[31m"
+# define COL_GRN "\x1B[32m"
+# define COL_YEL "\x1B[33m"
+# define COL_BLU "\x1B[34m"
+# define COL_MAG "\x1B[35m"
+# define COL_CYN "\x1B[36m"
+# define COL_WHT "\x1B[37m"
 # define BOLD "\033[1m"
 
 # define WORD 0

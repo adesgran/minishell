@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 17:31:13 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:29:05 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	main(int ac, char **av, char **env)
 		data = init_data(env);
 		if (!data)
 			return (1);
-		printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
+		printf("%sWelcome to Minishell!%s\n", COL_GRN, COL_DEFAULT);
 		loop_read(data);
 		free_data(data);
 		exit(1);
