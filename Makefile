@@ -26,29 +26,27 @@ INCLUDES = -I ${LIBFT_DIR} -I . -I lst_token -I lst_cmd
 all: ${NAME}
 
 %.o: %.c
-	@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
+	@printf "\033[0;33mGenerating minishell objects... %-33.33s\r\033[0m" $@
 	@${CC} ${C_FLAGS} ${INCLUDES} -c $< -o $@
 
 ${NAME}: $(O_FILES)
 	@echo "\n"
 	@if [ ! -d "./libft" ]; then git clone ${LIBFT_REPO} libft; fi
 	@make --no-print-directory -C libft 
-	@echo "\n\033[0;34mCompiling minshell..."
+	@echo "\n\033[0;34mCompiling minshell...\033[0m"
 	@${CC} ${O_FILES} ${LIBFT_INC} ${LIBS_FLAGS} -o ${NAME}
 
 clean:
 	@make --no-print-directory clean -C libft/ 
-	@echo "\nRemoving binaries..."
+	@echo "\n\033[0;31mRemoving binaries...\033[0m"
 	@rm -f $(O_FILES)
-	@echo "\033[0m"
 
 fclean:
 	@make --no-print-directory fclean -C libft/
-	@echo "\n\033[0;31mCleaning Minishell binaries..."
+	@echo "\n\033[0;31mCleaning Minishell binaries...\033[0m"
 	@rm -f $(O_FILES)
-	@echo "\n\033[0;31mCleaning Minishell executable..."
+	@echo "\n\033[0;31mCleaning Minishell executable...\033[0m"
 	@rm -f $(NAME)
-	@echo "\033[0m"
 
 re: fclean all
 
