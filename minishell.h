@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 18:14:10 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 11:47:29 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int		token_to_cmd(t_token *token, t_data *data, int i);
 char	**split_pipes(char *str, int *ret);
 
 // ft_remove_quotes.c
-char	*ft_remove_quotes(t_token *token);
+char	*ft_remove_quotes(t_token *token, int *is_expanded_quote);
 
 // ft_expander.c
 int		lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc);
@@ -179,5 +179,7 @@ void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token);
 
 //error_buffer.c
 char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token);
+
+char	*ft_tabjoin(char **strs, char *sep);
 
 #endif
