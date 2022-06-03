@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 18:29:03 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 18:43:00 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:21:02 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ft_tabjoin(char **strs, char *sep)
 	int		l;
 	int		len;
 	int		size;
-	
+
 	size = ft_tablen(strs);
 	if (!size)
 		return (NULL);

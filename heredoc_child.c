@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:30:02 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 18:16:17 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:20:37 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token)
 		}
 		if (ft_strcmp(line, token->token) == 0)
 			break ;
-		if (!token->expanded && lf_var(&line, data->env, data->last_cmd_status, 1) == -1)
+		if (!token->expanded
+			&& lf_var(&line, data->env, data->last_cmd_status, 1) == -1)
 			exit(EXIT_FAILURE);
 		ft_putendl_fd(line, g_gbg.fd_heredoc);
 		line = (free(line), NULL);

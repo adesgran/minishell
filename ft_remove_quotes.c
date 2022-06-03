@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:10:10 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 11:47:55 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:20:54 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,18 +105,21 @@ static void	fill_str(char *res, char *str)
 	*res = '\0';
 }
 
-char	*ft_remove_quotes(t_token *token, int *is_expanded_quote)
+int	ft_remove_quotes(t_token *token)
 {
-	size_t		size;
+	size_t	size;
 	char	*res;
+	int		is_expanded_quote;
 
+	is_expanded_quote = 0;
 	size = get_size(token->token, token);
 	if (size != ft_strlen(token->token))
-		*is_expanded_quote = 1;
-	// printf("strlen = %ld / size = %d\n", ft_strlen(token->token), size);
+		is_expanded_quote = 1;
 	res = malloc(sizeof(char) * size + 1);
 	if (!res)
-		return (NULL);
+		return (-1);
 	fill_str(res, token->token);
-	return (res);
+	free(token->token);
+	token->token = res;
+	return (is_expanded_quote);
 }
