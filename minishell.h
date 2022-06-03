@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 16:47:47 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 21:09:44 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	free_garbage(int is_unlink);
 
 // get_line.c
 char	*get_line(t_data *data);
+char	*get_prompt(t_data *data);
 
 //debugage.c
 void	print_token(t_token *token);

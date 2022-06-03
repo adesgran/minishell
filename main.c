@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 21:02:43 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 21:04:40 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ static void	loop_read(t_data *data)
 
 	while (1)
 	{
+		g_gbg.data = data;
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
 		line = get_line(data);

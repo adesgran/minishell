@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 16:57:06 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 21:09:35 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*replace_begin(t_data *data, char *str)
 	return (free(str), res);
 }
 
-static char	*get_prompt(t_data *data)
+char	*get_prompt(t_data *data)
 {
 	char	*cwd;
 	char	*res;
