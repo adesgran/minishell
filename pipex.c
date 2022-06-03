@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 16:38:21 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 20:39:40 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 {
 	pid_t	pid;
 
-	pid = fork();
+	pid = (signal(SIGINT, SIG_DFL), fork());
 	if (!pid)
 	{
 		dup2(cmd->fd_infile, STDIN_FILENO);
@@ -98,6 +98,11 @@ int	wait_child(pid_t pid, int i, int ret)
 	if (i == 0)
 	{
 		waitpid(pid, &status, 0);
+		if (status == 2)
+		{
+			printf("\n");
+			return (130);
+		}
 		if (WIFEXITED(status))
 			ret = WEXITSTATUS(status);
 	}
