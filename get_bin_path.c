@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 17:31:31 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 18:25:09 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:51:09 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	**get_path(t_data *data)
 		if (res == NULL)
 			return (NULL);
 		*res = NULL;
+		if (data->in_env == 0)
+			*res = ft_strdup("/bin");
 		return (res);
 	}
 	res = ft_split(path, ':');

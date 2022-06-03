@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:05:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 17:55:44 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:54:54 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,17 @@ t_data	*init_data(char **env)
 	if (!data)
 		exit(EXIT_FAILURE);
 	data->cmd = NULL;
+	data->in_env = 1;
 	data->env = init_env(env);
+	if (!get_var_env(data->env, "PATH"))
+		data->in_env = 0;
 	if (!get_var_env(data->env, "SHLVL"))
 		push_back_env(data->env, ft_strdup("SHLVL"), ft_strdup("1"));
 	if (ft_atoi(get_var_env(data->env, "SHLVL")->value) > 999)
 		error_shlvl(data);
 	data->token = NULL;
 	if (!data->env)
-	{
-		free(data);
-		exit(EXIT_FAILURE);
-	}
+		return (free(data), exit(EXIT_FAILURE), NULL);
 	data->envp = env;
 	data->n_cmd = 0;
 	data->last_cmd_status = ft_itoa(0);

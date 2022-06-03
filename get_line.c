@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 16:34:37 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:57:06 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*get_prompt(t_data *data)
 				COL_DEFAULT, "$ ");
 	free(cwd);
 	if (!res)
-		res = ft_strjoinx(5, COL_RED, BOLD, "minishell$> ",	COL_DEFAULT, "$ ");
+		res = ft_strjoinx(5, COL_RED, BOLD, "minishell$> ", COL_DEFAULT, "$ ");
 	return (res);
 }
 

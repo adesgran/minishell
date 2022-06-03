@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 16:27:54 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:47:47 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_data
 	int		n_cmd;
 	char	*last_cmd_status;
 	t_token	*token;
-
+	int		in_env;
 }	t_data;
 
 typedef struct s_garbage
