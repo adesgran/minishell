@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 20:48:36 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/03 20:56:56 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 
 	pid = fork();
-	if (!pid && pid > 0)
+	if (!pid)
 	{
 		signal(SIGINT, SIG_DFL);
 		dup2(cmd->fd_infile, STDIN_FILENO);
