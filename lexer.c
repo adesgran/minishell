@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 16:06:58 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:48:28 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static t_token	*new_file(char *str, int *i, char chevron, int *ret)
 	return (lstnew_token(new_str, type));
 }
 
-int	lexer(char *str, t_token **token)
+int	lexer(t_data *data, char *str, t_token **token, int num)
 {
 	int		i;
 	int		ret;
@@ -109,6 +109,15 @@ int	lexer(char *str, t_token **token)
 			if (!new)
 				return (lstclear_token(token), ret);
 			lstadd_back_token(token, new);
+			if (new->type == HEREDOC)
+			{
+				new->expanded = ft_remove_quotes(new);
+				if (new->expanded == -1)
+					return (lstclear_token(token), ret);
+				ret = getfd_heredoc(data, new, num);
+				if (ret)
+					return (lstclear_token(token), ret);
+			}
 		}
 		i++;
 	}

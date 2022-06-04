@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 12:20:16 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 19:02:43 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,21 +121,23 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 	is_option = 0;
 	while (token)
 	{
-		token->unexpanded = ft_strdup(token->token);
-		if (!token->unexpanded)
-			return (1);
 		if (token->type != HEREDOC)
-			token->expanded = lf_var(&(token->token), env, last_cmd_status, 0);
-		if (token->expanded == -1)
-			return (1);
-		is_expanded_quote = ft_remove_quotes(token);
-		if (is_expanded_quote == -1)
-			return (1);
-		if (token->type == WORD && token->token[0] && !is_expanded_quote)
-			if (replace_token(&token, is_option) == 1)
+		{
+			token->unexpanded = ft_strdup(token->token);
+			if (!token->unexpanded)
 				return (1);
-		if (token->type == WORD && is_option == 0)
-			is_option = 1;
+			token->expanded = lf_var(&(token->token), env, last_cmd_status, 0);
+			if (token->expanded == -1)
+				return (1);
+			is_expanded_quote = ft_remove_quotes(token);
+			if (is_expanded_quote == -1)
+				return (1);
+			if (token->type == WORD && token->token[0] && !is_expanded_quote)
+				if (replace_token(&token, is_option) == 1)
+					return (1);
+			if (token->type == WORD && is_option == 0)
+				is_option = 1;
+		}
 		token = token->next;
 	}
 	return (0);

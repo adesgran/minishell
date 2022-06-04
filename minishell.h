@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 12:20:44 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:59:42 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 typedef struct s_token
 {
 	char			*token;
-	int				expanded;
 	int				type;
+	int				expanded;
 	char			*unexpanded;
 	struct s_token	*next;
 }	t_token;
@@ -86,13 +86,14 @@ typedef struct s_garbage
 {
 	t_data	*data;
 	char	**line_tab;
-	t_cmd	*new_cmd;
+	t_token	**tab_token;
+	char	*heredoc_name;
 	int		fd_heredoc;
 }	t_garbage;
 
 // main.c
 void	free_data(t_data *data);
-void	free_garbage(int is_unlink);
+void	free_garbage(void);
 
 // get_line.c
 char	*get_line(t_data *data);
@@ -155,7 +156,7 @@ void	lstclear_token(t_token **lst);
 void	lstdelone_token(t_token *lst);
 
 // lexer.c
-int		lexer(char *str, t_token **token);
+int		lexer(t_data *data, char *str, t_token **token, int num);
 
 //parsing.c
 int		token_to_cmd(t_token *token, t_data *data, int i);
@@ -174,12 +175,14 @@ int		expander(t_token *token, t_env *env, char *last_cmd_value);
 void	get_sig_heredoc(int sig);
 void	get_sig_child(int sig);
 
-//heredoc_child.c
-void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token);
+//heredoc.c
+// void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token);
+int		getfd_heredoc(t_data *data, t_token *token, int num);
 
 //error_buffer.c
 char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token);
 
 char	*ft_tabjoin(char **strs, char *sep);
+int		ft_tablen(char **strs);
 
 #endif
