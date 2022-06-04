@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 17:48:20 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 19:10:56 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	set_env_value(t_data *data, char *str, char *varname)
 		if (env->value)
 			free(env->value);
 		env->value = var;
+		free(varname);
 	}
 	else
 		push_back_env(data->env, varname, var);
@@ -62,13 +63,13 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 	env = get_var_env(data->env, varname);
 	if (env)
 	{
+		free(varname);
 		if (env->value)
 		{
 			temp = env->value;
 			env->value = ft_strjoin(temp, var);
 			free(var);
 			free(temp);
-			free(varname);
 		}
 		else
 			env->value = var;

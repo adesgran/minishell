@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:30:02 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 15:59:29 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:36:14 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,28 @@ void	heredoc_child(t_data *data, t_token *token, char *heredoc_name)
 	return (free(line), free_garbage(), exit(0));
 }
 
-int	getfd_heredoc(t_data *data, t_token *token, int num)
+static char	*gen_heredoc_name(t_token *token, int num)
+{
+	char	*heredoc_num;
+	char	*heredoc_name;
+
+	token->expanded = ft_remove_quotes(token);
+	if (token->expanded == -1)
+		return (NULL);
+	heredoc_num = ft_itoa(num);
+	if (!heredoc_num)
+		return (NULL);
+	heredoc_name = ft_strjoin("heredoc", heredoc_num);
+	free(heredoc_num);
+	return (heredoc_name);
+}
+
+int	create_heredoc(t_data *data, t_token *token, int num)
 {
 	pid_t	pid;
 	int		res;
-	char	*heredoc_num;
 
-	heredoc_num = ft_itoa(num);
-	if (!heredoc_num)
-		return (1);
-	g_gbg.heredoc_name = ft_strjoin("heredoc", heredoc_num);
-	free(heredoc_num);
+	g_gbg.heredoc_name = gen_heredoc_name(token, num);
 	if (!g_gbg.heredoc_name)
 		return (1);
 	pid = fork();

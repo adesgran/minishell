@@ -6,35 +6,13 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 15:32:34 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:57:40 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 extern t_garbage	g_gbg;
-
-void	free_tab_token(void)
-{
-	int	i;
-
-	i = 0;
-	while (g_gbg.tab_token[i])
-	{
-		lstclear_token(&g_gbg.tab_token[i]);
-		i++;
-	}
-	free(g_gbg.tab_token);
-}
-
-void	free_garbage(void)
-{
-	free_data(g_gbg.data);
-	ft_free_tabstr(g_gbg.line_tab);
-	free_tab_token();
-	free(g_gbg.heredoc_name);
-	close(g_gbg.fd_heredoc);
-}
 
 int	init_tab_token(t_data *data, char *line)
 {

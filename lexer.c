@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 17:55:20 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:40:23 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,13 @@ int	lexer(t_data *data, char *str, t_token **token, int num)
 				new = new_file(str, &i, str[i], &ret);
 			else
 				new = new_word(str, &i, WORD, &ret);
-			if (!new)
-				return (lstclear_token(token), ret);
+			if (!new || ret)
+				return (lstdelone_token(new), ret);
 			lstadd_back_token(token, new);
 			if (new->type == HEREDOC)
-			{
-				new->expanded = ft_remove_quotes(new);
-				if (new->expanded == -1)
-					return (lstclear_token(token), 1);
-				ret = getfd_heredoc(data, new, num);
-				if (ret)
-					return (lstclear_token(token), ret);
-			}
+				ret = create_heredoc(data, new, num);
+			if (ret)
+				return (lstclear_token(token), ret);
 		}
 		i++;
 	}
