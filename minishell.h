@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 15:59:42 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:58:35 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ typedef struct s_garbage
 
 // main.c
 void	free_data(t_data *data);
-void	free_garbage(void);
 
 // get_line.c
 char	*get_line(t_data *data);
@@ -177,12 +176,16 @@ void	get_sig_heredoc(int sig);
 void	get_sig_child(int sig);
 
 //heredoc.c
-// void	heredoc_child(t_data *data, t_cmd *cmd, t_token *token);
-int		getfd_heredoc(t_data *data, t_token *token, int num);
+int		create_heredoc(t_data *data, t_token *token, int num);
 
 //error_buffer.c
-char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token);
+void	error_msg(char *file_name, int type, t_token *token);
 
+// free_functions.c
+void	free_tab_token(void);
+void	free_garbage(void);
+
+// ft_tabjoin.c
 char	*ft_tabjoin(char **strs, char *sep);
 int		ft_tablen(char **strs);
 
