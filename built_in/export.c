@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 17:28:44 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:48:20 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ static char	*get_var_name(char *str)
 	i = 0;
 	if (!ft_isalpha(*str))
 	{
-		printf("minishell: export: `%s\': not a valid identifier\n", str);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putendl_fd("\': not a valid identifier", 2);
 		return (NULL);
 	}
 	while ((ft_isalnum(str[i]) || str[i] == '_') && str[i])
@@ -94,7 +96,9 @@ static int	mini_export_loop(t_data *data, char *str)
 		set_env_value(data, str, varname);
 	else
 	{
-		printf("minishell: export: `%s\': not a valid identifier\n", str);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putendl_fd("\': not a valid identifier", 2);
 		free(varname);
 		return (1);
 	}
