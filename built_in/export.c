@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 12:30:53 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 12:37:04 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:28:44 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	append_env_value(t_data *data, char *str, char *varname)
 	char	*temp;
 
 	var = ft_strdup(str + ft_strlen(varname) + 2);
-	printf("var=%s\n", var);
 	if (!var)
 		return ;
 	env = get_var_env(data->env, varname);
@@ -95,8 +94,9 @@ static int	mini_export_loop(t_data *data, char *str)
 		set_env_value(data, str, varname);
 	else
 	{
+		printf("minishell: export: `%s\': not a valid identifier\n", str);
 		free(varname);
-		return (2);
+		return (1);
 	}
 	return (0);
 }
