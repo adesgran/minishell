@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 21:04:40 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:07:21 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &res, 0);
-	printf("\n");
+	printf("%sGood Bye!%s\n", COL_RED, COL_DEFAULT);
 	(void)ac;
 	(void)av;
 	return (close(1), close(2), close(3), res / 256);

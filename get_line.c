@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 21:09:35 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:07:19 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*get_line(t_data *data)
 	if (!line)
 	{
 		printf("exit\n");
-		printf("%sGood Bye!%s\n", COL_RED, COL_DEFAULT);
 		return (NULL);
 	}
 	data->n_cmd++;

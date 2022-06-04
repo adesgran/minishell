@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 16:37:31 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:07:25 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	mini_exit(t_data *data, char **cmd, int infork)
 			printf("minishell: exit: %s: numeric argument required\n", cmd[1]);
 			res = 2;
 		}
-		printf("%sGood Bye!%s\n", COL_RED, COL_DEFAULT);
 	}
 	if (cmd[1] && check_input(cmd[1]))
 		res = ft_atoi(cmd[1]);
