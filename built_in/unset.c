@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 14:10:56 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 17:25:37 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:54:01 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ int	mini_unset(t_data *data, char **strs)
 	while (*strs)
 	{
 		if (!check_identifier(*strs))
-			printf("minishell: unset: `%s\': not a valid identifier\n", *strs);
+		{
+			ft_putstr_fd("minishell: unset: `", 2);
+			ft_putstr_fd(*strs, 2);
+			ft_putendl_fd("\': not a valid identifier", 2);
+		}
 		else if (ft_strcmp(*strs, "_"))
 			data->env = remove_var_env(data->env, *strs);
 		strs++;

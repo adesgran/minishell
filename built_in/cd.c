@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 13:19:07 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:45:56 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,25 @@ static void	update_env(t_data *data)
 		free(buff);
 }
 
+static void	cd_error(char *tmp)
+{
+	struct stat	st;
+
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(tmp, 2);
+	if (stat(tmp, &st)) 
+		ft_putendl_fd(": No such file or directory", 2);
+	else
+		ft_putendl_fd(": Permission denied", 2);
+}
+
 int	mini_cd(t_data *data, char **cmd)
 {
 	char	*tmp;
 	int		res;
 
 	if (cmd[0] && cmd[1] && cmd[2])
-		return (printf("minishell: cd: too many arguments"), 1);
+		return (ft_putstr_fd("minishell: cd: too many arguments", 2), 1);
 	if (!cmd[1])
 		tmp = get_home(data, NULL);
 	else if (cmd[1][0] == '~')
@@ -68,7 +80,7 @@ int	mini_cd(t_data *data, char **cmd)
 		return (1);
 	res = chdir(tmp);
 	if (res)
-		return (printf("Can't access %s\n", tmp), free(tmp), 1);
+		return (cd_error(tmp), free(tmp), 1);
 	free(tmp);
 	update_env(data);
 	return (0);

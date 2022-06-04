@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:52:57 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 15:07:25 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:51:36 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ int	mini_exit(t_data *data, char **cmd, int infork)
 	{
 		printf("exit\n");
 		if (cmd_size(cmd) > 2)
-			return (printf("bash: exit: too many arguments\n"), 1);
+			return (ft_putstr_fd("bash: exit: too many arguments\n", 2), 1);
 		if (check_input(cmd[1]) == 0)
 		{
-			printf("minishell: exit: %s: numeric argument required\n", cmd[1]);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(cmd[1], 2);
+			ft_putendl_fd(": numeric argument required", 2);
 			res = 2;
 		}
 	}
