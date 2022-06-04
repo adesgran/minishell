@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_buffer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:29:06 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/01 17:50:24 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:29:58 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*error_buffer(char *old_msg, char *file_name, int type, t_token *token)
 		type_msg = ": ambiguous redirect\n";
 	}
 	else if (type == 1 || (type == 2 && !ft_strlen(file_name)))
-		type_msg = ": No such file or directory\n";
+		type_msg = ": No such file or directory !!\n";
 	else
 		type_msg = ": Persmission denied\n";
 	if (!old_msg)

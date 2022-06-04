@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_bin_path_relative.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 12:35:18 by adesgran          #+#    #+#             */
-/*   Updated: 2022/05/31 13:25:49 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:41:53 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ int	is_relative_path(t_cmd *cmd)
 
 static int	check_file(char *str)
 {
-	if (access(str, R_OK))
-		return (printf("minishell: %s: No such file or directory\n", str), 1);
-	if (access(str, X_OK))
-		return (printf("minishell: %s: Permission denied\n", str), 1);
+	struct stat	buffer;
+
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	if (stat(str, &buffer))
+		return (ft_putstr_fd(": No such file or directory\n", 2), 1);
+	else if (access(str, X_OK))
+		return (ft_putstr_fd(": Permission denied\n", 2), 1);
 	return (0);
 }
 

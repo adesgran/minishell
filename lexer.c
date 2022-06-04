@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 15:48:28 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:55:20 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	lexer(t_data *data, char *str, t_token **token, int num)
 			{
 				new->expanded = ft_remove_quotes(new);
 				if (new->expanded == -1)
-					return (lstclear_token(token), ret);
+					return (lstclear_token(token), 1);
 				ret = getfd_heredoc(data, new, num);
 				if (ret)
 					return (lstclear_token(token), ret);
@@ -121,7 +121,5 @@ int	lexer(t_data *data, char *str, t_token **token, int num)
 		}
 		i++;
 	}
-	if (str[i] == '|' && !*token)
-		return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2), 2);
 	return (ret);
 }
