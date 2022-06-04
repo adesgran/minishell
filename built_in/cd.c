@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:06:26 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 17:45:56 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:01:22 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	cd_error(char *tmp)
 
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(tmp, 2);
-	if (stat(tmp, &st)) 
+	if (stat(tmp, &st))
 		ft_putendl_fd(": No such file or directory", 2);
 	else
 		ft_putendl_fd(": Permission denied", 2);
