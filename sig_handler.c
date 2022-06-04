@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:55:00 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/03 21:10:24 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 14:57:53 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	get_sig_child(int sig)
 		printf("\n%s", prompt);
 		free(prompt);
 		rl_replace_line("", 0);
-		//rl_on_new_line();
-		//rl_redisplay();
 	}
 }
 

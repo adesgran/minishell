@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 20:56:56 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 14:59:23 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 		if (cmd->fd_outfile > 2)
 			close(cmd->fd_outfile);
 		close_pipes(data, cmd);
-		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-			call_built_in_fork(data, cmd);
-		else
+		if (ft_strncmp(cmd->bin_path, "built_in/", 9))
 		{
 			increment_shlvl(data);
 			execve(cmd->bin_path, cmd->cmd, env_to_tab(data->env));
 		}
+		call_built_in_fork(data, cmd);
 		return (close(cmd->fd_outfile), close(cmd->fd_infile), free_data(data),
 			exit(EXIT_SUCCESS), 0);
 	}
