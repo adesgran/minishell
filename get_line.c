@@ -6,7 +6,7 @@
 /*   By: adesgran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:22:55 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/02 12:02:18 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:07:19 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*replace_begin(t_data *data, char *str)
 	return (free(str), res);
 }
 
-static char	*get_prompt(t_data *data)
+char	*get_prompt(t_data *data)
 {
 	char	*cwd;
 	char	*res;
@@ -51,14 +51,14 @@ static char	*get_prompt(t_data *data)
 	if (home && ft_strncmp(home->value, cwd, ft_strlen(home->value)) == 0)
 		cwd = replace_begin(data, cwd);
 	if (ft_atoi(data->last_cmd_status))
-		res = ft_strjoinx(3, "\x1B[31m\033[1mminishell$> \x1B[33m", cwd,
-				"\x1B[0m$ ");
+		res = ft_strjoinx(7, COL_RED, BOLD, "minishell$> ", COL_YEL, cwd,
+				COL_DEFAULT, "$ ");
 	else
-		res = ft_strjoinx(3, "\x1B[34m\033[1mminishell$> \x1B[33m", cwd,
-				"\x1B[0m$ ");
+		res = ft_strjoinx(7, COL_BLU, BOLD, "minishell$> ", COL_YEL, cwd,
+				COL_DEFAULT, "$ ");
 	free(cwd);
 	if (!res)
-		res = ft_strdup("\x1B[34m\033[1mminishell$> \x1B[33m\x1B[0m$ ");
+		res = ft_strjoinx(5, COL_RED, BOLD, "minishell$> ", COL_DEFAULT, "$ ");
 	return (res);
 }
 
@@ -75,7 +75,6 @@ char	*get_line(t_data *data)
 	if (!line)
 	{
 		printf("exit\n");
-		printf("\x1B[31mGood Bye!\x1B[0m\n");
 		return (NULL);
 	}
 	data->n_cmd++;

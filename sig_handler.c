@@ -16,12 +16,16 @@ extern t_garbage	g_gbg;
 
 void	get_sig_child(int sig)
 {
+	char	*prompt;
+
 	if (sig == SIGINT)
 	{
-		printf("\n");
+		free(g_gbg.data->last_cmd_status);
+		g_gbg.data->last_cmd_status = ft_strdup("130");
+		prompt = get_prompt(g_gbg.data);
+		printf("\n%s", prompt);
+		free(prompt);
 		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 

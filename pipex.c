@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:34 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 15:47:49 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 14:59:23 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 	pid = fork();
 	if (!pid)
 	{
+		signal(SIGINT, SIG_DFL);
 		dup2(cmd->fd_infile, STDIN_FILENO);
 		if (cmd->fd_infile > 2)
 			close(cmd->fd_infile);
@@ -73,13 +74,12 @@ static pid_t	exec_cmd(t_data *data, t_cmd *cmd)
 		if (cmd->fd_outfile > 2)
 			close(cmd->fd_outfile);
 		close_pipes(data, cmd);
-		if (ft_strncmp(cmd->bin_path, "built_in/", 9) == 0)
-			call_built_in_fork(data, cmd);
-		else
+		if (ft_strncmp(cmd->bin_path, "built_in/", 9))
 		{
 			increment_shlvl(data);
 			execve(cmd->bin_path, cmd->cmd, env_to_tab(data->env));
 		}
+		call_built_in_fork(data, cmd);
 		return (close(cmd->fd_outfile), close(cmd->fd_infile), free_data(data),
 			exit(EXIT_SUCCESS), 0);
 	}
@@ -98,6 +98,11 @@ int	wait_child(pid_t pid, int i, int ret)
 	if (i == 0)
 	{
 		waitpid(pid, &status, 0);
+		if (status == 2)
+		{
+			printf("\n");
+			return (130);
+		}
 		if (WIFEXITED(status))
 			ret = WEXITSTATUS(status);
 	}
@@ -111,7 +116,7 @@ int	pipex(t_data *data, t_cmd *cmd)
 	int		ret;
 
 	if (set_pipefd(cmd, data))
-		return (-1);
+		return (0);
 	i = 0;
 	ret = 0;
 	while (cmd)

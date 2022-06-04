@@ -13,14 +13,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define COLOR_DEFAULT "\x1B[0m"
-# define COLOR_RED "\x1B[31m"
-# define COLOR_GRN "\x1B[32m"
-# define COLOR_YEL "\x1B[33m"
-# define COLOR_BLU "\x1B[34m"
-# define COLOR_MAG "\x1B[35m"
-# define COLOR_CYN "\x1B[36m"
-# define COLOR_WHT "\x1B[37m"
+# define COL_DEFAULT "\x1B[0m"
+# define COL_RED "\x1B[31m"
+# define COL_GRN "\x1B[32m"
+# define COL_YEL "\x1B[33m"
+# define COL_BLU "\x1B[34m"
+# define COL_MAG "\x1B[35m"
+# define COL_CYN "\x1B[36m"
+# define COL_WHT "\x1B[37m"
 # define BOLD "\033[1m"
 
 # define WORD 0
@@ -79,7 +79,7 @@ typedef struct s_data
 	int		n_cmd;
 	char	*last_cmd_status;
 	t_token	*token;
-
+	int		in_env;
 }	t_data;
 
 typedef struct s_garbage
@@ -97,6 +97,7 @@ void	free_garbage(void);
 
 // get_line.c
 char	*get_line(t_data *data);
+char	*get_prompt(t_data *data);
 
 //debugage.c
 void	print_token(t_token *token);

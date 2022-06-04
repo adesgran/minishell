@@ -112,6 +112,7 @@ static void	loop_read(t_data *data)
 
 	while (1)
 	{
+		g_gbg.data = data;
 		signal(SIGINT, get_sig_child);
 		signal(SIGQUIT, SIG_IGN);
 		line = get_line(data);
@@ -147,15 +148,15 @@ int	main(int ac, char **av, char **env)
 		data = init_data(env);
 		if (!data)
 			return (1);
-		printf("\x1B[32mWelcome to Minishell!\x1B[0m\n");
+		printf("%sWelcome to Minishell!%s\n", COL_GRN, COL_DEFAULT);
 		loop_read(data);
 		free_data(data);
-		exit(1);
+		exit(0);
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &res, 0);
-	printf("\n");
+	printf("%sGood Bye!%s\n", COL_RED, COL_DEFAULT);
 	(void)ac;
 	(void)av;
 	return (close(1), close(2), close(3), res / 256);
