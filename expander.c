@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 19:02:43 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:28:32 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc)
 	return (ret);
 }
 
-int	replace_token(t_token **token, int is_option)
+int	replace_token(t_token **token)
 {
 	char	**tab_str;
 	int		i;
@@ -94,11 +94,6 @@ int	replace_token(t_token **token, int is_option)
 	if (!tab_str)
 		return (1);
 	free((*token)->token);
-	if (is_option)
-	{
-		(*token)->token = ft_tabjoin(tab_str, " ");
-		return (ft_free_tabstr(tab_str), 0);
-	}
 	i = -1;
 	(*token)->token = tab_str[++i];
 	while (tab_str[++i])
@@ -115,10 +110,8 @@ int	replace_token(t_token **token, int is_option)
 
 int	expander(t_token *token, t_env *env, char *last_cmd_status)
 {
-	int		is_option;
 	int		is_expanded_quote;
 
-	is_option = 0;
 	while (token)
 	{
 		if (token->type != HEREDOC)
@@ -133,10 +126,8 @@ int	expander(t_token *token, t_env *env, char *last_cmd_status)
 			if (is_expanded_quote == -1)
 				return (1);
 			if (token->type == WORD && token->token[0] && !is_expanded_quote)
-				if (replace_token(&token, is_option) == 1)
+				if (replace_token(&token) == 1)
 					return (1);
-			if (token->type == WORD && is_option == 0)
-				is_option = 1;
 		}
 		token = token->next;
 	}
