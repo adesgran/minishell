@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 18:29:03 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/03 12:21:02 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/03 19:19:55 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	ft_copy(char *dest, char *src, int i)
 	return (i);
 }
 
-static int	ft_tablen(char **strs)
+int	ft_tablen(char **strs)
 {
 	if (*strs)
 		return (ft_tablen(strs + 1) + 1);

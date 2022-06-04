@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 15:07:21 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:32:34 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,55 @@
 
 extern t_garbage	g_gbg;
 
-void	free_garbage(int is_unlink)
+void	free_tab_token(void)
 {
-	ft_free_tabstr(g_gbg.line_tab);
-	if (is_unlink)
-		lstdelone_cmd(g_gbg.new_cmd);
-	else
+	int	i;
+
+	i = 0;
+	while (g_gbg.tab_token[i])
 	{
-		ft_free_tabstr(g_gbg.new_cmd->cmd);
-		free(g_gbg.new_cmd->bin_path);
-		if (g_gbg.new_cmd->fd_infile > 2)
-			close(g_gbg.new_cmd->fd_infile);
-		if (g_gbg.new_cmd->fd_outfile > 2)
-			close(g_gbg.new_cmd->fd_outfile);
-		free(g_gbg.new_cmd->heredoc);
-		free(g_gbg.new_cmd);
-		close(g_gbg.fd_heredoc);
+		lstclear_token(&g_gbg.tab_token[i]);
+		i++;
 	}
+	free(g_gbg.tab_token);
+}
+
+void	free_garbage(void)
+{
 	free_data(g_gbg.data);
+	ft_free_tabstr(g_gbg.line_tab);
+	free_tab_token();
+	free(g_gbg.heredoc_name);
+	close(g_gbg.fd_heredoc);
+}
+
+int	init_tab_token(t_data *data, char *line)
+{
+	int	len;
+	int	i;
+	int	ret;
+
+	ret = 1;
+	g_gbg.line_tab = split_pipes(ft_strtrim(line, " \t\n\r\v\f"), &ret);
+	free(line);
+	if (!g_gbg.line_tab || ret == 2)
+		return (ft_free_tabstr(g_gbg.line_tab), ret);
+	len = ft_tablen(g_gbg.line_tab);
+	g_gbg.tab_token = malloc(sizeof(t_token *) * (len + 1));
+	if (!g_gbg.tab_token)
+		return (ft_free_tabstr(g_gbg.line_tab), 1);
+	i = -1;
+	while (++i <= len)
+		g_gbg.tab_token[i] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		ret = lexer(data, g_gbg.line_tab[i], &g_gbg.tab_token[i], i);
+		if (ret)
+			return (ft_free_tabstr(g_gbg.line_tab), free_tab_token(), ret);
+		i++;
+	}
+	return (ft_free_tabstr(g_gbg.line_tab), 0);
 }
 
 static int	analyse_line(char *line, t_data *data)
@@ -39,28 +70,20 @@ static int	analyse_line(char *line, t_data *data)
 	int			i;
 	int			ret;
 
-	ret = 1;
-	g_gbg.line_tab = split_pipes(ft_strtrim(line, " \t\n\r\v\f"), &ret);
-	free(line);
-	if (!g_gbg.line_tab || ret == 2)
-		return (ft_free_tabstr(g_gbg.line_tab), ret);
+	ret = init_tab_token(data, line);
+	if (ret)
+		return (ret);
 	i = 0;
-	while (g_gbg.line_tab[i])
+	while (g_gbg.tab_token[i])
 	{
-		data->token = NULL;
-		ret = lexer(g_gbg.line_tab[i], &data->token);
+		if (expander(g_gbg.tab_token[i], data->env, data->last_cmd_status))
+			return (free_tab_token(), 1);
+		ret = token_to_cmd(g_gbg.tab_token[i], data, i);
 		if (ret)
-			return (ft_free_tabstr(g_gbg.line_tab), ret);
-		if (expander(data->token, data->env, data->last_cmd_status))
-			return (ft_free_tabstr(g_gbg.line_tab), 1);
-		ret = token_to_cmd(data->token, data, i);
-		if (ret)
-			return (lstclear_token(&data->token),
-				ft_free_tabstr(g_gbg.line_tab), ret);
-		lstclear_token(&data->token);
+			return (free_tab_token(), ret);
 		i++;
 	}
-	return (ft_free_tabstr(g_gbg.line_tab), 0);
+	return (free_tab_token(), 0);
 }
 
 static int	execution(t_data *data)

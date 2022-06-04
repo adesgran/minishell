@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/02 17:30:07 by adesgran         ###   ########.fr       */
+/*   Updated: 2022/06/04 15:59:25 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,7 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, \
 	if (cmd->fd_infile == -1 || cmd->fd_outfile == -1)
 		return (0);
 	if (cmd->is_heredoc == 1)
-	{
-		unlink(cmd->heredoc);
 		cmd->is_heredoc = 0;
-	}
-	else if (cmd->is_heredoc == 2)
-		cmd->is_heredoc = 1;
 	if (cmd->fd_infile > 2)
 		close(cmd->fd_infile);
 	cmd->fd_infile = open(file_name, O_RDONLY);
@@ -67,31 +62,6 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, \
 			return (1);
 	}
 	return (0);
-}
-
-static int	getfd_heredoc(t_cmd *cmd, t_token *token, \
-		t_data *data, char **error_msg)
-{
-	pid_t	pid;
-	int		res;
-
-	cmd->is_heredoc = 2;
-	pid = fork();
-	signal(SIGINT, SIG_IGN);
-	if (!pid)
-		heredoc_child(data, cmd, token);
-	signal(SIGINT, SIG_IGN);
-	wait(&res);
-	res = res / 256;
-	if (res == 1)
-		return (unlink(cmd->heredoc), 2);
-	if (res == 130)
-	{
-		free(data->last_cmd_status);
-		data->last_cmd_status = ft_strdup("130");
-		return (unlink(cmd->heredoc), 2);
-	}
-	return (getfd_infile(cmd, cmd->heredoc, error_msg, token), 0);
 }
 
 static int	getfd_outfile(t_cmd *cmd, t_token *token, char **error_msg)
@@ -121,27 +91,35 @@ int	token_to_cmd(t_token *token, t_data *data, int i)
 {
 	int		ret;
 	char	*error_msg;
+	t_cmd	*new;
 
 	ret = 0;
-	g_gbg.new_cmd = lstnew_cmd(i);
-	if (!g_gbg.new_cmd)
+	new = lstnew_cmd(i);
+	if (!new)
 		return (1);
 	error_msg = NULL;
 	while (token)
 	{
 		if (token->type == WORD && (token->token[0] || \
 			(!token->token[0] && !token->expanded)))
-			ret = add_optioncmd(g_gbg.new_cmd, token);
+			ret = add_optioncmd(new, token);
 		else if (token->type == LESS)
-			ret = getfd_infile(g_gbg.new_cmd, token->token, &error_msg, token);
+			ret = getfd_infile(new, token->token, &error_msg, token);
 		else if (token->type == HEREDOC)
-			ret = getfd_heredoc(g_gbg.new_cmd, token, data, &error_msg);
+		{
+			if (new->fd_infile != -2)
+				close(new->fd_infile);
+			new->fd_infile = open(token->token, O_RDONLY);
+			new->is_heredoc = 1;
+		}
 		else if (token->type == GREAT || token->type == GREATGREAT)
-			ret = getfd_outfile(g_gbg.new_cmd, token, &error_msg);
+			ret = getfd_outfile(new, token, &error_msg);
 		if (ret)
-			return (lstdelone_cmd(g_gbg.new_cmd), ret);
+			return (lstdelone_cmd(new), ret);
 		token = token->next;
 	}
+	if (new->is_heredoc == 0)
+		unlink(new->heredoc);
 	return (ft_putstr_fd(error_msg, 2), free(error_msg), \
-			lstadd_back_cmd(&(data->cmd), g_gbg.new_cmd), 0);
+			lstadd_back_cmd(&(data->cmd), new), 0);
 }
