@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:29:18 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 18:54:51 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:03:34 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	lstadd_back_token(t_token **alst, t_token *new)
 
 void	lstdelone_token(t_token *lst)
 {
+	if (!lst)
+		return ;
 	free(lst->token);
 	free(lst->unexpanded);
 	free(lst);
