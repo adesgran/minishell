@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:23:42 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 18:52:42 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/07 16:22:03 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ static int	getfd_infile(t_cmd *cmd, char *file_name, t_token *token)
 	if (cmd->fd_infile == -1)
 	{
 		if (!stat(file_name, &buffer))
-			error_msg(file_name, 3, token);
+			redirection_error(file_name, 3, token);
 		else
-			error_msg(file_name, 1, token);
+			redirection_error(file_name, 1, token);
 	}
 	return (0);
 }
@@ -76,7 +76,7 @@ static int	getfd_outfile(t_cmd *cmd, t_token *token)
 	cmd->fd_outfile = open(token->token, \
 			O_WRONLY | open_option | O_CREAT, 0644);
 	if (cmd->fd_outfile == -1)
-		error_msg(token->token, 2, token);
+		redirection_error(token->token, 2, token);
 	return (0);
 }
 

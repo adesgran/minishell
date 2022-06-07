@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 18:58:35 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:28:02 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ void	get_sig_child(int sig);
 int		create_heredoc(t_data *data, t_token *token, int num);
 
 //error_buffer.c
-void	error_msg(char *file_name, int type, t_token *token);
+void	syntax_error(char c);
+void	redirection_error(char *file_name, int type, t_token *token);
 
 // free_functions.c
 void	free_tab_token(void);
