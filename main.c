@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:14:59 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 18:57:40 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:34:20 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,19 @@ static int	analyse_line(char *line, t_data *data)
 	return (free_tab_token(), 0);
 }
 
-static int	execution(t_data *data)
+static int	execution(t_data *data, int ret)
 {
-	int	ret;
-
-	if (get_bin_path(data->cmd, get_path(data)) == 1)
-		return (1);
-	if (is_env_built_in(data->cmd))
-		ret = env_built_in(data, data->cmd);
-	else
-		ret = pipex(data, data->cmd);
-	if (ret == -1)
-		return (1);
+	if (ret == 0)
+	{
+		if (get_bin_path(data->cmd, get_path(data)) == 1)
+			return (1);
+		if (is_env_built_in(data->cmd))
+			ret = env_built_in(data, data->cmd);
+		else
+			ret = pipex(data, data->cmd);
+		if (ret == -1)
+			return (1);
+	}
 	free(data->last_cmd_status);
 	data->last_cmd_status = ft_itoa(ret);
 	if (!data->last_cmd_status)
@@ -102,8 +103,8 @@ static void	loop_read(t_data *data)
 			ret = analyse_line(line, data);
 			if (ret == 1)
 				return (rl_clear_history());
-			if (ret == 0)
-				if (execution(data) == 1)
+			else
+				if (execution(data, ret) == 1)
 					return (rl_clear_history());
 			lstclear_cmd(&(data->cmd));
 		}

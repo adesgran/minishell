@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:21:40 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/04 17:53:24 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:32:14 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,7 @@ static char	*static_next_line(char **str, int *ret)
 		i++;
 	}
 	res[i] = '\0';
-	if (res[ft_strlen(res) - 1] == '|' && !**str)
-	{
-		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-		*ret = 2;
-	}
+	(void)ret;
 	return (res);
 }
 

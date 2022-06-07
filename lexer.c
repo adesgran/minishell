@@ -6,24 +6,15 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 18:41:02 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/06 14:03:56 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:31:49 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	syntax_error(char c, int *ret)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	if (c)
-		ft_putchar_fd(c, 2);
-	else
-		ft_putstr_fd("newline", 2);
-	ft_putstr_fd("'\n", 2);
-	*ret = 2;
-}
+extern t_garbage	g_gbg;
 
-static int	len_token(char *str, int i, int *ret)
+static int	len_token(char *str, int i)
 {
 	char	quote;
 
@@ -37,7 +28,7 @@ static int	len_token(char *str, int i, int *ret)
 			if (str[i++] == '\\' && str[i])
 				i++;
 		if (str[i++] != quote)
-			return (syntax_error('\0', ret), -1);
+			return (syntax_error('\0'), -1);
 	}
 	else
 	{
@@ -45,28 +36,31 @@ static int	len_token(char *str, int i, int *ret)
 			if (str[i++] == '\\' && str[i])
 				i++;
 	}
-	return (len_token(str, i, ret));
+	return (len_token(str, i));
 }
 
-static t_token	*new_word(char *str, int *i, int type_word, int *ret)
+static int	add_token(char *str, int *i, int type, t_token **token)
 {
 	int		len;
 	char	*new_str;
+	t_token	*new;
 
-	len = len_token(&str[*i], 0, ret);
+	len = len_token(&str[*i], 0);
 	if (len == -1)
-		return (NULL);
+		return (2);
 	new_str = ft_substr(str, *i, len);
 	if (!new_str)
-		return (NULL);
+		return (1);
 	*i += len - 1;
-	return (lstnew_token(new_str, type_word));
+	new = lstnew_token(new_str, type);
+	if (!new)
+		return (1);
+	lstadd_back_token(token, new);
+	return (0);
 }
 
-static t_token	*new_file(char *str, int *i, char chevron, int *ret)
+static int	new_file(char *str, int *i, char chevron, t_token **token)
 {
-	char	*new_str;
-	int		len;
 	int		type;
 
 	if (str[++(*i)] == chevron)
@@ -78,23 +72,15 @@ static t_token	*new_file(char *str, int *i, char chevron, int *ret)
 		type = chevron;
 	while (ft_ischarset(str[*i], " \t\n\r\v\f"))
 		(*i)++;
-	if (!str[*i] || ft_ischarset(str[*i], "<>|"))
-		return (syntax_error(str[*i], ret), NULL);
-	len = len_token(&str[*i], 0, ret);
-	if (len == -1)
-		return (NULL);
-	new_str = ft_substr(str, *i, len);
-	if (!new_str)
-		return (NULL);
-	*i += len - 1;
-	return (lstnew_token(new_str, type));
+	if (!str[*i] || ft_ischarset(str[*i], "<>"))
+		return (syntax_error(str[*i]), 2);
+	return (add_token(str, i, type, token));
 }
 
 int	lexer(t_data *data, char *str, t_token **token, int num)
 {
 	int		i;
 	int		ret;
-	t_token	*new;
 
 	i = 0;
 	ret = 0;
@@ -103,18 +89,19 @@ int	lexer(t_data *data, char *str, t_token **token, int num)
 		if (!ft_ischarset(str[i], " \t\n\r\v\f"))
 		{
 			if (str[i] == '<' || str[i] == '>')
-				new = new_file(str, &i, str[i], &ret);
+				ret = new_file(str, &i, str[i], token);
 			else
-				new = new_word(str, &i, WORD, &ret);
-			if (!new || ret)
-				return (lstdelone_token(new), ret);
-			lstadd_back_token(token, new);
-			if (new->type == HEREDOC)
-				ret = create_heredoc(data, new, num);
+				ret = add_token(str, &i, WORD, token);
+			if (ret)
+				return (ret);
+			if (lstlast_token(*token)->type == HEREDOC)
+				ret = create_heredoc(data, lstlast_token(*token), num);
 			if (ret)
 				return (lstclear_token(token), ret);
 		}
 		i++;
 	}
+	if (str[i] == '|' && !g_gbg.line_tab[num + 1])
+		return (syntax_error(str[i]), 2);
 	return (ret);
 }
