@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 17:30:02 by adesgran          #+#    #+#             */
-/*   Updated: 2022/06/07 18:29:32 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/10 11:56:10 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*gen_heredoc_name(t_token *token, int num)
 	heredoc_num = ft_itoa(num);
 	if (!heredoc_num)
 		return (NULL);
-	heredoc_name = ft_strjoin("heredoc", heredoc_num);
+	heredoc_name = ft_strjoin(".heredoc", heredoc_num);
 	free(heredoc_num);
 	return (heredoc_name);
 }
