@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:53:59 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/07 18:28:02 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:23:15 by adesgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ typedef struct s_garbage
 	char	*heredoc_name;
 	int		fd_heredoc;
 }	t_garbage;
+
+typedef struct s_get_quotes
+{
+	bool	singleq;
+	bool	doubleq;
+}	t_get_quotes;
 
 // main.c
 void	free_data(t_data *data);
