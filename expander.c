@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 19:25:04 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/04 17:28:32 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/10 11:50:51 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,29 @@ char	*get_var_value(char *str, int *i, t_env *env, char *last_cmd_status)
 int	lf_var(char **token, t_env *env, char *last_cmd_status, int is_heredoc)
 {
 	int		i;
-	bool	is_expandable;
+	bool	single_quote;
+	bool	double_quote;
 	int		ret;
 
-	i = 0;
-	is_expandable = TRUE;
+	i = -1;
+	single_quote = FALSE;
+	double_quote = FALSE;
 	ret = 0;
-	while (token[0][i])
+	while (token[0][++i])
 	{
-		if (token[0][i] == '\\')
+		if (token[0][i] == '\\' && token[0][i + 1])
 			i++;
-		else if (!is_heredoc && token[0][i] == '\'')
-			is_expandable = !is_expandable;
-		else if (token[0][i] == '$' && is_expandable == TRUE)
+		else if (!is_heredoc && token[0][i] == '\"' && !single_quote)
+			double_quote = !double_quote;
+		else if (!is_heredoc && token[0][i] == '\'' && !double_quote)
+			single_quote = !single_quote;
+		else if (token[0][i] == '$' && !single_quote)
 		{
 			ret = 1;
 			token[0] = get_var_value(token[0], &i, env, last_cmd_status);
 			if (!token[0])
 				return (-1);
 		}
-		if (token[0][i])
-			i++;
 	}
 	return (ret);
 }

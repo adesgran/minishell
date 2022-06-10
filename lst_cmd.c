@@ -6,7 +6,7 @@
 /*   By: mchassig <mchassig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:59:15 by mchassig          #+#    #+#             */
-/*   Updated: 2022/06/01 16:50:28 by mchassig         ###   ########.fr       */
+/*   Updated: 2022/06/08 18:56:22 by mchassig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_cmd	*lstnew_cmd(int i)
 	num_cmd = ft_itoa(i);
 	if (!num_cmd)
 		return (free(res), NULL);
-	res->heredoc = ft_strjoin("heredoc", num_cmd);
+	res->heredoc = ft_strjoin(".heredoc", num_cmd);
 	free(num_cmd);
 	if (!res->heredoc)
 		return (free(res), NULL);
